@@ -14,6 +14,10 @@ predictivo. Este repo no tiene código: define qué se construye en
 | `111.ETEI - Soplador # 01..xls` | Plantilla de reporte vibracional |
 | `2CRONOGRAMA SERVICIOS AMBEV HUACHIPA MPd 2014.xlsx` | Cronograma anual de servicios |
 
+> Para retomar el proyecto en otra sesión, empieza por
+> **[SUMMARY.md](SUMMARY.md)**: estado actual, cómo levantarlo, decisiones
+> cerradas y lo que falta.
+
 ## Documentos
 
 | Doc | Contenido |
