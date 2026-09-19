@@ -87,6 +87,26 @@ Con `pillow` + `pillow-heif` + `pillow-avif-plugin`. Una foto tarda ~0,5–1,5 s
 CPU; 2 200 fotos son ~20–40 min en 4 workers. Entra de sobra en la ventana
 nocturna.
 
+### Sin broker también corre
+
+El trabajo vive en `modules/media/infrastructure/conversion.py`, no dentro de la
+tarea. La tarea de Celery, el `beat` y el comando de consola son tres llamadas a
+lo mismo:
+
+```bash
+./.venv/bin/python manage.py tenants run <cliente> media_convert --limit 500
+./.venv/bin/python manage.py tenants run <cliente> media_convert --retry-failed
+```
+
+Una instalación de un servidor no tiene Redis, y unas miniaturas que dependen de
+que un broker esté levantado no son miniaturas. Una línea de cron hace el mismo
+trabajo.
+
+**El codificador se degrada solo.** AVIF es lo que pide el requisito, pero
+`pillow-avif-plugin` es una dependencia opcional: si no está, se escribe WebP,
+que es la mitad de la ganancia y está siempre disponible. Una derivada que no
+existe le cuesta al navegador el original entero, que es mucho peor que un WebP.
+
 **Pero el cron no puede ser lo único.** Si un técnico sube fotos a las 10:00 y
 las quiere ver en el reporte a las 11:00, esperar a medianoche es inaceptable.
 Solución de dos velocidades:
@@ -107,11 +127,21 @@ metadatos propietarios. Convertirlo a AVIF la destruye y el termograma pasa a se
 una imagen bonita sin datos.
 
 ```
-termograma → extraer matriz (exiftool/flirimageextractor) → parquet en S3
-           → guardar emisividad, T reflejada, rango, paleta en thermal_meta
+termograma → extraer matriz (modules/media/domain/flir.py) → rejilla cruda en el store
+           → guardar emisividad, T reflejada y constantes de Planck en thermal_meta
            → el ORIGINAL nunca se degrada ni se archiva en frío
-           → las derivadas AVIF son solo para previsualizar
+           → las derivadas son solo para previsualizar
 ```
+
+El lector del segmento `APP1 FLIR` está escrito en el dominio, con la librería
+estándar: recompone los trozos del segmento, recorre la tabla de tags FFF y saca
+la imagen cruda (tipo 1) y la calibración (tipo 32). `temperature_at()` invierte
+la curva de Planck, que es lo que permite recalcular un ΔT sin la cámara.
+
+**Fallar no puede costar la conversión entera.** Antes esto lanzaba
+`NotImplementedError` y el termograma se quedaba sin ninguna derivada. Ahora una
+foto normal devuelve `radiometric: false` con el motivo en `notes`, y las
+derivadas se generan igual.
 
 Lo mismo aplica a cualquier captura que sea *dato* y no *ilustración*.
 
@@ -121,6 +151,39 @@ Lo mismo aplica a cualquier captura que sea *dato* y no *ilustración*.
 prefirmada de corta vida, con `Cache-Control` largo y ETag por hash — el
 navegador y el CDN cachean, la API deja de verse. La galería pide `thumb`; el
 detalle pide `card`; `original` exige permiso explícito y queda en `AuditLog`.
+
+## 6.1 Galería por equipo: miles de imágenes por máquina
+
+Ver un año de espectros de un reductor no puede obligar a abrir visita por
+visita, y tampoco puede degradarse cuando la máquina acumula diez mil imágenes.
+Tres decisiones, las tres necesarias:
+
+1. **`equipment_ref` y `captured_on` desnormalizados** en `MediaAsset`, escritos
+   en la subida a partir de la visita. La galería es un recorrido de índice, no
+   un join por visitas. Son enteros y no FKs porque el dueño de un asset siempre
+   fue genérico (`owner_type`/`owner_id`).
+2. **Índice que carga también el orden**:
+   `(company, equipment_ref, kind, -created_at, -id)`. SQLite lo resuelve como
+   `SEARCH ... USING COVERING INDEX`: sin paso de ordenación y sin tocar la tabla.
+3. **Paginación por cursor, nunca `OFFSET`.** `OFFSET 18000` obliga a la base a
+   recorrer dieciocho mil filas que va a tirar.
+
+Medido sobre 20 000 imágenes de un solo equipo (SQLite, portátil):
+
+| Consulta | Tiempo |
+|---|---|
+| Página 1 (60 filas) | 2,6 ms |
+| Página 300 (fila ~18 000) por cursor | **2,3 ms** |
+| La misma página por `OFFSET` | 11,2 ms |
+| Conteos de los chips (`GROUP BY kind`) | 7,6 ms, sólo en la primera página |
+| Visitas de una página | 1 consulta, 2,4 ms |
+
+La página 300 cuesta lo mismo que la 1: ésa es la propiedad que se buscaba.
+
+En el navegador, cada azulejo lleva `content-visibility: auto` con altura
+reservada (`contain-intrinsic-size`) y la imagen va `loading="lazy"`: lo que está
+fuera de pantalla no se maqueta ni se pinta, y añadir una página no mueve lo que
+ya se está mirando. El original sólo se descarga al abrir una imagen.
 
 ## 7. Presupuesto de rendimiento (objetivos, no deseos)
 

@@ -61,7 +61,8 @@ Implementado en `assets/domain/asset_code.py`, con tests.
 MeasurementPoint
     equipment            FK
     number               1..n  (posicional dentro del AssetGroup, como en las fuentes)
-    side                 free_end | coupling_end | opposite_coupling | inboard | outboard | custom
+    side                 free_end | coupling_end | opposite_coupling | inboard | outboard
+                         | lower | upper | custom
     axis                 H | V | A | none
     point_type           bearing | electrical | thermal | ultrasound | lubrication | process
     label                "1H", "3V", "Pto 3HV"   (derivado, para mostrar)
@@ -73,6 +74,33 @@ MeasurementPoint
 
 `blueprint_x/y` normalizados (0–1) y no en píxeles: el plano se puede sustituir
 por otro de distinta resolución sin recolocar puntos.
+
+#### La numeración es del conjunto, y los componentes no llevan los mismos puntos
+
+Los reportes de `docs/vibration/reports` no tienen una sola forma:
+
+| Reportes | Componentes (puntos) | Total |
+|---|---|---|
+| 0021, 0022 | MOTOR (2) + REDUCTOR (4) | 6 |
+| 0023, 0024, 0025 | MOTOR (2) + REDUCTOR (4) + CHUMACERA LADO MANDO (2) + CHUMACERA LADO TRANSMISIÓN (2) | 10 |
+| 0026 – 0029 | CHUMACERA (1) + REDUCTOR (5) | 6 |
+
+Dos consecuencias que no se pueden saltar:
+
+1. **`number` corre a lo largo del conjunto, no del equipo.** El reductor del
+   0021 es 3–6 y las chumaceras del 0023 son 7–10. El código que escribe el
+   analista (`HV-7`, `EE-10`) no lleva componente, así que un número repetido
+   dentro del mismo conjunto es ambiguo. Se valida al crear el punto.
+2. **Cada componente declara cuántos puntos se le leen**
+   (`AssetGroupComponent.point_count`). Suponer dos por máquina se come la
+   mitad de un reductor en silencio.
+
+Un tren puede además llevar **dos componentes del mismo tipo** (las dos
+chumaceras del 0023). Emparejarlos por tipo y posición no los distingue, así que
+el equipo guarda a qué componente del tipo corresponde
+(`Equipment.group_component`) y en qué orden se imprime (`order_in_group`).
+Los límites se resuelven **por componente**: el reductor no lo juzga la norma
+del motor, y por eso la sección V del reporte lista varias tablas a la vez.
 
 ### Plano del equipo (T3)
 
@@ -161,6 +189,24 @@ Spectrum
 
 Acepta las dos realidades de doc 00 §8: hoy hay capturas, mañana hay arrays.
 `caption` + `diagnosis` son el par (imagen, etiqueta) para el modelo futuro.
+
+**Implementado** en `modules/measurements` (no en `vibration`: cuelga de
+`Reading` y de `MeasurementPoint`, y ese módulo siempre está instalado). Dos
+diferencias con el diseño de arriba:
+
+- La curva no va en la fila ni en Parquet, sino en **JSON comprimido con gzip**
+  en el object store (`data_key`), content-addressed como las imágenes. Un
+  espectro de 1 600 líneas ocupa 3,7 KB. Parquet exigiría `pyarrow` para algo
+  que se escribe una vez y se lee entero; el día que haya analítica sobre
+  millones de espectros, se cambia el formato detrás de `data_key`.
+- `peak_hz` y `peak_amplitude` se calculan al importar y sí viven en la fila:
+  son lo que una lista necesita mostrar sin abrir la curva.
+
+El listado **nunca** devuelve la curva —
+`GET /api/v1/spectra/{id}/curve/` es un endpoint aparte, porque mandar 3 200
+pares para pintar seis miniaturas es lo que hace que una galería parezca rota.
+La importación acepta el CSV de SEMAPI y SKF (`modules/measurements/domain/spectra.py`),
+con preámbulos del fabricante, delimitador `;`/`,`/tab y coma decimal.
 
 ## 4. Estados, normas y umbrales — T12
 

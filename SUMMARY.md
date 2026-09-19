@@ -56,6 +56,13 @@ rm -f data/tenant_ambev.sqlite3
     --url "sqlite:///data/tenant_ambev.sqlite3" --deployment on_premise
 ./.venv/bin/python manage.py tenants issue ambev --plan enterprise --months 12 \
     --equipment 600 --plants 2 --users 25
+
+# Rellenar lo que seed_demo no trae: ultrasonido, aceite, multimedia y espectros.
+# Es aditivo e idempotente; correrlo dos veces reporta ceros.
+./.venv/bin/python manage.py tenants run ambev seed_more
+
+# Derivadas de imagen (miniaturas y formatos web), sin Redis
+./.venv/bin/python manage.py tenants run ambev media_convert
 ```
 
 > ⚠️ **No usar `pkill -f "manage.py runserver"`**: el patrón coincide con la
@@ -67,6 +74,11 @@ rm -f data/tenant_ambev.sqlite3
 191 entradas de diario · 528 placas · 19 260 valores operativos ·
 7 tipos de conjunto con 78 plantillas de punto · 12 normas · 21 juegos de
 umbrales · 45 modos de falla · 8 técnicas · 9 medidas.
+
+Con `seed_more` encima: 5 técnicas con lecturas (vibraciones, termografía,
+ultrasonido, análisis de aceite, aceite dieléctrico) · 4 884 visitas ·
+1 847 imágenes repartidas en 268 equipos · 432 espectros numéricos, 262 con
+diagnóstico · 23 juegos de umbrales.
 
 ---
 
@@ -100,6 +112,16 @@ de forma silenciosa.
    motor y la bomba del mismo tren se visitan con horas de diferencia.
 10. **`es-PE` escribe `1,234.50` igual que `en-US`**; el que usa coma decimal
     es `es-ES`. Nunca asumir "español = coma". Todo por `Intl`.
+11. **Los componentes de un conjunto no llevan los mismos puntos**, y la
+    numeración corre a lo largo del tren, no de la máquina. `docs/vibration/reports`
+    trae tres formas: MOTOR 2 + REDUCTOR 4; MOTOR 2 + REDUCTOR 4 + dos
+    CHUMACERAS de 2 (1→10); y CHUMACERA 1 + REDUCTOR 5. Suponer dos por máquina
+    se come la mitad de un reductor sin avisar.
+12. **Un tren puede llevar dos componentes del mismo tipo** (chumacera lado
+    mando y lado transmisión). Emparejarlos por tipo y posición no los
+    distingue: el equipo guarda su componente (`group_component`) y su orden.
+13. **Los límites se resuelven por componente.** El reductor no lo juzga la
+    norma del motor; por eso la sección V del reporte lista varias tablas.
 
 ---
 
@@ -184,6 +206,47 @@ problemas) · `nameplate` · `media` (galería) · `licensing` · `modules_admin
   órdenes y visitas, tipos de conjunto con su plantilla de puntos.
 - **Licencia**: revocar bloquea con 402 al instante; el estado sigue
   consultable para que la UI pueda explicarlo.
+- **Galería por equipo** en `/assets/:id/media`: todas las imágenes de una
+  máquina, de todos sus servicios, con filtro por tipo y scroll infinito.
+  Paginación por cursor sobre un índice que lleva el orden — medido con 20 000
+  imágenes en un equipo, la página 300 cuesta lo mismo que la 1 (2,3 ms). Ver
+  `docs/05 §6.1`.
+- **Conversión de imágenes** ejecutable sin Redis
+  (`manage.py tenants run <cliente> media_convert`), con las tres derivadas y el
+  codificador degradando a WebP si no está el plugin AVIF.
+- **Termogramas radiométricos**: el segmento `APP1 FLIR` se lee con la librería
+  estándar (`modules/media/domain/flir.py`), la rejilla cruda se guarda aparte y
+  la calibración queda en `thermal_meta`. Antes esto lanzaba `NotImplementedError`
+  y el termograma se quedaba sin ninguna derivada.
+- **Espectros numéricos**: modelo `Spectrum`, importación del CSV de SEMAPI/SKF
+  y `GET /spectra/{id}/curve/` aparte del listado. Pantalla en
+  `/measurements/:id/spectra`: importar CSV, ver la curva, editar el pie.
+- **CRUD completo en todas las vistas.** Auditado ruta por ruta: las 11
+  mutaciones que existían sin botón están cableadas (editar y borrar equipo,
+  renombrar planta/área/sector/conjunto, editar orden, diario editable,
+  ejecutantes, simulador de umbrales), y las operaciones que faltaban en el
+  backend existen (`PATCH/DELETE` de planta y magnitud, `PATCH` de punto y de
+  espectro). Tres pantallas nuevas: **instrumentos** (`/settings/instruments`,
+  con aviso de calibración vencida), **modos de falla**
+  (`/settings/fault-modes`) y **parámetros operativos**
+  (`/settings/operating-parameters`).
+
+> Lo que se borra con historia detrás **se desactiva y se explica**: el
+> servidor responde con el conteo ("no se puede borrar: 20 088 lecturas se
+> tomaron en esta magnitud") y la UI lo enseña tal cual.
+
+- **Captura de ronda** en `/services/visits/:id/capture`: crea las lecturas de
+  una visita de golpe, las gradúa al entrar y **sobrevive al reintento** —
+  `Idempotency-Key` devuelve la primera respuesta en vez de duplicar la ronda.
+  No es lo mismo que el registro de valores, que edita lecturas que ya existen.
+
+> El caso de uso `RecordReadings` estaba escrito entero desde el principio y
+> **ningún adaptador implementaba sus puertos**, así que no había forma de
+> entrar. Al cablearlo aparecieron dos fallos que solo se ven ejecutándolo: el
+> contexto de evaluación se construía sin la norma del equipo (toda lectura
+> salía sin graduar), y el lote de idempotencia guardaba un conteo pero no
+> *qué* lecturas produjo, así que un reintento devolvía las primeras N de la
+> visita — lecturas de otra ronda. `ReadingBatch.reading_ids` lo arregla.
 
 ---
 
@@ -192,10 +255,9 @@ problemas) · `nameplate` · `media` (galería) · `licensing` · `modules_admin
 | Pendiente | Nota |
 |---|---|
 | Reporte de inspección en **PDF** | El módulo `reports` está vacío. Es el paso que cierra el círculo con `MPd-AV-N°006-13`. |
-| Parsers CSV de SEMAPI y SKF | El puerto y el registro existen y están probados; faltan las clases. |
 | Módulo `blueprints` (planos con puntos) | Diseñado en `docs/02 §1`, sin implementar. Es T3 del pedido original. |
-| Espectros numéricos | Hoy solo se suben capturas de pantalla. El modelo `Spectrum` está diseñado, no creado. |
-| Conversión nocturna real | La tarea Celery existe; nunca se ejecutó (no hay Redis levantado en local). |
+| `pillow-heif` y `pillow-avif-plugin` | **No instalados en el venv**: las derivadas salen en WebP y un HEIC de iPhone no se convierte. `pip install -e ".[dev]"` no los trae; están en las deps de runtime. |
+| Importador de espectros conectado a la UI | El endpoint y el parser CSV están hechos y probados; falta el botón en la visita. |
 | Cifrar `Tenant.database_url` | Hoy es texto; la variable de entorno ya permite no guardarlo. |
 | Versionado de `NameplateData` | Hoy es un registro por equipo. Hará falta el día que se rebobine un motor. |
 | Migraciones a Postgres real | Todo probado en SQLite. Timescale/hypertables sin ejercitar. |
