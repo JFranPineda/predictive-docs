@@ -63,7 +63,14 @@ rm -f data/tenant_ambev.sqlite3
 
 # Derivadas de imagen (miniaturas y formatos web), sin Redis
 ./.venv/bin/python manage.py tenants run ambev media_convert
+
+# Los cuatro perfiles de la matriz de acceso, con una persona de ejemplo cada uno
+./.venv/bin/python manage.py tenants run ambev seed_profiles --demo-users
 ```
+
+Perfiles de ejemplo (contraseña `predictive2026`): `gerencia@ambev.com.pe`,
+`subgerencia@ambev.com.pe`, `jefe.mtto@ambev.com.pe`. El técnico
+`jorge.a@simiai.pe` entra con el código que le emita el administrador.
 
 > ⚠️ **No usar `pkill -f "manage.py runserver"`**: el patrón coincide con la
 > propia línea de comandos del shell y mata la sesión. Ya pasó dos veces.
@@ -239,6 +246,30 @@ problemas) · `nameplate` · `media` (galería) · `licensing` · `modules_admin
   una visita de golpe, las gradúa al entrar y **sobrevive al reintento** —
   `Idempotency-Key` devuelve la primera respuesta en vez de duplicar la ronda.
   No es lo mismo que el registro de valores, que edita lecturas que ya existen.
+
+- **Matriz de acceso de la planta** (Gerente General, Subgerente de Planta, Jefe
+  de Mantenimiento, Personal Técnico) visible en `/settings/users`: cada rol se
+  apoya en un **comportamiento base** que decide si puede alterar datos de campo
+  y de quién; sus permisos deciden qué pantallas ve. `seed_profiles` crea los
+  cuatro perfiles (`--demo-users` añade una persona por perfil).
+- **Código único personalizado** para el personal de campo: el servidor lo
+  genera, se muestra **una vez**, se guarda solo como HMAC y el login
+  (`/auth/code-login/`) está limitado a 10 intentos por minuto. La gerencia entra
+  con credencial corporativa; a un rol de gerencia no se le puede emitir código.
+- **Turnos** A/B/C (tres relevos de 8 h) en la membresía.
+- **Auditoría** en `/settings/audit` para quien tenga `core.view_audit`: lecturas
+  registradas y corregidas, accesos, roles e inicios por código. La tabla existía
+  desde el principio y nadie escribía en ella.
+- El **tablero** muestra bajo cada área el técnico responsable y la hora exacta
+  de registro (y la de medición en el tooltip: se digita a veces en oficina).
+- Cada servicio en **su unidad**: ultrasonido en dB, vibraciones en mm/s, y los
+  espesores UT (mm) como servicio propio, «END · Espesores UT».
+
+> Dos bugs hacían inservibles los roles propios: `Role(code)` reventaba con
+> cualquier rol que no fuera de los siete del sistema (ningún usuario con
+> «Gerente General» podía cargar una pantalla), y la asignación de rol rechazaba
+> todo lo que no estuviera en esa misma lista. Además, corregir una lectura
+> sobrescribía `operator` con quien corregía: se perdía quién la midió.
 
 > El caso de uso `RecordReadings` estaba escrito entero desde el principio y
 > **ningún adaptador implementaba sus puertos**, así que no había forma de
