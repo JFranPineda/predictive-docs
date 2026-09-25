@@ -438,15 +438,14 @@ varios eran del tipo que no falla: devuelve algo plausible y equivocado.
 
 ## 8. Trampas del entorno (leer antes de prometer nada)
 
-- **`pytest` y `ruff` NO están instalados** en `predictive-back/.venv`. Solo
-  están las dependencias de runtime, así que **los 199 tests del backend no se
-  pueden correr**. Para instalarlos: `./.venv/bin/pip install -e ".[dev]"`.
-  Mientras tanto se usa `manage.py check` y un runner mínimo para los tests de
-  dominio (16 pasan: `test_role_behaviour`, `test_flir`, `test_point_layout`).
-  `test_spectra.py` usa `pytest.raises` y no se puede ejecutar así.
-- **`pillow-heif` y `pillow-avif-plugin` tampoco están.** Las derivadas salen
-  en WebP y un HEIC no convierte.
-- **El front sí corre entero**: `npx vitest run` → 101 tests, `npx tsc --noEmit`
+- **Herramientas de desarrollo instaladas** (2026-09-25) en `predictive-back/.venv`:
+  `pytest`, `ruff`, `import-linter`, `weasyprint`, `pillow-heif`,
+  `pillow-avif-plugin`. `pip install -e ".[dev]"` **falla** (layout plano, varios
+  paquetes top-level): se instalan las dependencias por nombre. Línea base:
+  `pytest tests/unit` verde; `lint-imports` con 2 violaciones de capas previas
+  (`security.application` y `thresholds.application` importan infraestructura);
+  ruff con ~222 avisos previos (sobre todo `RUF012` y `E501`).
+- **El front sí corre entero**: `npx vitest run` → 128 tests, `npx tsc --noEmit`
   limpio.
 - **Lint del front: 9 errores preexistentes** en 7 ficheros
   (`GroupKindsPage`, `PlantStructurePage`, `MeasurementsIndexPage`,
@@ -547,3 +546,39 @@ huecos de multimedia/conversión/espectros → llenar las vistas con datos reale
 gráfico de tendencias con hasta 6 series → las correcciones de las imágenes
 (espesor mínimo, valor en la barra, filas por rodamiento) → unidades por
 servicio → usuarios y permisos con la matriz de acceso.
+
+---
+
+## 12. v3 — requerimientos de la revisión con el cliente (2026-09-25)
+
+Los tickets están en `docs/v3/README.md` (índice, sprints, preguntas Q1–Q15) y
+`docs/v3/tickets/`. **Implementados y verificados**: V3-01 a V3-15, V3-19,
+V3-24 a V3-28, V3-30, V3-31, V3-33 a V3-36. **Pendientes**: V3-16 (termografía),
+V3-17/18 (alineamiento, topografía), V3-20 a V3-23 (END, informes), V3-29
+(lubricación), V3-32 (mantenimiento) y la Fase 3. El estado por ticket de la
+épica de vibraciones está al inicio de `docs/v3/tickets/03-vibration.md`.
+
+Lo que no se deduce del código:
+
+- **`@transaction.atomic` sin alias no protege los datos del cliente**: abre la
+  transacción en `default` (plano de control). Usar
+  `modules.core.infrastructure.transactions.tenant_atomic`. Ya aplicado al
+  editor de tipos y a la captura; **faltan 10 ficheros** (servicios, umbrales,
+  seguridad, datos operativos, activos, seeds).
+- **La sesión es de 10 minutos de inactividad de verdad**: acceso 5 min,
+  refresh 10 min, renovación anticipada solo si hubo actividad desde que se
+  emitió el token (`app/session/idlePolicy.ts`). Antes, acceso y refresh
+  vencían juntos y expulsaban también al usuario activo.
+- **Los tipos de conjunto de fábrica** salen de `assets/domain/builtin_kinds.py`
+  (seed y migración de reparación). La BD de AMBEV se había sembrado con una
+  versión vieja; `assets.0008` la restauró y conservó el tren de la MP3 como
+  tipo propio.
+- **Imágenes**: el contenido se guarda una vez, pero la fila es por propietario
+  (visita, punto, conjunto). La subida vive en `media/infrastructure/uploads.py`.
+- **Espejo para pruebas que escriben**: backend en 8012 con
+  `TENANT_AMBEV_DATABASE_URL` apuntando a una copia, y Vite en 5175 con
+  `VITE_API_PROXY` a 8012. La variable de entorno gana al registro de inquilinos.
+- **`/media` necesita proxy** también en Vite (ya está en `vite.config.ts`) y en
+  el proxy inverso de producción (`docs/07` §3).
+- `modules upgrade measurements|thresholds` vuelve a funcionar: sus manifiestos
+  declaraban fixtures que nunca existieron.
