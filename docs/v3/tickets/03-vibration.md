@@ -1,5 +1,41 @@
 # 03 · Vibraciones y espectros
 
+> **Estado (2026-09-25): los siete tickets están implementados y verificados**
+> contra la API y en el navegador, sobre una copia de la base de AMBEV.
+>
+> | Ticket | Estado | Commits (back · front) |
+> |---|---|---|
+> | V3-09 | Hecho | `cf77f3a` · `09d2c40` |
+> | V3-10 | Hecho | `5c9674c` · `7ec846a` |
+> | V3-11 | Hecho | `1b4b570`, `5303e4c`, `82f5fc1` · `b39ff94` |
+> | V3-12 | Hecho | `5c9674c` · `7ec846a` |
+> | V3-13 | Hecho | `5c9674c` · `7ec846a` |
+> | V3-14 | Hecho | `9e227ed` · `7ece706` |
+> | V3-15 | Hecho | `cf77f3a` · `09d2c40` |
+>
+> Decisiones tomadas al implementar:
+>
+> - **V3-11**: la aceleración es la primera magnitud "solo donde la plantilla
+>   lo pida" (`Magnitude.template_only`). Una visita siembra sus filas, y la
+>   captura ofrece sus casillas, solo en los puntos cuya plantilla la incluye.
+>   Sin eso, añadirla al catálogo habría puesto una casilla "no medida" en todos
+>   los puntos de todas las rondas. Q1 (agregación de la envolvente) sigue
+>   abierta: no se tocó.
+> - **V3-14**: esquema y foto son imágenes del conjunto (`owner_type=group`),
+>   con los mismos permisos, auditoría y borrado que el resto de la multimedia.
+>
+> Hallazgos al verificar, corregidos en el camino:
+>
+> - La captura de ronda **creaba** lecturas nuevas en vez de rellenar las filas
+>   vacías que siembra la visita (`5303e4c`).
+> - Las filas del registro y de la visita salían A, H, V; ahora H, V, A (`82f5fc1`).
+> - `@transaction.atomic` sin alias abre la transacción en la base de control,
+>   no en la del cliente: un guardado rechazado dejaba cambios a medias. Se
+>   corrigió en el editor de tipos y en la captura con `tenant_atomic`
+>   (`fc102bb`). **Quedan 10 ficheros (vistas y comandos) con el mismo defecto** fuera de
+>   esta épica (servicios, umbrales, seguridad, datos operativos, activos,
+>   seeds).
+
 ---
 
 ## V3-09 · Espectros de todos los puntos del conjunto
