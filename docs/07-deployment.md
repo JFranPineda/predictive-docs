@@ -83,6 +83,27 @@ docker compose up -d
 
 El front se construye aparte (`npm run build`) y Caddy sirve `dist/`.
 
+### Imágenes con `MEDIA_BACKEND=local`
+
+En una instalación de un solo servidor sin MinIO, los originales y sus
+derivadas viven en `MEDIA_ROOT` y la API devuelve URLs relativas `/media/<clave>`.
+Django solo las sirve con `DEBUG=1`, así que en producción las sirve el proxy:
+
+```caddyfile
+handle_path /media/* {
+    root * /srv/predictive/data/media
+    file_server
+}
+```
+
+Sin esta ruta, `/media/...` cae en el `index.html` del front: la miniatura se ve
+rota y el clic abre la SPA en vez de la imagen. En desarrollo hace lo mismo el
+`proxy` de `vite.config.ts`.
+
+Las claves son el SHA-256 del contenido: no se pueden adivinar, pero una URL
+copiada funciona para cualquiera. Si un cliente exige que las fotos requieran
+sesión, el siguiente paso es servirlas desde un endpoint autenticado.
+
 ## 4. Copias de seguridad
 
 Lo que hay que respaldar es de dos naturalezas y se trata distinto:
