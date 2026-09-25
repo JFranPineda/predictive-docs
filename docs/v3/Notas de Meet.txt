@@ -1,0 +1,158 @@
+Sistema
+	1.	Mediciones > Alineamiento
+  Equipos que se alinearon en el mes e imágenes pre y post alineamiento
+En vez de “medidas” que diga “tipos de medición”
+Columna nueva: última fecha de intervención 
+Tabla: elige un equipo:
+    Que se dirija por Conjunto no por equipo cada fila.
+Inger soll rana es un compresor: 6 envolventes y 18 velocidades 
+
+Orden de tablas: 
+Vibraciones: 1) velocidad, 2) aceleración, 3) envolvente aceleración 
+      Con el esquema (planos del equipo)
+       Con subir fotos (real del equipo)
+
+Termografia:
+     Solo subir imágenes
+      Valores de temperaturas en el cuadro de tendencias, Para ver con el cuadro los valores de tendencia. 
+               Valor delta mayor del elemento observado.
+
+Ultrosonido: 
+    Rodillos: 6 puntos de medidas
+
+
+Ver tendencia:
+Separar: 
+	1.	Ensayos no destructivos: Tintes, partículas, ultrasonido.
+	2.	Mpd Predictivo
+         Alineamiento (foto de SKF)
+             Fotos: antes (4 medidas) y después (4 medidas)
+             Valores (pre y post): paralelo horizontal, angular horizontal, paralelo vertical, angular vertical.
+             Foto representativa del alineamiento: solo 3 fotos. 1 del conjunto y 2 de observaciones.
+             Notas por foto.
+             
+
+         Topografía (foto de plano)
+               Nivelación V y H - y paralelismo V y H
+
+Todo el conjunto vs Solo este equipo:
+ Ya que medidas van a ser mandado por tipo de conjunto, entonces Poner lista seleccionable en vez de botones Todo el conjunto y solo este equipo.
+    Que esa lista muestre las opciones de: todo el conjunto, motor, bomba, cada equipo dentro del conjunto.
+
+
+  Límite de sesión inactiva: 10 minutos.
+
+Ensayos no destructivos:
+Tintes y partículas: Solo subir fotos y conclusiones
+Ultrasonido: observaciones, fotos (comentarios por foto) y conclusiones. Medidas de 6 puntos según formato.
+
+Ultrasonido a motor (formato actual del sistema)
+Deficiencia por flutting: corrientes parásitas que pasan por el rodamiento y lo pican.
+
+Ultrasonido a chumaceras: para ver el rascado (formato actual del sistema)
+
+
+Limitar el plan de pase a producción 
+   Limitar por cantidad de equipos
+   
+Motor +
+reductor: 8 puntos
+Compresor: 6 puntos
+Bomba: 4 puntos
+Ventilador: 4 puntos
+Soplador: 4 puntos
+Turbina: 4 puntos
+——-
+
+Turbina: 8 puntos (lado = otro)
+
+——-
+Word: motor - compresor solo tiene 4 puntos y dice veo mrd y mms no dicen los demás servicios por q? Cómo se configura?
+
+
+	2.	Ejecución de servicios:
+Detalle: agregar columna que diga equipo y conjunto 
+Tipo de lubricación: 
+Compresor, bomba, reductor, turbinas: Aceite
+Motor: grasa 
+Soplador: aceite o grasa
+
+Datos operativos:
+Números sin decimales, solo guardar y mostrar enteros.
+
+Problemas a identificar:
+Agregar opciones otros.
+
+Informes de laboratorio y registro fotográfico del equipo:
+Cuando le doy clic me lleva al inicio de sesión base URL 
+No puedo visualizar la imagen
+No puedo eliminar la imagen
+
+	3.	Activos
+Filas deben de ser conjuntos no equipos
+Espectros deben de verse todos los puntos del conjunto
+Al subir imágenes que formato debo de subir: me dice no tiene pares amplitud ni frecuencia
+Las imágenes no me dejan visualizarlas
+El campo de texto del espectro importado solo muestra una línea. 
+Solamente al hacer clic sobre una imagen que se muestren sus campos:  y ahí se pueden editar el texto y detalles.
+
+
+
+	4.	Mantenimiento (los técnicos llenan esta parte)
+Cambio de rodamiento, Alineamiento, Balanceo
+Cerrar el registro y guardar 
+En el informe de correctivos debe de haber: fecha y hora inicio y fecha y hora final.
+Con nombres de responsables durante ese día.
+
+	5.	Botón retroceder
+
+	6.	Servicios:
+Botón Editar: no me deja editar al analista
+Columna analista: renombrar por Empresa
+Columna ventana: renombrar por Fecha de servicio
+
+Visitas: qué significa? Renombrar por número de personas?? Son personas que ingresarán a planta? 
+Abiertas: qué significa abiertas?
+
+Valores superiores (tienen que ser dinámicos respecto de barra de búsqueda de órdenes de servicio) de: 
+Órdenes, visitas, abiertas
+Agregar barra de búsqueda por órdenes de servicio.
+Abiertas: quitar esa columna.
+Columna estado: solo el admin puede cambiar el estado de los servicios (en ejecución, abierta, …).
+
+Informes MPD
+Informes END (ensayos no destructivos)
+
+
+Logo de 1A MIG
+Reemplazar la palabra superior izquierda que dice Predictive por el logo de 1A MIG.
+
+
+Fase 3 del sistema (A FUTURO)
+——————————-
+El ingeniero jefe (admin):
+debe de poder agarrar y cerrar con su clave el día de trabajo.
+Comenzó a tal hora y terminó a tal hora.
+Trabajos del día
+Servicio X
+Orden 
+Personas involucradas
+Hora inicio 
+Hora termino
+
+
+Usuario técnico:
+Pasada la hora final, los técnicos ya no pueden modificar nada en el sistema.
+El usuario debe de colocar número de ATS de apertura.
+  Subir ATS cargada
+
+
+En observaciones:
+El operador debe de poner se hizo X Y Z
+Antes de eso tomar fotos de la observación si es visible o no.
+Antes de tomar foto al conjunto rotorico, primero debe de haber un ATS .
+
+Ingeniero jefe: cambio en motor de la pulpería número 4 a las 2pm 
+Número de ATS xyz
+
+Jefe de Seguridad también debe de ver esto.
