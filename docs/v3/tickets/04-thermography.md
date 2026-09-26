@@ -1,5 +1,14 @@
 # 04 · Termografía
 
+> **Estado (2026-09-26): implementado y verificado** (`9159df1` · `3ae5312`).
+> `Reading.image` enlaza el termograma con sus lecturas; Tmáx va en su propia
+> magnitud `ir_tmax` y el titular del semáforo pasa a `delta_temp`; un JPEG
+> radiométrico de FLIR propone la Tmáx (solo matriz `raw16`, sin Pillow en el
+> dominio). Al verificar salió un fallo del registro de valores: una fila
+> vacía de otro eje pisaba el valor real en la misma celda.
+> Q8 y Q9 siguen abiertas: el ΔT es contra la referencia que escribe el
+> técnico, y la escala de cuatro niveles no está cargada.
+
 ---
 
 ## V3-16 · Termografía: subir termogramas y llevar sus temperaturas y el ΔT mayor a la tendencia

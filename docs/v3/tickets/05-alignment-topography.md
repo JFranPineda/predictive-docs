@@ -1,5 +1,19 @@
 # 05 · Alineamiento y topografía (MPd Predictivo)
 
+> **Estado (2026-09-26): los dos implementados y verificados**, cada uno como
+> módulo instalable.
+>
+> - **V3-17** (`6e0c309` · `9ca461f`), módulo `alignment`: reproduce los ✓/✗
+>   de la captura 6; tolerancias SKF por RPM sobrescribibles por conjunto,
+>   congeladas en cada registro; tope de 3 fotos representativas en el
+>   servidor. Al verificar salió que la tabla de tolerancias elegía siempre el
+>   tramo más estricto (SQLite ordena los nulos primero). Sin selector del
+>   diagnóstico que lo motivó (la FK existe) ni prefijo de código sugerido
+>   (falta la lista oficial).
+> - **V3-18** (`4781f09` · `1a0ed2c`), módulo `topography`: el plano es una
+>   captura `topography_plan` y es obligatorio al cerrar la visita, mediante
+>   `Technique.close_requirement` para que `services` no dependa del módulo.
+
 Dos servicios que el cliente vende y el sistema todavía no sabe registrar. Los
 dos entran en la familia **MPd Predictivo** de V3-19.
 

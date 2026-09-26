@@ -273,15 +273,18 @@ conjunto con plantilla de puntos, importador RGP) · `nameplate` ·
 `thresholds` · `measurements` (lecturas, registro de valores, exportación,
 **captura de ronda**, **espectros**, instrumentos) · `services` ·
 `diagnostics` · `operating_data` · `media` (subida, conversión, **galería por
-equipo**, **FLIR**) · `summaries` · `oil_analysis` · y los stubs `blueprints`,
-`reports`, `vibration`, `ultrasound`, `thermography`.
+equipo**, **FLIR**) · `summaries` · `oil_analysis` · y, de v3, `alignment`,
+`topography`, `maintenance`, `ut_rollers` y `reports` (informes MPd/END en PDF
+y Excel). Quedan como stubs `blueprints`, `vibration`, `ultrasound`,
+`thermography`.
 
 **Frontend — 13 módulos**: `assets` · `measurements` (registro de valores,
 tendencia, **gráfico de tendencias**, **espectros**, **captura de ronda**,
 **instrumentos**) · `services` · `summaries` · `thresholds` · `users`
 (usuarios, roles, **auditoría**) · `diagnostics` (**catálogo de fallas**) ·
-`nameplate` · `media` (**galería por equipo**) · `operating_data` (**nuevo**) ·
-`licensing` · `modules_admin` · `preferences`.
+`nameplate` · `media` (**galería por equipo**) · `operating_data` ·
+`licensing` · `modules_admin` · `preferences` · y, de v3, `alignment`,
+`topography`, `maintenance`, `ut_rollers`, `reports`.
 
 ### 5.2 Conjuntos rotativos y registro de valores
 
@@ -388,12 +391,12 @@ PATCH  /points/1/       ["El punto 2H ya existe en el conjunto, en MOTOR"]
 
 | Pendiente | Nota |
 |---|---|
-| Reporte de inspección en **PDF** | El módulo `reports` está vacío. Es el paso que cierra el círculo con `MPd-AV-N°006-13`. |
 | Módulo `blueprints` (planos con puntos) | Diseñado en `docs/02 §1`, sin implementar. T3 del pedido original. |
-| **Polín como activo** e incidencias UT | Para cargar el informe real de IPSA hace falta modelar el polín (rollo, diámetro, longitud externa/total) y las incidencias (fisura/socavación con longitud y profundidad) con su vocabulario ACEPTABLE/MEDIO/INACCESIBLE/CRÍTICO, distinto al del semáforo. |
+| Umbral **CRÍTICO** de rodillos | V3-21 usa < 6,14 mm como supuesto: la orden 14778 no trae ningún rodillo crítico. Confirmar con el cliente (Q15). Diámetro con calibrador y desgaste contra nominal, fuera de v3. |
 | Datos reales de IPSA sin importar | El inquilino de demo es AMBEV; el libro es Industrias del Papel. Los espesores sembrados son sintéticos en el rango real (8–12 mm). |
-| Aceleración en **G** | La unidad existe, ninguna magnitud la usa. Falta saber si es pico o RMS. |
-| `pillow-heif` y `pillow-avif-plugin` | **No instalados**: derivadas en WebP y un HEIC de iPhone no convierte. |
+| Fase 3 (jornada, ATS, jefe de seguridad) | Fuera de v3 por decisión del cliente: `docs/v3/tickets/10-phase-3.md`. |
+| Escala térmica de 4 niveles (IPSA) | Q9 sin respuesta; los perfiles de estado ya la admiten. |
+| `make check` del backend | Nunca ha estado verde: `ruff format` reformatearía 202 ficheros y `mypy` no está instalado. No se forzó. |
 | Importador de espectros en la UI de visita | El endpoint y el parser están hechos; falta el botón dentro del formulario de visita. |
 | Costos asociados (Gerente General) | No hay modelo de costos en el sistema. |
 | Intentos de código fallidos por compañía | Quedan a nivel plataforma: aún no se sabe de quién son. |
@@ -433,6 +436,14 @@ varios eran del tipo que no falla: devuelve algo plausible y equivocado.
 | **Heurística de delimitador CSV** | Un fichero `;` con coma decimal parseaba como una columna | Contar caracteres elegía la coma en `0,0;0,01` |
 | **Un tren incompleto se comía puntos ajenos** | Los puntos 7–10 caían sobre el reductor | Al faltar máquinas, el emparejador usaba la última como comodín |
 | **Vendor +484 kB** | ECharts entraba en el arranque de todas las pantallas | `manualChunks` mandaba todo `node_modules` a `vendor` |
+| **Un módulo instalado desde la UI no respondía** | 404 hasta reiniciar; uno desinstalado seguía respondiendo; el segundo inquilino no contaba | `/api/v1` se construía una vez por proceso con el inquilino por defecto. Ahora se registran todas las rutas y `ModuleGateMiddleware` decide por petición |
+| **Reinstalar un módulo no servía** | Sus pantallas seguían sin permisos | `revoke()` desactivaba los permisos y `sync()` nunca los reactivaba |
+| **`on_install` ignorado** | Un módulo no podía crear su catálogo al instalarse | El instalador no llamaba a los hooks del manifiesto |
+| **Escrituras fuera de transacción** | Un guardado rechazado dejaba su primera mitad | 10 vistas y seeds con `@transaction.atomic` sin alias (plano de control) |
+| **Espesores sin calificar → 500** | Capturar una ronda de END · Espesores UT fallaba | El enum `Aggregation` no tenía `min`, y AMBEV ya tenía un juego de umbrales con `min` |
+| **Celda del registro vacía con dato** | Un termograma guardado no salía | Una fila sembrada vacía de otro eje pisaba el valor en la misma celda |
+| **Tolerancia de alineamiento siempre la más estricta** | 980 rpm juzgado con 0,03 mm | `order_by` pone los nulos primero en SQLite; el tramo sin techo ganaba |
+| **Informes → 404** | `?format=pdf` no llegaba a la vista | DRF se reserva `format` para su negociación; se usa `?output=` |
 
 ---
 
@@ -441,16 +452,17 @@ varios eran del tipo que no falla: devuelve algo plausible y equivocado.
 - **Herramientas de desarrollo instaladas** (2026-09-25) en `predictive-back/.venv`:
   `pytest`, `ruff`, `import-linter`, `weasyprint`, `pillow-heif`,
   `pillow-avif-plugin`. `pip install -e ".[dev]"` **falla** (layout plano, varios
-  paquetes top-level): se instalan las dependencias por nombre. Línea base:
-  `pytest tests/unit` verde; `lint-imports` con 2 violaciones de capas previas
-  (`security.application` y `thresholds.application` importan infraestructura);
-  ruff con ~222 avisos previos (sobre todo `RUF012` y `E501`).
-- **El front sí corre entero**: `npx vitest run` → 128 tests, `npx tsc --noEmit`
-  limpio.
-- **Lint del front: 9 errores preexistentes** en 7 ficheros
-  (`GroupKindsPage`, `PlantStructurePage`, `MeasurementsIndexPage`,
-  `NameplateModal`, `ServiceOrdersPage`, `VisitFormModal`, `StandardFormModal`).
-  Si `npx eslint src/modules src/app` da **más de 9**, algo nuevo lo rompió.
+  paquetes top-level): se instalan las dependencias por nombre. Línea base
+  (2026-09-26): `pytest tests/unit` verde; `lint-imports` con 2 violaciones de
+  capas previas (`security.application` y `thresholds.application` importan
+  infraestructura); ruff con 228 avisos (sobre todo `RUF012` y `E501`, el
+  estilo del repo). `mypy` no está instalado.
+- **El front corre entero y en verde**: `npx vitest run` → 133 tests,
+  `npx tsc --noEmit` limpio, **`npx eslint src` sin errores** y `npx vite build`
+  con un chunk por módulo. Cualquier error de lint es nuevo.
+- **Un fichero de código nuevo exige reiniciar `runserver`**: el recargador
+  solo vigila módulos ya importados. Instalar o desinstalar un módulo, en
+  cambio, ya no exige reinicio.
 - **El aviso de "26 migraciones sin aplicar" al arrancar es cosmético.**
   `TenantRouter.allow_migrate` prohíbe esas apps en el plano de control;
   Django avisa porque no conoce el router. Las reales van al inquilino con
@@ -551,20 +563,32 @@ servicio → usuarios y permisos con la matriz de acceso.
 
 ## 12. v3 — requerimientos de la revisión con el cliente (2026-09-25)
 
-Los tickets están en `docs/v3/README.md` (índice, sprints, preguntas Q1–Q15) y
-`docs/v3/tickets/`. **Implementados y verificados**: V3-01 a V3-15, V3-19,
-V3-24 a V3-28, V3-30, V3-31, V3-33 a V3-36. **Pendientes**: V3-16 (termografía),
-V3-17/18 (alineamiento, topografía), V3-20 a V3-23 (END, informes), V3-29
-(lubricación), V3-32 (mantenimiento) y la Fase 3. El estado por ticket de la
-épica de vibraciones está al inicio de `docs/v3/tickets/03-vibration.md`.
+Los tickets están en `docs/v3/README.md` (índice, sprints, preguntas Q1–Q15,
+**estado por ticket con sus commits**) y `docs/v3/tickets/` (cada fichero abre
+con su estado). **Implementados y verificados: V3-01 a V3-36.** Fuera de v3:
+la Fase 3 (decisión del cliente) y V3-37 (pide confirmación antes de crear el
+inquilino IPSA).
+
+En la base real los módulos nuevos (`alignment`, `topography`, `maintenance`,
+`ut_rollers`) están migrados pero **sin instalar**, y `reports` pide
+actualizar de 0.1.0 a 0.2.0: se hace desde `/settings/modules`. Instalar
+`ut_rollers` crea su técnica, magnitud, perfil de estados, umbrales y el tipo
+de conjunto Rodillos (hook `on_install` del manifiesto).
 
 Lo que no se deduce del código:
 
 - **`@transaction.atomic` sin alias no protege los datos del cliente**: abre la
   transacción en `default` (plano de control). Usar
-  `modules.core.infrastructure.transactions.tenant_atomic`. Ya aplicado al
-  editor de tipos y a la captura; **faltan 10 ficheros** (servicios, umbrales,
-  seguridad, datos operativos, activos, seeds).
+  `modules.core.infrastructure.transactions.tenant_atomic`, o
+  `transaction.atomic(using=current_alias())` para un punto de guardado dentro
+  de una vista. Ya no queda ninguno sin alias (`9b5610d`).
+- **Un módulo se instala por inquilino y surte efecto al momento**: todas las
+  rutas están registradas y `ModuleGateMiddleware` responde 404 a las de un
+  módulo que el inquilino no tiene instalado. `on_install` del manifiesto
+  (ruta punteada a una función idempotente) crea lo que el módulo necesita.
+- **Un servicio optativo no se importa desde `services`**: lo que una visita
+  necesita para cerrarse es un dato de la técnica (`close_requirement`,
+  `evidence_only`), no un `if` por módulo.
 - **La sesión es de 10 minutos de inactividad de verdad**: acceso 5 min,
   refresh 10 min, renovación anticipada solo si hubo actividad desde que se
   emitió el token (`app/session/idlePolicy.ts`). Antes, acceso y refresh

@@ -1,5 +1,11 @@
 # 01 · Bugs
 
+> **Estado (2026-09-26): los cuatro implementados y verificados** (`5c9674c` ·
+> `7ec846a`). Revisado de nuevo al cerrar v3: `/media` en el proxy de Vite y en
+> `docs/07-deployment.md`; `can_delete` decidido por el servidor; ningún tipo de
+> conjunto de AMBEV queda sin plantilla y todos cuadran con su `point_count`;
+> los totales de Órdenes se calculan sobre el filtro completo.
+
 Lo que el cliente encontró roto usando el sistema. Todos se reprodujeron contra
 el entorno local (front 5174, back 8010) antes de escribirlos.
 

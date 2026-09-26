@@ -1,5 +1,10 @@
 # 07 · Servicios y ejecución
 
+> **Estado (2026-09-26): los ocho implementados y verificados.** V3-24 a
+> V3-28, V3-30 y V3-31 en el sprint 1 (`5c9674c` · `7ec846a`); V3-29
+> (`6980341` · `a070f29`): tipo de lubricación propuesto por tipo de equipo,
+> obligatorio en un soplador, aplicado a los equipos de AMBEV.
+
 Pantallas `/services` (órdenes), `/services/authorship` (Ejecución) y el
 detalle de visita `/services/visits/:id`.
 

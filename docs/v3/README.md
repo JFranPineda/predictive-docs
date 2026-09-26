@@ -4,6 +4,44 @@ Tercera ronda de requerimientos. Sale de la reunión de revisión del sistema en
 uso y de la ruta que recorrió Jesús por las pantallas. Cada ticket cita el
 texto del cliente que lo origina y apunta al código que hay que tocar.
 
+## Estado (2026-09-26)
+
+**Implementados y verificados: V3-01 a V3-36.** Fuera de v3 por decisión:
+la Fase 3 (el cliente la marcó "a futuro") y V3-37 (derivado, no pedido;
+requiere confirmación antes de crear un segundo inquilino).
+
+Verificado contra la API y en el navegador sobre una copia de la base de
+AMBEV (espejo 8012/5175); la base real solo recibió migraciones. Cada módulo
+nuevo se instala y desinstala desde `/settings/modules` sin reiniciar nada.
+
+| Ticket | Estado | Commits (back · front) | Nota |
+|---|---|---|---|
+| V3-01 a V3-04 | Hecho | `5c9674c` · `7ec846a` | Sprint 1 |
+| V3-05 | Hecho | `239e154` · `15d33b5` | |
+| V3-06 a V3-08 | Hecho | `5c6597f` · `09d2c40` | |
+| V3-09 a V3-15 | Hecho | ver [`03-vibration.md`](tickets/03-vibration.md) | |
+| V3-16 | Hecho | `9159df1` · `3ae5312` | Q8/Q9 abiertas: ΔT contra la referencia del técnico; escala de 4 niveles sin cargar |
+| V3-17 | Hecho | `6e0c309` · `9ca461f` | Módulo `alignment`. Tolerancias SKF por RPM (Q10) |
+| V3-18 | Hecho | `4781f09` · `1a0ed2c` | Módulo `topography`. Sin veredicto (Q11) |
+| V3-19 | Hecho | `a4b8103` · `d25fbd7` | |
+| V3-20 | Hecho | `72aca99` · `c942ae8` | `Technique.evidence_only` |
+| V3-21 | Hecho | `e441cb1`, `df13a77` · `063d11d` | Módulo `ut_rollers`. MEDIO ≤ 8,00 mm inferido de la orden 14778; CRÍTICO < 6,14 mm es supuesto (Q15) |
+| V3-22 | Hecho | `052c33e` · — | Solo datos |
+| V3-23 | Hecho | `c816b4b`, `c2f876d` · `a02a134` | Módulo `reports`: MPd, END, resumen mensual y correctivos en PDF y Excel |
+| V3-24 a V3-28, V3-30, V3-31 | Hecho | `5c9674c` · `7ec846a` | Sprint 1 |
+| V3-29 | Hecho | `6980341` · `a070f29` | |
+| V3-32 | Hecho | `15c0526`, `0b9d1b3` · `2dafdfa`, `b9bba67` | Módulo `maintenance`; marcas en el gráfico de tendencias; correctivos en V3-23 |
+| V3-33 a V3-35 | Hecho | `5c9674c` · `7ec846a` | Sprint 1 |
+| V3-36 | Hecho | `5569549` · `922192c` | |
+| Fase 3 | No se implementa | — | Decisión del cliente |
+| V3-37 | No iniciado | — | Pide confirmación antes de empezar |
+
+Correcciones transversales encontradas al validar (no las pidió nadie):
+módulos que se instalaban desde la UI sin exponer sus rutas hasta reiniciar
+(`3c6e51b`), reinstalar un módulo sin recuperar sus permisos (`ca759b5`), diez
+escrituras fuera de transacción (`9b5610d`), la calificación de espesores que
+fallaba con `min` (`df13a77`) y el lint del front en rojo (`2a8bfd1`).
+
 ## Fuentes de esta carpeta
 
 | Fichero | Qué es | Cómo se usó |

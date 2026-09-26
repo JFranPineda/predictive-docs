@@ -1,5 +1,12 @@
 # 08 · Mantenimiento
 
+> **Estado (2026-09-26): implementado y verificado** (`15c0526`, `0b9d1b3` ·
+> `2dafdfa`, `b9bba67`), módulo `maintenance`. AC-01 da 3 h 25 min; cerrar
+> exige inicio, fin posterior y un responsable; cerrado solo lo reabre el
+> administrador, con auditoría. Cuenta como intervención (V3-07) y aparece
+> como línea discontinua en el gráfico de tendencias, en su propio día aunque
+> no haya ronda ese día. El informe de correctivos está en V3-23.
+
 ---
 
 ## V3-32 · Registro de mantenimiento correctivo que llenan los técnicos

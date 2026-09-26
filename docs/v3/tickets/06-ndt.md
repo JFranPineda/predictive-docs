@@ -1,5 +1,24 @@
 # 06 · END y familias de servicio
 
+> **Estado (2026-09-26): V3-19 a V3-23 implementados y verificados.**
+>
+> - V3-19 (`a4b8103` · `d25fbd7`); V3-22 (`052c33e`, solo datos).
+> - V3-20 (`72aca99` · `c942ae8`): `Technique.evidence_only`; la visita se
+>   cierra con una foto y una conclusión, y no muestra tabla de lecturas.
+> - V3-21 (`e441cb1` · `063d11d`), módulo `ut_rollers`: la orden 14778
+>   cargada por la API de la hoja (la misma que usa la pantalla, probada
+>   aparte en el navegador) da 65 ACEPTABLE y 14 MEDIO, rodillo por rodillo
+>   igual que el libro. MEDIO es el espesor mínimo ≤ 8,00 mm (inferido de sus 79
+>   filas); **CRÍTICO < 6,14 mm es un supuesto** (75 % de la pared de 8,18 mm
+>   del tubo de 8" SCH 40) pendiente de Q15. Ambos se editan en Umbrales. Al
+>   probarlo salió que la calificación fallaba con agregación `min`, que ya
+>   usaba el servicio de espesores (`df13a77`).
+> - V3-23 (`c816b4b`, `c2f876d` · `a02a134`), módulo `reports`: informe MPd
+>   por conjunto y orden (I a VI, espectros, termogramas, alineamiento),
+>   informe END por orden, resumen mensual con Pareto y correctivos. Una sola
+>   plantilla HTML para la vista previa, el PDF (WeasyPrint, logo de 1A-MIG) y
+>   el Excel. El formato se pide con `?output=`: DRF se reserva `?format=`.
+
 El cliente separa su oferta en dos familias: **MPd Predictivo** (monitoreo de
 condición) y **END**, ensayos no destructivos. Hoy el sistema los tiene todos al
 mismo nivel y solo uno de END (espesores UT).

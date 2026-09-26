@@ -1,5 +1,9 @@
 # 11 · Contexto: los 47 informes de IPSA
 
+> **Estado (2026-09-26): V3-37 no iniciado.** El ticket pide confirmación
+> antes de crear un segundo inquilino. El resto del fichero es contexto; la
+> orden 14778 sí se usó para validar V3-21.
+
 `EQUIPOS PLANTA IPSA - SEPTIEMBRE/` trae el trabajo real de un mes en la planta
 de **Industrias del Papel (IPSA), Chaclacayo**: 47 libros de Excel, uno por
 conjunto, y un libro resumen. Es la mejor fuente que hay de cómo trabaja el

@@ -1,5 +1,9 @@
 # 10 · Fase 3 (a futuro)
 
+> **Estado (2026-09-26): no se implementa en v3**, por decisión del cliente.
+> Lo que deja preparado: `WorkRecord.shift_date` (V3-32) y la auditoría de
+> cambios de estado y borrados.
+
 El cliente lo marcó como **"Fase 3 del sistema (A FUTURO)"**. No se implementa
 en v3. Se deja escrito para que las decisiones de v3 no lo cierren: sobre todo
 V3-32 (mantenimiento), que es la base de la jornada.

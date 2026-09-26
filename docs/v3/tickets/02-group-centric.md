@@ -1,5 +1,10 @@
 # 02 · El conjunto como fila
 
+> **Estado (2026-09-26): los cuatro implementados y verificados** (V3-05
+> `239e154` · `15d33b5`; V3-06 a V3-08 `5c6597f` · `09d2c40`). Desde V3-32, la
+> "última intervención" de V3-07 también cuenta los registros de mantenimiento
+> cerrados, no solo las visitas.
+
 El cliente trabaja por **conjunto rotativo** (motor + bomba, motor + reductor),
 no por máquina suelta. Es lo mismo que ya decía `docs/00-source-analysis.md`:
 los límites y las conclusiones se emiten al conjunto. Las tablas principales

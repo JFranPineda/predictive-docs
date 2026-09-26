@@ -1,5 +1,9 @@
 # 09 · Plataforma
 
+> **Estado (2026-09-26): los cuatro implementados y verificados** (sprint 1
+> `5c9674c` · `7ec846a`; V3-36 `5569549` · `922192c`). Revisado al cerrar v3:
+> la carga de rodillos (V3-21) también respeta el tope del plan, todo o nada.
+
 ---
 
 ## V3-33 · Logo de 1A-MIG en lugar de "Predictive"
