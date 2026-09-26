@@ -403,7 +403,6 @@ PATCH  /points/1/       ["El punto 2H ya existe en el conjunto, en MOTOR"]
 |---|---|
 | Módulo `blueprints` (planos con puntos) | Diseñado en `docs/02 §1`, sin implementar. T3 del pedido original. |
 | Umbral **CRÍTICO** de rodillos | V3-21 usa < 6,14 mm como supuesto: la orden 14778 no trae ningún rodillo crítico. Confirmar con el cliente (Q15). Diámetro con calibrador y desgaste contra nominal, fuera de v3. |
-| Escala térmica de 4 niveles (IPSA) | Q9 sin respuesta. Cargada en IPSA con ALERTA contada como alarma (82–148 °C); separarla pide un estado nuevo y que el Pareto lo cuente. |
 | OBSERVACIÓN de IPSA | Q16 sin respuesta: el importador no crea estado, califica por valores. |
 | Supuestos de la Fase 3 | Q17 a Q19 (alcance del ATS, quién reabre, qué es "hora final"). |
 | Termografía de IPSA sin valores | Sus hojas no traen tabla de temperaturas: las visitas importadas quedan sin veredicto (el resumen del cliente dice OK). |
@@ -468,11 +467,11 @@ varios eran del tipo que no falla: devuelve algo plausible y equivocado.
   `pytest`, `ruff`, `import-linter`, `weasyprint`, `pillow-heif`,
   `pillow-avif-plugin`. `pip install -e ".[dev]"` **falla** (layout plano, varios
   paquetes top-level): se instalan las dependencias por nombre. Línea base
-  (2026-09-26): `pytest tests/unit` verde, 345 tests; `lint-imports` con 2 violaciones de
+  (2026-09-26): `pytest tests/unit` verde, 354 tests; `lint-imports` con 2 violaciones de
   capas previas (`security.application` y `thresholds.application` importan
   infraestructura); ruff con 228 avisos (sobre todo `RUF012` y `E501`, el
   estilo del repo). `mypy` no está instalado.
-- **El front corre entero y en verde**: `npx vitest run` → 138 tests,
+- **El front corre entero y en verde**: `npx vitest run` → 142 tests,
   `npx tsc --noEmit` limpio, **`npx eslint src` sin errores** y `npx vite build`
   con un chunk por módulo. Cualquier error de lint es nuevo.
 - **Un fichero de código nuevo exige reiniciar `runserver`**: el recargador
@@ -595,6 +594,18 @@ de conjunto Rodillos (hook `on_install` del manifiesto).
 
 Lo que no se deduce del código:
 
+- **La norma la elige el informe** (Q9): `ServiceOrder.standard` gana a la
+  norma de cada equipo al calificar (captura, edición, termograma, límites del
+  informe); cambiarla recalifica con `thresholds/infrastructure/regrade.py`.
+  En un mismo ámbito, el juego de la norma elegida gana al criterio propio.
+  La **escala** de una norma son sus juegos globales sin clase; Normas la
+  muestra y la edita.
+- **Un módulo aporta el editor de escala de su técnica** con
+  `ModuleDefinition.scaleEditors` (front): alineamiento pone ahí su tabla por
+  RPM (`alignment-scales/<norma>/`), y umbrales nunca importa alineamiento.
+- **ALERTA** es un estado de condición de severidad 25 (entre alarma y
+  parada). El Pareto del resumen mensual solo muestra su columna si alguien la
+  usó.
 - **Una regla que cruza módulos va en `write_guard`**: el manifiesto nombra una
   función `guard(request, view_func, view_kwargs)` y `WriteGuardMiddleware`
   (después de `ModuleGateMiddleware`) la consulta solo si el inquilino tiene el

@@ -6,8 +6,15 @@
 > radiométrico de FLIR propone la Tmáx (solo matriz `raw16`, sin Pillow en el
 > dominio). Al verificar salió un fallo del registro de valores: una fila
 > vacía de otro eje pisaba el valor real en la misma celda.
-> Q8 y Q9 siguen abiertas: el ΔT es contra la referencia que escribe el
-> técnico, y la escala de cuatro niveles no está cargada.
+>
+> **Q8 y Q9 respondidas (2026-09-26).** Q8: el ΔT es un número en °C que el
+> técnico escribe tal cual; el formulario ya no pide referencia. Q9: la
+> escala de IPSA es una norma del módulo Normas («Escala térmica IPSA»,
+> aceptable < 82 °C, alarma 82–121, **alerta** 121–148, parada ≥ 148, sobre
+> Tmáx IR) con ALERTA como cuarto estado de condición. Cada informe (orden de
+> servicio) elige su norma, así un cliente puede tener un informe con la
+> norma A y otro con la B; cambiarla recalifica sus lecturas y queda en la
+> auditoría. Las lecturas del termograma se califican con esa norma.
 
 ---
 

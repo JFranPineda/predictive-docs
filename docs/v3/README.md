@@ -22,8 +22,8 @@ desinstala desde `/settings/modules` sin reiniciar nada. IPSA se abre en
 | V3-05 | Hecho | `239e154` · `15d33b5` | |
 | V3-06 a V3-08 | Hecho | `5c6597f` · `09d2c40` | |
 | V3-09 a V3-15 | Hecho | ver [`03-vibration.md`](tickets/03-vibration.md) | |
-| V3-16 | Hecho | `9159df1` · `3ae5312` | Q8/Q9 abiertas: ΔT contra la referencia del técnico; escala de 4 niveles sin cargar |
-| V3-17 | Hecho | `6e0c309` · `9ca461f` | Módulo `alignment`. Tolerancias SKF por RPM (Q10) |
+| V3-16 | Hecho | `9159df1` · `3ae5312`; Q8/Q9 `50037af`, `8fca47a` · `51c45d7` | ΔT se escribe tal cual (Q8); escala de 4 niveles de IPSA como norma, elegida por informe (Q9) |
+| V3-17 | Hecho | `6e0c309` · `9ca461f`; Q10 `b4d0b27` · `51c45d7` | Módulo `alignment`. La tabla por RPM es la escala de una norma editable en Normas (Q10) |
 | V3-18 | Hecho | `4781f09` · `1a0ed2c` | Módulo `topography`. Sin veredicto (Q11) |
 | V3-19 | Hecho | `a4b8103` · `d25fbd7` | |
 | V3-20 | Hecho | `72aca99` · `c942ae8` | `Technique.evidence_only` |
@@ -163,9 +163,9 @@ el ticket aplica el supuesto que se indica.
 | Q5 | "Visitas" es el número de equipos inspeccionados en la orden, no de personas. ¿Se renombra a "Equipos inspeccionados"? | V3-25 | Sí, con una ayuda al pasar el ratón. |
 | Q6 | ¿También el factor de potencia va en enteros? Vale entre 0 y 1: en entero siempre sale 0 o 1. | V3-30 | Excepción: factor de potencia con 2 decimales. |
 | Q7 | ¿Dónde se quiere ver el tipo de lubricación: ficha del equipo, visita de lubricación, informe? | V3-29 | En la ficha del equipo y en la cabecera de la visita. |
-| Q8 | "Valor delta mayor del elemento observado": ¿ΔT contra qué: componente similar, ambiente, o el mínimo de la misma imagen? | V3-16 | Tmáx del elemento menos la referencia que elija el técnico. |
-| Q9 | La escala térmica de IPSA tiene **cuatro** niveles (aceptable < 82 °C, alarma < 121, **alerta** < 148, parada). ¿Se usa en lugar de NETA para IPSA? | V3-16 | Cargada en el inquilino IPSA sobre la temperatura (°C): aceptable < 82, alarma 82–148, parada ≥ 148. ALERTA no tiene estado propio todavía y cuenta como alarma. |
-| Q10 | Tolerancias de alineamiento: ¿las de la tabla SKF por RPM, o una por equipo? | V3-17 | Tabla SKF por RPM, sobrescribible por equipo. |
+| Q8 | "Valor delta mayor del elemento observado": ¿ΔT contra qué? | V3-16 | **Respondida (2026-09-26):** es un número en °C que el técnico escribe tal cual. El formulario del termograma pide ΔT directamente; ya no hay referencia (`50037af` · `51c45d7`). |
+| Q9 | La escala térmica de IPSA tiene **cuatro** niveles (aceptable < 82 °C, alarma < 121, **alerta** < 148, parada). | V3-16 | **Respondida:** va al módulo de Normas, aplicada a termografía, y cada informe elige su norma. Hecho: estado ALERTA, norma «Escala térmica IPSA» sobre Tmáx IR, `ServiceOrder.standard` (un informe con norma A y otro con B en el mismo cliente; cambiarla recalifica), escala editable en Normas (`50037af`, `8fca47a` · `51c45d7`). |
+| Q10 | Tolerancias de alineamiento: ¿las de la tabla SKF por RPM, o una por equipo? | V3-17 | **Respondida:** tabla por RPM como valores de escala de una norma. La tabla SKF es la norma «SKF · Tolerancias de alineamiento por RPM», editable en Normas; cada alineamiento elige su norma y sigue pudiendo sobrescribirse por conjunto (`b4d0b27` · `51c45d7`). |
 | Q11 | Topografía: ¿unidades, tolerancias y cuántos puntos? | V3-18 | mm y mm/m, sin veredicto automático hasta tener tolerancias. |
 | Q12 | Límite del plan: ¿cuentan los equipos retirados o apagados? ¿Qué pasa al superarlo? | V3-36 | Cuentan los activos no retirados; al superarlo se bloquea el alta, no la lectura. |
 | Q13 | ¿Hay versión del logo con fondo transparente (PNG o SVG)? La actual lleva fondo blanco y no funciona en modo oscuro. | V3-33 | Se usa la JPEG sobre una placa blanca. |

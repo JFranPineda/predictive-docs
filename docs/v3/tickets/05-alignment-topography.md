@@ -105,7 +105,12 @@ guardado la ignoró sin avisar (bug descrito en V3-24).
 
 **Preguntas abiertas**
 
-- Q10: tolerancias — tabla SKF por RPM o una por equipo.
+- Q10: tolerancias — tabla SKF por RPM o una por equipo. **Respondida
+  (2026-09-26):** los valores por RPM son la escala de una norma. La tabla SKF
+  es la norma «SKF · Tolerancias de alineamiento por RPM», editable en
+  Configuración → Normas; se pueden crear otras y cada alineamiento elige la
+  suya. La sobrescritura por conjunto sigue valiendo, y cada registro conserva
+  la tolerancia con la que se emitió.
 - Prefijo del código de las órdenes de alineamiento y topografía (y de las
   técnicas END de la épica 06). Pedir la lista oficial.
 - "Alineamiento" aparece también como tarea de **mantenimiento** (V3-32). Aquí
