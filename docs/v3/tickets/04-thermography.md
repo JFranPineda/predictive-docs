@@ -28,7 +28,9 @@ dos hojas (`TERMOGRAFÍA_LM`, `TERMOGRAFÍA_LT`).
 
 - Termografía existe como servicio con tres magnitudes por punto: `temp`
   (TEMP n), `delta_temp` (ΔT contra componente similar) y `delta_temp_ambient`
-  (ΔTA). Se capturan como números en la ronda, igual que vibraciones.
+  (ΔTA). Se capturan como números en la ronda, igual que vibraciones. Su
+  familia ya quedó fijada en `mpd` al implementar V3-19
+  (`measurements/domain/families.py`), así que no hay nada pendiente ahí.
 - Las imágenes se suben aparte, a la galería, sin relación con los números.
 - **Las 20 088 lecturas de termografía de AMBEV no vienen de termogramas.**
   Todas cuelgan de visitas de vibraciones: son la temperatura de rodamiento que
@@ -37,8 +39,31 @@ dos hojas (`TERMOGRAFÍA_LM`, `TERMOGRAFÍA_LT`).
   pertenece a la técnica termografía, y por eso el semáforo de termografía
   muestra datos.
 - `modules/media/domain/flir.py` sabe leer la matriz radiométrica de un JPEG
-  de FLIR, pero **las páginas de informe que exporta la E4 son PNG**, sin datos
-  radiométricos: de ellas no se puede leer la temperatura.
+  de FLIR (`extract()`, `temperature_at()`), pero **las páginas de informe que
+  exporta la E4 son PNG**, sin datos radiométricos: de ellas no se puede leer
+  la temperatura.
+- **Ya existe el precedente exacto que este ticket necesita**: `Spectrum`
+  (`measurements/infrastructure/models.py:141-186`) enlaza una imagen
+  (`image`, FK a `MediaAsset`) con un punto (`point`), una visita
+  (`service_visit`) y, opcionalmente, una lectura (`reading`, FK a `Reading`,
+  `related_name="spectra"`). Es la misma forma que un termograma necesita:
+  imagen + punto + visita + valor. No hace falta inventar cómo relacionar una
+  imagen con una lectura, ni resolver cómo un `MediaAsset` sería a la vez de
+  la visita y del punto (hoy solo tiene **un** propietario, `owner_type` +
+  `owner_id`: `media/infrastructure/models.py:30-31`) — la captura de
+  espectros de V3-15 ya lo resolvió subiendo la imagen con
+  `owner_type="point"` (`media/infrastructure/uploads.py:98-102`,
+  `measurements/interfaces/spectrum_views.py`, función `_store_capture`) y
+  dejando que la visita se sepa por el propio `Reading.service_visit`
+  (`measurements/infrastructure/models.py:100-102`), no por el `MediaAsset`.
+- El otro precedente útil es `Magnitude.template_only`
+  (`measurements/infrastructure/models.py:51`, dominio en
+  `measurements/domain/point_magnitudes.py`): una magnitud opcional que solo
+  se siembra y se ofrece en los puntos cuya plantilla la pide (usado hoy por
+  `accel_rms`, V3-11). No aplica igual aquí — un termograma no se siembra por
+  punto al abrir la visita, se crea al subir la imagen — pero es la referencia
+  de cómo el sistema ya distingue "esta magnitud no está en todas partes" sin
+  romper el resto de la ronda.
 
 **Qué hacer**
 
@@ -46,19 +71,39 @@ dos hojas (`TERMOGRAFÍA_LM`, `TERMOGRAFÍA_LT`).
   casilla. Por cada termograma: subir la imagen, elegir el punto o elemento
   observado, y escribir **Tmáx del elemento** y **T de referencia**; el ΔT se
   calcula. Opcional: comentario por imagen.
-- Back: al guardar, cada imagen crea sus lecturas enlazadas a la imagen, y la
-  imagen queda enlazada a la visita y al punto. Se reutiliza la captura por
-  lotes con `Idempotency-Key`.
-- Back, magnitudes: Tmáx del termograma va a una magnitud **propia**
-  (`ir_tmax`, °C) y no a `temp`. Contacto e infrarrojo miden cosas distintas
-  (el rodamiento por dentro de la carcasa contra la superficie que ve la
-  cámara); mezclarlos en una serie produce saltos que no son del equipo. El
-  ΔT sigue en `delta_temp`. Revisar a qué técnica pertenece `temp`: si es la
-  del colector de vibraciones, debería contar en vibraciones.
+- Back, enlace imagen ↔ lectura: **añadir `Reading.image`** (FK a
+  `MediaAsset`, `null=True`, `blank=True`, `on_delete=SET_NULL`), en vez de
+  crear un modelo `Thermogram` aparte. Es más simple que `Spectrum` porque no
+  hay curva que guardar — solo Tmáx y ΔT, que ya son campos de `Reading`
+  (`value`) y de una segunda lectura (`delta_temp`). El punto y la visita ya
+  están en `Reading` (`point`, `service_visit`); no hace falta duplicarlos en
+  el `MediaAsset`.
+- Back, subida: la imagen se sube como hace `_store_capture` en
+  `spectrum_views.py` — `owner_type="point"`, `owner_id=<point.id>`, mismo
+  `store_upload()` de `media/infrastructure/uploads.py` — y el kind es
+  `thermogram` (ya existe en `MediaAsset.KINDS`,
+  `media/infrastructure/models.py:12`). Al guardar, se crean o actualizan las
+  `Reading` de `temp` y `delta_temp` de ese punto y visita, con `image_id`
+  apuntando a la imagen. Se reutiliza la captura por lotes con
+  `Idempotency-Key`, igual que el resto de la ronda.
+- Back, magnitudes: revisar si Tmáx del termograma necesita una magnitud
+  **propia** (`ir_tmax`, °C) en vez de reutilizar `temp` — contacto e
+  infrarrojo miden cosas distintas (el rodamiento por dentro de la carcasa
+  contra la superficie que ve la cámara) y mezclarlos en una serie produce
+  saltos que no son del equipo. El ΔT sigue en `delta_temp`. Revisar también a
+  qué técnica pertenece `temp` hoy: si de verdad es la del colector de
+  vibraciones (ver más arriba, "las 20 088 lecturas… no vienen de
+  termogramas"), debería contar en vibraciones, y `ir_tmax` quedaría como la
+  única magnitud de temperatura propia de termografía.
 - Si la imagen es un JPEG radiométrico, proponer Tmáx leyendo la matriz con
-  `flir.py`; el técnico puede corregirla. Con un PNG, se escribe a mano.
+  `flir.py` (`extract()` + `temperature_at()`); el técnico puede corregirla.
+  Con un PNG, se escribe a mano.
 - Registro de valores: las filas de termografía muestran Tmáx y ΔT por fecha,
-  y al pasar por una celda se ve la miniatura del termograma que la produjo.
+  y al pasar por una celda se ve la miniatura del termograma que la produjo —
+  el patrón ya existe para el registro (`RecordOfValuesPage.tsx`) y para el
+  panel de detalle de una imagen (`MediaDetailModal.tsx`, usado por V3-02 y
+  V3-15); aquí es la misma miniatura, colgada de `cell.image_url` en vez de
+  abrir un modal aparte.
 - "Valor delta mayor": el titular del conjunto en el semáforo de termografía
   es el **mayor ΔT** entre sus elementos observados en la última ronda.
 
@@ -88,3 +133,11 @@ dos hojas (`TERMOGRAFÍA_LM`, `TERMOGRAFÍA_LT`).
   admiten opciones propias, así que "alerta" cabe sin tocar el modelo; hay que
   confirmar que el cliente la quiere y en qué orden va ("alerta" es **peor**
   que "alarma" en esa tabla, al revés de lo habitual).
+- Q10 (nueva): si un termograma **sin** valores se sube (AC-05: "no medido con
+  motivo, no como cero"), ¿la fila `temp`/`delta_temp` se crea igual, vacía y
+  ligada a la imagen, o solo se crea al escribir Tmáx? La ronda de vibraciones
+  siembra sus filas al abrir la visita (`_seed_readings`,
+  `point_plan.magnitude_plan`); termografía, al no tener una plantilla de
+  puntos fija por elemento observado, probablemente no puede sembrar así, y la
+  fila nacería con la imagen. Confirmar con el flujo real de campo antes de
+  implementar.
