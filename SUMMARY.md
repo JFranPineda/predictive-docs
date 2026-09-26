@@ -67,6 +67,16 @@ importa es que `VITE_API_PROXY` apunte al puerto de `runserver`.
 
 - Front: **http://127.0.0.1:5174** · API: **http://127.0.0.1:8010/api/docs/**
 
+### Segundo inquilino: IPSA
+
+Cada cliente sale del subdominio. Con `BASE_DOMAIN=localhost` en el `.env` del
+backend (y `.localhost` en `ALLOWED_HOSTS`), **http://ipsa.localhost:5174** es
+IPSA y **http://localhost:5174** sigue siendo AMBEV (el inquilino por defecto).
+Vite conserva la cabecera Host al proxyar (`vite.config.ts`); con el atajo de
+cadena la reescribía y todo subdominio caía en AMBEV. Base propia:
+`data/tenant_ipsa.sqlite3`. Usuarios de IPSA: `admin@simiai.pe`,
+`carlos.balta@simiai.pe`, `suan.hilario@simiai.pe`, `cliente@ipsa.com.pe`.
+
 ### Usuarios (contraseña `predictive2026`)
 
 | Correo | Rol | Para qué sirve probarlo |
@@ -275,7 +285,7 @@ conjunto con plantilla de puntos, importador RGP) · `nameplate` ·
 `diagnostics` · `operating_data` · `media` (subida, conversión, **galería por
 equipo**, **FLIR**) · `summaries` · `oil_analysis` · y, de v3, `alignment`,
 `topography`, `maintenance`, `ut_rollers` y `reports` (informes MPd/END en PDF
-y Excel). Quedan como stubs `blueprints`, `vibration`, `ultrasound`,
+y Excel), y de la Fase 3, `workday` (jornada, ATS y cierre del día). Quedan como stubs `blueprints`, `vibration`, `ultrasound`,
 `thermography`.
 
 **Frontend — 13 módulos**: `assets` · `measurements` (registro de valores,
@@ -284,7 +294,7 @@ tendencia, **gráfico de tendencias**, **espectros**, **captura de ronda**,
 (usuarios, roles, **auditoría**) · `diagnostics` (**catálogo de fallas**) ·
 `nameplate` · `media` (**galería por equipo**) · `operating_data` ·
 `licensing` · `modules_admin` · `preferences` · y, de v3, `alignment`,
-`topography`, `maintenance`, `ut_rollers`, `reports`.
+`topography`, `maintenance`, `ut_rollers`, `reports`, `workday`.
 
 ### 5.2 Conjuntos rotativos y registro de valores
 
@@ -393,9 +403,10 @@ PATCH  /points/1/       ["El punto 2H ya existe en el conjunto, en MOTOR"]
 |---|---|
 | Módulo `blueprints` (planos con puntos) | Diseñado en `docs/02 §1`, sin implementar. T3 del pedido original. |
 | Umbral **CRÍTICO** de rodillos | V3-21 usa < 6,14 mm como supuesto: la orden 14778 no trae ningún rodillo crítico. Confirmar con el cliente (Q15). Diámetro con calibrador y desgaste contra nominal, fuera de v3. |
-| Datos reales de IPSA sin importar | El inquilino de demo es AMBEV; el libro es Industrias del Papel. Los espesores sembrados son sintéticos en el rango real (8–12 mm). |
-| Fase 3 (jornada, ATS, jefe de seguridad) | Fuera de v3 por decisión del cliente: `docs/v3/tickets/10-phase-3.md`. |
-| Escala térmica de 4 niveles (IPSA) | Q9 sin respuesta; los perfiles de estado ya la admiten. |
+| Escala térmica de 4 niveles (IPSA) | Q9 sin respuesta. Cargada en IPSA con ALERTA contada como alarma (82–148 °C); separarla pide un estado nuevo y que el Pareto lo cuente. |
+| OBSERVACIÓN de IPSA | Q16 sin respuesta: el importador no crea estado, califica por valores. |
+| Supuestos de la Fase 3 | Q17 a Q19 (alcance del ATS, quién reabre, qué es "hora final"). |
+| Termografía de IPSA sin valores | Sus hojas no traen tabla de temperaturas: las visitas importadas quedan sin veredicto (el resumen del cliente dice OK). |
 | `make check` del backend | Nunca ha estado verde: `ruff format` reformatearía 202 ficheros y `mypy` no está instalado. No se forzó. |
 | Importador de espectros en la UI de visita | El endpoint y el parser están hechos; falta el botón dentro del formulario de visita. |
 | Costos asociados (Gerente General) | No hay modelo de costos en el sistema. |
@@ -414,6 +425,10 @@ varios eran del tipo que no falla: devuelve algo plausible y equivocado.
 
 | Bug | Síntoma | Causa |
 |---|---|---|
+| **Columnas con la fecha del día anterior** | El registro de valores de AMBEV y de IPSA mostraba cada ronda un día antes | `new Date("2025-08-27")` es medianoche UTC, que en Lima es el 26. `formatDate` lee ahora `YYYY-MM-DD` como día local (`e611df7`) |
+| **Ficheros compartidos entre inquilinos** | Borrar una foto en un inquilino podía borrar la del otro | Las claves eran `originals/<company_id>/…` y cada base numera sus empresas desde 1; ahora llevan el inquilino (`2ba888f`) |
+| **Todo subdominio iba a AMBEV en desarrollo** | `ipsa.localhost` mostraba los datos de AMBEV | El proxy de Vite reescribía la cabecera Host (`bb1e408`) |
+| **"Esa pantalla no existe" al entrar** | Justo después del login | Ningún módulo tiene `/`; ahora `/` y `/login` van a la primera entrada del menú (`bb1e408`) |
 | **Semáforo de una sola técnica** | Termografía tenía 20 088 lecturas graduadas y ninguna pestaña | `technique_code="vibration"` estaba **hardcodeado** en `_to_domain`, contradiciendo el docstring de la propia vista |
 | **Cobertura siempre 100 %** | Ningún área mostraba hueco de plan | Solo entraban al semáforo los equipos ya medidos |
 | **Roles propios inservibles** | Un usuario con "Gerente General" no cargaba **ninguna** pantalla | `Role(code)` lanzaba `ValueError` con cualquier rol fuera de los 7 del sistema |
@@ -453,11 +468,11 @@ varios eran del tipo que no falla: devuelve algo plausible y equivocado.
   `pytest`, `ruff`, `import-linter`, `weasyprint`, `pillow-heif`,
   `pillow-avif-plugin`. `pip install -e ".[dev]"` **falla** (layout plano, varios
   paquetes top-level): se instalan las dependencias por nombre. Línea base
-  (2026-09-26): `pytest tests/unit` verde; `lint-imports` con 2 violaciones de
+  (2026-09-26): `pytest tests/unit` verde, 345 tests; `lint-imports` con 2 violaciones de
   capas previas (`security.application` y `thresholds.application` importan
   infraestructura); ruff con 228 avisos (sobre todo `RUF012` y `E501`, el
   estilo del repo). `mypy` no está instalado.
-- **El front corre entero y en verde**: `npx vitest run` → 133 tests,
+- **El front corre entero y en verde**: `npx vitest run` → 138 tests,
   `npx tsc --noEmit` limpio, **`npx eslint src` sin errores** y `npx vite build`
   con un chunk por módulo. Cualquier error de lint es nuevo.
 - **Un fichero de código nuevo exige reiniciar `runserver`**: el recargador
@@ -563,19 +578,37 @@ servicio → usuarios y permisos con la matriz de acceso.
 
 ## 12. v3 — requerimientos de la revisión con el cliente (2026-09-25)
 
-Los tickets están en `docs/v3/README.md` (índice, sprints, preguntas Q1–Q15,
+Los tickets están en `docs/v3/README.md` (índice, sprints, preguntas Q1–Q19,
 **estado por ticket con sus commits**) y `docs/v3/tickets/` (cada fichero abre
-con su estado). **Implementados y verificados: V3-01 a V3-36.** Fuera de v3:
-la Fase 3 (decisión del cliente) y V3-37 (pide confirmación antes de crear el
-inquilino IPSA).
+con su estado). **Implementados y verificados: V3-01 a V3-37 y la Fase 3**
+(módulo `workday`). V3-37 creó el inquilino `ipsa` con su planta importada de
+los 47 libros; el informe de la importación está en
+`docs/v3/ipsa-import-report.md`.
 
 En la base real los módulos nuevos (`alignment`, `topography`, `maintenance`,
 `ut_rollers`) están migrados pero **sin instalar**, y `reports` pide
-actualizar de 0.1.0 a 0.2.0: se hace desde `/settings/modules`. Instalar
+actualizar de 0.1.0 a 0.2.0: se hace desde `/settings/modules`. `workday`
+también está migrado y sin instalar: instalarlo activa el candado del día y
+la exigencia de ATS para los técnicos de ese cliente. Instalar
 `ut_rollers` crea su técnica, magnitud, perfil de estados, umbrales y el tipo
 de conjunto Rodillos (hook `on_install` del manifiesto).
 
 Lo que no se deduce del código:
+
+- **Una regla que cruza módulos va en `write_guard`**: el manifiesto nombra una
+  función `guard(request, view_func, view_kwargs)` y `WriteGuardMiddleware`
+  (después de `ModuleGateMiddleware`) la consulta solo si el inquilino tiene el
+  módulo instalado. Corre antes de que DRF autentique, así que lee el token por
+  su cuenta; solo puede rechazar, nunca dejar pasar lo que DRF rechazaría.
+- **Un inquilino nuevo no hereda el catálogo de las migraciones de datos**:
+  estas solo rellenan las empresas que ya existen, y en una base vacía no hay
+  ninguna. `import_ipsa` crea estados, técnicas, magnitudes, normas, perfiles y
+  roles antes de nada. `write_layout` escribe por defecto en `default` (el plano
+  de control): pasar siempre `using=current_alias()` (`a3fa5e8`).
+- **`import_ipsa` encuentra cada bloque por sus palabras**, no por
+  coordenadas: los libros desplazan columnas, intercambian las filas de toma y
+  estado, escriben fechas como texto y, en el 029, velocidades de línea donde
+  van las fechas. Lo que no pudo mapear va al informe, nunca a los datos.
 
 - **`@transaction.atomic` sin alias no protege los datos del cliente**: abre la
   transacción en `default` (plano de control). Usar

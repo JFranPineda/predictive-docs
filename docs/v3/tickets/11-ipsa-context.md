@@ -1,8 +1,26 @@
 # 11 · Contexto: los 47 informes de IPSA
 
-> **Estado (2026-09-26): V3-37 no iniciado.** El ticket pide confirmación
-> antes de crear un segundo inquilino. El resto del fichero es contexto; la
-> orden 14778 sí se usó para validar V3-21.
+> **Estado (2026-09-26): V3-37 implementado** (back `750d830`, `2ba888f`;
+> front `bb1e408`). El inquilino `ipsa` existe, con su base propia
+> (`data/tenant_ipsa.sqlite3`), y se abre en `http://ipsa.localhost:5174`.
+>
+> ```
+> manage.py tenants add ipsa "Industrias del Papel — Planta Chaclacayo" --url …
+> manage.py tenants migrate ipsa
+> manage.py tenants issue ipsa --plan enterprise --months 12
+> manage.py tenants run ipsa import_ipsa --docs ../predictive-docs --report informe.md
+> ```
+>
+> Resultado: 47 conjuntos, 98 equipos, 795 puntos, 1 101 visitas en 42
+> órdenes, 10 536 lecturas, 281 líneas del diario y 258 imágenes (esquemas de
+> puntos en el conjunto, espectros y termogramas en sus visitas). La segunda
+> ejecución no crea nada (AC-04). AC-01 a AC-03 están en
+> `tests/unit/test_ipsa_import.py`; AC-05, en
+> [`../ipsa-import-report.md`](../ipsa-import-report.md): el resumen coincide
+> con el total del Pareto (19 / 3 / 5 / 20) y cada diferencia entre libro,
+> sistema y resumen queda explicada. OBSERVACIÓN sigue pendiente (Q16).
+> Usuarios: `admin@simiai.pe`, `carlos.balta@simiai.pe`,
+> `suan.hilario@simiai.pe`, `cliente@ipsa.com.pe`, clave `predictive2026`.
 
 `EQUIPOS PLANTA IPSA - SEPTIEMBRE/` trae el trabajo real de un mes en la planta
 de **Industrias del Papel (IPSA), Chaclacayo**: 47 libros de Excel, uno por

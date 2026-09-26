@@ -1,12 +1,36 @@
-# 10 · Fase 3 (a futuro)
+# 10 · Fase 3: jornada, ATS y cierre del día
 
-> **Estado (2026-09-26): no se implementa en v3**, por decisión del cliente.
-> Lo que deja preparado: `WorkRecord.shift_date` (V3-32) y la auditoría de
-> cambios de estado y borrados.
+> **Estado (2026-09-26): implementada como módulo opcional `workday`**
+> (back `1dc832e`, front `d156299`), desinstalado por defecto: se activa desde
+> `/settings/modules` y al desinstalarlo sus reglas desaparecen con él.
+>
+> - F3-01: el ingeniero jefe (`workday.manage`) abre la jornada de hoy por
+>   planta y la cierra **con su clave**; una jornada por planta y día.
+> - F3-02: los trabajos del día salen de las visitas y, si `maintenance` está
+>   instalado, de los correctivos de esa fecha: servicio, orden, personas,
+>   hora de inicio y de término.
+> - F3-03: cerradas todas las jornadas de una fecha, quien no tiene
+>   `workday.manage` recibe 423 en cualquier escritura de datos de campo de
+>   ese día (visitas, lecturas, fotos, correctivos). Usuarios, permisos,
+>   licencia y preferencias siguen editables. Reabrir exige clave y motivo, y
+>   queda en la auditoría.
+> - F3-04: sin un ATS del conjunto **con su copia firmada** en la jornada
+>   abierta de hoy, el servidor rechaza (428) fotos y observaciones de ese
+>   conjunto.
+> - F3-05: la observación de campo pide la foto, luego si lo observado es
+>   visible en ella, y al final el texto.
+> - F3-06: al instalar el módulo se crea el perfil **Jefe de Seguridad**
+>   (solo lectura: jornadas, ATS, trabajos del día).
+>
+> Las reglas cruzan datos de otros módulos, así que el núcleo ganó un punto de
+> extensión: un manifiesto declara `write_guard` y el middleware solo consulta
+> los guardias de los módulos que el inquilino tiene instalados. Las tres
+> preguntas del final se resolvieron con un supuesto (Q17 a Q19 en
+> `docs/v3/README.md`).
 
-El cliente lo marcó como **"Fase 3 del sistema (A FUTURO)"**. No se implementa
-en v3. Se deja escrito para que las decisiones de v3 no lo cierren: sobre todo
-V3-32 (mantenimiento), que es la base de la jornada.
+El cliente lo marcó como **"Fase 3 del sistema (A FUTURO)"**. Se implementó
+después de v3, a pedido, como módulo que cada cliente decide instalar. Lo que
+sigue es el pedido original y las decisiones que lo dejaron preparado.
 
 ## Origen
 

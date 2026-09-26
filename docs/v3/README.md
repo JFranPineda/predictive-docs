@@ -6,13 +6,15 @@ texto del cliente que lo origina y apunta al código que hay que tocar.
 
 ## Estado (2026-09-26)
 
-**Implementados y verificados: V3-01 a V3-36.** Fuera de v3 por decisión:
-la Fase 3 (el cliente la marcó "a futuro") y V3-37 (derivado, no pedido;
-requiere confirmación antes de crear un segundo inquilino).
+**Implementados y verificados: V3-01 a V3-37 y la Fase 3.** La Fase 3 es el
+módulo opcional `workday` (desinstalado por defecto); V3-37 creó el segundo
+inquilino, `ipsa`, con la planta de Chaclacayo importada de sus 47 libros.
 
 Verificado contra la API y en el navegador sobre una copia de la base de
-AMBEV (espejo 8012/5175); la base real solo recibió migraciones. Cada módulo
-nuevo se instala y desinstala desde `/settings/modules` sin reiniciar nada.
+AMBEV (espejo 8012/5175) y sobre un inquilino IPSA de prueba (8013/5176); la
+base real de AMBEV solo recibió migraciones. Cada módulo nuevo se instala y
+desinstala desde `/settings/modules` sin reiniciar nada. IPSA se abre en
+`http://ipsa.localhost:5174` (el inquilino sale del subdominio).
 
 | Ticket | Estado | Commits (back · front) | Nota |
 |---|---|---|---|
@@ -33,14 +35,19 @@ nuevo se instala y desinstala desde `/settings/modules` sin reiniciar nada.
 | V3-32 | Hecho | `15c0526`, `0b9d1b3` · `2dafdfa`, `b9bba67` | Módulo `maintenance`; marcas en el gráfico de tendencias; correctivos en V3-23 |
 | V3-33 a V3-35 | Hecho | `5c9674c` · `7ec846a` | Sprint 1 |
 | V3-36 | Hecho | `5569549` · `922192c` | |
-| Fase 3 | No se implementa | — | Decisión del cliente |
-| V3-37 | No iniciado | — | Pide confirmación antes de empezar |
+| Fase 3 (F3-01 a F3-06) | Hecho | `1dc832e` · `d156299` | Módulo `workday`: jornada firmada con clave, candado del día, ATS antes de la foto, observaciones con foto primero, perfil Jefe de Seguridad. Supuestos en [`10-phase-3.md`](tickets/10-phase-3.md) |
+| V3-37 | Hecho | `750d830`, `2ba888f` · `bb1e408` | Inquilino `ipsa`, comando `import_ipsa`. Informe: [`ipsa-import-report.md`](ipsa-import-report.md) |
 
 Correcciones transversales encontradas al validar (no las pidió nadie):
 módulos que se instalaban desde la UI sin exponer sus rutas hasta reiniciar
 (`3c6e51b`), reinstalar un módulo sin recuperar sus permisos (`ca759b5`), diez
 escrituras fuera de transacción (`9b5610d`), la calificación de espesores que
-fallaba con `min` (`df13a77`) y el lint del front en rojo (`2a8bfd1`).
+fallaba con `min` (`df13a77`) y el lint del front en rojo (`2a8bfd1`). Con el
+segundo inquilino salieron tres más: las fechas de las columnas se veían un
+día antes en Lima (`e611df7`), los ficheros de dos inquilinos compartían
+carpeta y borrar una foto en uno podía borrar la del otro (`2ba888f`), y el
+proxy de desarrollo mandaba todo subdominio al inquilino por defecto
+(`bb1e408`).
 
 ## Fuentes de esta carpeta
 
@@ -157,13 +164,17 @@ el ticket aplica el supuesto que se indica.
 | Q6 | ¿También el factor de potencia va en enteros? Vale entre 0 y 1: en entero siempre sale 0 o 1. | V3-30 | Excepción: factor de potencia con 2 decimales. |
 | Q7 | ¿Dónde se quiere ver el tipo de lubricación: ficha del equipo, visita de lubricación, informe? | V3-29 | En la ficha del equipo y en la cabecera de la visita. |
 | Q8 | "Valor delta mayor del elemento observado": ¿ΔT contra qué: componente similar, ambiente, o el mínimo de la misma imagen? | V3-16 | Tmáx del elemento menos la referencia que elija el técnico. |
-| Q9 | La escala térmica de IPSA tiene **cuatro** niveles (aceptable < 82 °C, alarma < 121, **alerta** < 148, parada). ¿Se usa en lugar de NETA para IPSA? | V3-16 | Se carga como juego de umbrales propio del inquilino IPSA. |
+| Q9 | La escala térmica de IPSA tiene **cuatro** niveles (aceptable < 82 °C, alarma < 121, **alerta** < 148, parada). ¿Se usa en lugar de NETA para IPSA? | V3-16 | Cargada en el inquilino IPSA sobre la temperatura (°C): aceptable < 82, alarma 82–148, parada ≥ 148. ALERTA no tiene estado propio todavía y cuenta como alarma. |
 | Q10 | Tolerancias de alineamiento: ¿las de la tabla SKF por RPM, o una por equipo? | V3-17 | Tabla SKF por RPM, sobrescribible por equipo. |
 | Q11 | Topografía: ¿unidades, tolerancias y cuántos puntos? | V3-18 | mm y mm/m, sin veredicto automático hasta tener tolerancias. |
 | Q12 | Límite del plan: ¿cuentan los equipos retirados o apagados? ¿Qué pasa al superarlo? | V3-36 | Cuentan los activos no retirados; al superarlo se bloquea el alta, no la lectura. |
 | Q13 | ¿Hay versión del logo con fondo transparente (PNG o SVG)? La actual lleva fondo blanco y no funciona en modo oscuro. | V3-33 | Se usa la JPEG sobre una placa blanca. |
 | Q14 | ¿Quién puede borrar una foto: solo el administrador, o también quien la subió mientras la visita siga abierta? | V3-02 | Quien la subió, con la visita abierta; el administrador siempre. |
 | Q15 | "Medidas de 6 puntos según formato" en ultrasonido de rodillos, ¿son los P1–P6 de `docs/v2/ORDEN_14778(1).xlsx`? | V3-21 | Sí. |
+| Q16 | IPSA escribe **OBSERVACIÓN** como estado de columna (Pulper Nº 04). ¿Es un estado propio, entre normal y alarma, o equivale a alarma? | V3-37 | No se crea estado: el sistema califica por los valores (el Pulper sale PARADA, como en el resumen). |
+| Q17 | El **ATS**, ¿es un documento por trabajo, por conjunto o por jornada? | Fase 3 | Uno o varios por conjunto y jornada; vale mientras la jornada esté abierta y solo con el ATS firmado subido. |
+| Q18 | ¿Quién puede **reabrir** una jornada cerrada, y queda rastro? | Fase 3 | Solo quien tiene `workday.manage` (ingeniero jefe, administrador), con su clave y un motivo que queda en la auditoría. |
+| Q19 | "Pasada la hora final": ¿la hora que declara el ingeniero jefe al cerrar, o una hora fija de turno (A/B/C)? | Fase 3 | El momento en que el ingeniero jefe firma el cierre. |
 
 ## Hallazgos que el cliente no reportó
 
