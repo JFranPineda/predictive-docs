@@ -41,7 +41,7 @@ Generado el 26/09/2026. 47 libros leídos; la hoja 2P no se lee.
 
 | Conjunto | Fecha | Orden | Libro | Sistema | Resumen |
 |---|---|---|---|---|---|
-| 1 · Pulper Nº 04 | 28/09/2025 | IPSA-AV-20250928 | OBSERVACIÓN | PARADA | PARADA |
+| 1 · Pulper Nº 04 | 28/09/2025 | IPSA-AV-20250928 | OBSERVACIÓN | OBSERVACIÓN | PARADA |
 | 10 · REFINADOR PILAO 20´´ 260 HP | 28/09/2025 | IPSA-AV-20250928 | APAGADO | APAGADO | APAGADO |
 | 11 · BBA ECOSCREEN MOTOR 18.5 KW | 28/09/2025 | IPSA-AV-20250928 | APAGADO | APAGADO | APAGADO |
 | 12 · ECOSCREEN MOTOR 45 HP | 28/09/2025 | IPSA-AV-20250928 | APAGADO | APAGADO | APAGADO |
@@ -92,9 +92,9 @@ Generado el 26/09/2026. 47 libros leídos; la hoja 2P no se lee.
 | Estado | Libro | Sistema | Resumen | Pareto (total) |
 |---|---|---|---|---|
 | NORMAL | 28 | 25 | 19 | 19 |
-| OBSERVACIÓN | 1 | 0 | 0 | — |
+| OBSERVACIÓN | 1 | 1 | 0 | — |
 | ALARMA | 2 | 6 | 3 | 3 |
-| PARADA | 6 | 6 | 5 | 5 |
+| PARADA | 6 | 5 | 5 | 5 |
 | APAGADO | 9 | 9 | 20 | 20 |
 | SIN ACCESO | 1 | 1 | 0 | — |
 
@@ -105,10 +105,10 @@ Tablas de la hoja PARETO VIBRACIONAL: ESTADO - 21 -SEP: NORMAL 17, ALARMA 1, PAR
 - El resumen marca APAGADO 11 conjuntos que su libro midió en la última columna (BBA. FAN VAL PRIMARIA MOTOR 150 HP, BBA. FAN VALTEK TERCIARIA 30 KW, FAJA TRANSPORTADORA- MOTOR REDUCTOR- CHUMACERAS 04, RAGGER, TROMMEL, Pulper Nº 01, MOTOR DE VACÍO 05, MOTOR DE VACÍO 06, MOTOR DESBOBINADOR, MOTOR CAMA 01, MOTOR CAMA 02): el resumen cuenta el estado al cierre del 28-sep, no el de la toma. Por eso tiene 20 APAGADO y los libros 9.
 - En 3 conjuntos el analista escribió un estado mejor que el que dan sus propios valores con los límites importados (BBA. FAN VALTEK TERCIARIA 30 KW, MOTOR REDUCTOR 1 RA. PRENSA, MOTOR DE TRANSMISION PRINCIPAL R2): algún punto supera el límite de alarma de su norma.
 - En 1 el libro dice más grave que sus valores (BBA. PASTA REFINADA Nº 01): el analista calificó por espectro o por tendencia, no solo por el valor global.
-- OBSERVACIÓN (Pulper Nº 04) no existe en el sistema: se califica por sus valores. Queda pendiente que el cliente diga a qué estado corresponde.
+- OBSERVACIÓN (Pulper Nº 04): equipo fuera de ISO 20816-3, calificado con su norma propia (Q16). El resumen del cliente lo cuenta con el criterio ISO.
 - La hoja PARETO VIBRACIONAL separa rondas (ESTADO - 21 -SEP: 41 conjuntos; ESTADO - 28 -SEP- B: 6 conjuntos); en los libros la última columna es 27 del 21/09, 20 del 28/09. Su total coincide con la columna VIBRACIONES del resumen.
 
-- 1 · Equipo # 01._Pulper N° 04.xlsx: libro OBSERVACIÓN, sistema PARADA, resumen PARADA.
+- 1 · Equipo # 01._Pulper N° 04.xlsx: libro OBSERVACIÓN, sistema OBSERVACIÓN, resumen PARADA.
 - 16 · Equipo # 016._ BBA. PASTA REFINADA Nº 01.xlsx: libro PARADA, sistema ALARMA, resumen ALARMA.
 - 18 · Equipo # 018._ BBA. FAN VAL PRIMARIA MOTOR 150 HP.xlsx: libro NORMAL, sistema NORMAL, resumen APAGADO.
 - 19 · Equipo # 019._ BBA. FAN VALTEK TERCIARIA 30 KW.xlsx: libro NORMAL, sistema ALARMA, resumen APAGADO.
@@ -137,7 +137,7 @@ Las hojas de termografía no traen tabla de valores, solo cabecera, textos e im�
 - Equipo # 01._Pulper N° 04.xlsx: punto 5 rotulado EE-4: se guarda como punto 5
 - Equipo # 01._Pulper N° 04.xlsx: punto 5 rotulado VV-4: se guarda como punto 5
 - Equipo # 01._Pulper N° 04.xlsx: punto 5 rotulado AV-4: se guarda como punto 5
-- Equipo # 01._Pulper N° 04.xlsx: estado OBSERVACIÓN en la cabecera; pendiente de que el cliente diga a qué estado corresponde.
+- Equipo # 01._Pulper N° 04.xlsx: equipo fuera de ISO 20816-3, calificado con su norma «Pulper Nº 04 · criterio propio» (Operativo / Observación; alarma y parada las fija el cliente en Normas). Actualizado el 2026-09-27 (Q16).
 - Equipo # 011._ BBA ECOSCREEN MOTOR 18.5 KW.xlsx: el resumen dice que el equipo ya no opera; queda APAGADO, no retirado, hasta confirmarlo.
 - Equipo # 012._ ECOSCREEN MOTOR 45 HP.xlsx: el resumen dice que el equipo ya no opera; queda APAGADO, no retirado, hasta confirmarlo.
 - Equipo # 015._ REJECT SEPARADOR MOTOR 30 KW.xlsx: el resumen dice que el equipo ya no opera; queda APAGADO, no retirado, hasta confirmarlo.

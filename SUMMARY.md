@@ -404,7 +404,7 @@ PATCH  /points/1/       ["El punto 2H ya existe en el conjunto, en MOTOR"]
 |---|---|
 | Módulo `blueprints` (planos con puntos) | Diseñado en `docs/02 §1`, sin implementar. T3 del pedido original. |
 | Umbral **CRÍTICO** de rodillos | Q15 respondida: los rangos se editan en la norma «UT en rodillos · espesor mínimo de pared». < 6,14 mm sigue como valor de partida hasta que el cliente lo cambie ahí. Diámetro con calibrador y desgaste contra nominal (hojas de trabajo del Excel), fuera de alcance. |
-| OBSERVACIÓN de IPSA | Q16 abierta: se le indicó al cliente dónde figura (Pulper Nº 04, hoja VIBRACIONES, D13 y fila 22). El importador no crea estado, califica por valores. |
+| Límites del Pulper Nº 04 | Q16 respondida: OBSERVACIÓN es un estado propio y el Pulper tiene norma propia («Pulper Nº 04 · criterio propio»), con valores de partida Operativo / Observación. Faltan sus límites de alarma y parada: los fija el cliente en Normas. |
 | Activar módulos en AMBEV/IPSA reales | `activity`, `workday`, `alignment`, `topography`, `ut_rollers`, `maintenance` siguen desinstalados; `reports` pide actualizar en AMBEV. Se hace desde `/settings/modules`. |
 | Retención del registro de actividad | `activity` guarda todo sin caducidad; con uso real hará falta purgar o archivar por antigüedad. |
 | Termografía de IPSA sin valores | Sus hojas no traen tabla de temperaturas: las visitas importadas quedan sin veredicto (el resumen del cliente dice OK). |
@@ -476,7 +476,7 @@ varios eran del tipo que no falla: devuelve algo plausible y equivocado.
   `pytest`, `ruff`, `import-linter`, `weasyprint`, `pillow-heif`,
   `pillow-avif-plugin`. `pip install -e ".[dev]"` **falla** (layout plano, varios
   paquetes top-level): se instalan las dependencias por nombre. Línea base
-  (2026-09-27): `pytest tests/unit` verde, 383 tests; `lint-imports` con 2 violaciones de
+  (2026-09-27): `pytest tests/unit` verde, 387 tests; `lint-imports` con 2 violaciones de
   capas previas (`security.application` y `thresholds.application` importan
   infraestructura); ruff con 228 avisos (sobre todo `RUF012` y `E501`, el
   estilo del repo). `mypy` no está instalado.

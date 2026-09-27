@@ -18,7 +18,9 @@
 > `tests/unit/test_ipsa_import.py`; AC-05, en
 > [`../ipsa-import-report.md`](../ipsa-import-report.md): el resumen coincide
 > con el total del Pareto (19 / 3 / 5 / 20) y cada diferencia entre libro,
-> sistema y resumen queda explicada. OBSERVACIÓN sigue pendiente (Q16).
+> sistema y resumen queda explicada. OBSERVACIÓN (Q16, respondida el 2026-09-27) es un
+> estado propio entre Operativo y Alarma: el Pulper Nº 04 está fuera de ISO 20816-3 y se
+> califica con su norma propia (`b55c338` · `ceb44b9`).
 > Usuarios: `admin@simiai.pe`, `carlos.balta@simiai.pe`,
 > `suan.hilario@simiai.pe`, `cliente@ipsa.com.pe`, clave `predictive2026`.
 
@@ -104,7 +106,7 @@ captura 1 del Word (V3-03).
 
 NORMAL · **OBSERVACIÓN** · ALARMA · PARADA · APAGADO · **SIN ACCESO**.
 
-- OBSERVACIÓN no existe en el sistema (operativo / alarma / parada).
+- OBSERVACIÓN es un estado propio (Q16): «en observación», entre Operativo y Alarma.
 - APAGADO es disponibilidad, no condición (`SUMMARY.md` §3.3).
 - SIN ACCESO es "no medido" con motivo. Los motivos del resumen son concretos:
   "residuos excesivos de pulpa (SSOMA no permite el acceso por resbalamiento)",
