@@ -104,6 +104,32 @@ Las claves son el SHA-256 del contenido: no se pueden adivinar, pero una URL
 copiada funciona para cualquiera. Si un cliente exige que las fotos requieran
 sesión, el siguiente paso es servirlas desde un endpoint autenticado.
 
+## 3.bis Registros históricos (actividad y auditoría)
+
+Las dos pantallas de registro — `Registro de actividad` y `Auditoría` —
+muestran **14 días** y nada más: son tablas que solo crecen, y a los meses no
+se llega desplazándose. Lo anterior se archiva en disco, un CSV por mes:
+
+```
+<HISTORY_ROOT>/<empresa>/<registro>/<AAAA-MM>.csv    # por defecto data/history/
+data/history/ambev/activity/2026-06.csv
+data/history/ambev/audit/2026-06.csv
+```
+
+El archivado **borra de la base** lo que ya escribió en el fichero (primero
+escribe, después borra: una caída repite un mes, nunca lo pierde). Se lanza
+por inquilino, de noche:
+
+```cron
+15 1 * * *  cd /srv/predictive && .venv/bin/python manage.py tenants run ambev history archive
+```
+
+Las pantallas listan esos meses y los descargan (`GET history/`), así que
+nadie tiene que pedir el fichero al sysadmin. Quien tenga
+`core.archive_history` puede además forzarlo desde la pantalla con «Archivar
+ahora». `HISTORY_ROOT` se respalda igual que Postgres: es el registro legal de
+lo que pasó.
+
 ## 4. Copias de seguridad
 
 Lo que hay que respaldar es de dos naturalezas y se trata distinto:
@@ -114,6 +140,7 @@ Lo que hay que respaldar es de dos naturalezas y se trata distinto:
 | Originales de media | ya están en object storage; versionado del bucket | continuo |
 | Derivadas | **no se respaldan**: se regeneran del original | — |
 | `.env` y secretos | fuera del servidor, en el gestor de contraseñas | al cambiar |
+| `HISTORY_ROOT` (CSV de actividad y auditoría) | copia al mismo destino que el dump | noche |
 
 Una restauración se prueba **antes** de necesitarla: `pg_restore` sobre una base
 vacía y arrancar la API contra ella. Un backup que nadie restauró no es un

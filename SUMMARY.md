@@ -690,4 +690,13 @@ Se recorrió el sistema entero con los módulos instalados y desinstalados desde
   `thresholds` — se movieron a `infrastructure`; la capa `application` es
   opcional en el contrato, porque un módulo sin ella no es un módulo con un
   agujero.
+- **Los registros que solo crecen muestran 14 días** (`core.domain.history`):
+  actividad y auditoría sirven una quincena, la ventana se mueve pero no se
+  ensancha, y lo anterior se archiva en `HISTORY_ROOT/<empresa>/<registro>/<AAAA-MM>.csv`
+  y se borra de la tabla. El módulo declara su registro en el manifiesto
+  (`history_source`), como declara su `write_guard`: lo que no está instalado
+  no se archiva. Cron por inquilino: `tenants run <code> history archive`
+  (ver `docs/07-deployment.md` §3.bis). Núcleo pasa a 0.2.0 porque añade el
+  permiso `core.archive_history`: hay que **Actualizar** el módulo en cada
+  inquilino para que el botón «Archivar ahora» exista.
 

@@ -156,3 +156,36 @@ Ingeniero jefe: cambio en motor de la pulpería número 4 a las 2pm
 Número de ATS xyz
 
 Jefe de Seguridad también debe de ver esto.
+
+--------------------------C
+MÓDULOS
+--------------------------D
+[('assets', 'Activos'), ('blueprints', 'Planos'), ('core', 'Sistema'), ('diagnostics', 'Diagnóstico'), ('licensing', 'Licencia'), ('measurements', 'Mediciones'), ('media', 'Multimedia'), ('nameplate', 'Placa'), ('oil_analysis', 'Análisis de aceite'), ('operating_data', 'Datos operativos'), ('reports', 'Informes'), ('security', 'Usuarios y permisos'), ('services', 'Servicios'), ('summaries', 'Tableros'), ('thermography', 'Termografía'), ('thresholds', 'Umbrales'), ('ultrasound', 'Ultrasonido'), ('vibration', 'Vibraciones')]
+
+TAREAS:
+T1. En los conjuntos de equipos, cada equipo debe de tener datos de operación y placa: motor, bomba, compresor, turbina, etc. Creo que ahora solo los MOTORES tienen esos datos y placa.
+---------------------b
+
+ruta: http://localhost:5174/measurements/groups/122?equipment=226
+1. Hay un bug, cuando selecciono BOMBA
+los gráficos de tendencia solo deben de contar los seleccionados para BOMBA, en este caso tengo seleccionados 5 de 6 pero me bloquea porque cuenta los del motor también...
+2.Los cuadros deben de reflejar (veo que no existe aceleración y eso sí está en los informes):
+2.1 Velocidad vibracional ( mm/s — rms )
+2.2 Aceleración
+2.3 Envolvente de aceleración ( gE — peak )
+2.4 Temperatura ( °C — max )
+2.5 Nivel de ultrasonido ( dB — avg )
+2.6  Espesor de pared ( mm — min )
+
+
+
+--------------------------------
+--------------------------------
+http://localhost:5174/reports
+esta opción debe de estar separada en 2 botones en el menú distintos:
+1. Informes MPD
+2. Informes END
+Y la opción que dice INFORMES debe de renombrarse por Informes de Planta (http://localhost:5174/summaries)
+
+-------------------a
+
