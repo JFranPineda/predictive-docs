@@ -685,4 +685,9 @@ Se recorrió el sistema entero con los módulos instalados y desinstalados desde
   importación de IPSA; `thresholds.0004` lo da a las empresas que ya existían.
   Un equipo fuera de norma (la Pulper Nº 04) se juzga con su propia norma y
   con este estado, no bajando los límites de la ISO.
+- **`lint-imports` pasa entero** (2 contratos, 533 ficheros). Los dos servicios
+  que consultan el ORM — `security…access` y el mapeador de contexto de
+  `thresholds` — se movieron a `infrastructure`; la capa `application` es
+  opcional en el contrato, porque un módulo sin ella no es un módulo con un
+  agujero.
 
