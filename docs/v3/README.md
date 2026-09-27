@@ -22,7 +22,7 @@ desinstala desde `/settings/modules` sin reiniciar nada. IPSA se abre en
 | V3-01 a V3-04 | Hecho | `5c9674c` · `7ec846a` | Sprint 1 |
 | V3-05 | Hecho | `239e154` · `15d33b5` | |
 | V3-06 a V3-08 | Hecho | `5c6597f` · `09d2c40` | |
-| V3-09 a V3-15 | Hecho | ver [`03-vibration.md`](tickets/03-vibration.md) | |
+| V3-09 a V3-15 | Hecho | ver [`03-vibration.md`](tickets/03-vibration.md); V3-11 `403d2d4` · `3155976` | La aceleración es cuadro fijo del registro de valores, con celdas abiertas donde la ronda aún no la midió |
 | V3-16 | Hecho | `9159df1` · `3ae5312`; Q8/Q9 `50037af`, `8fca47a` · `51c45d7` | ΔT se escribe tal cual (Q8); escala de 4 niveles de IPSA como norma, elegida por informe (Q9) |
 | V3-17 | Hecho | `6e0c309` · `9ca461f`; Q10 `b4d0b27`, `85b8f55` · `51c45d7`, `b5549c7` | Módulo `alignment`. Cada tramo de RPM de la norma dice hasta qué valor corresponde cada estado del equipo; ocho valores antes/después con ✓/✗ y estado; imágenes por conjunto según alineador: SKF 1, otro 2 (Q10) |
 | V3-18 | Hecho | `4781f09` · `1a0ed2c`; Q11 `ffd3dbf` · `9f1333b` | Módulo `topography`. Levantamiento por visita (fecha, componente principal, notas, esquema, plano con notas) y por polín los cuatro cuadros del plano con su medida, su foto y los desplazamientos (Q11). Sin veredicto |
@@ -30,7 +30,7 @@ desinstala desde `/settings/modules` sin reiniciar nada. IPSA se abre en
 | V3-20 | Hecho | `72aca99` · `c942ae8` | `Technique.evidence_only` |
 | V3-21 | Hecho | `e441cb1`, `df13a77` · `063d11d`; Q15 `eaa8a5f` · `19b878e` | Módulo `ut_rollers`. La escala de espesor es una norma de UT editable en Normas (MEDIO ≤ 8,00 mm; CRÍTICO < 6,14 mm, supuesto hasta que el cliente la corrija). Muñones de prensas por lado, resumen de resultados, conclusiones, recomendaciones, plano y registro fotográfico por conjunto (Q15) |
 | V3-22 | Hecho | `052c33e` · — | Solo datos |
-| V3-23 | Hecho | `c816b4b`, `c2f876d` · `a02a134` | Módulo `reports`: MPd, END, resumen mensual y correctivos en PDF y Excel |
+| V3-23 | Hecho | `c816b4b`, `c2f876d`, `403d2d4` · `a02a134`, `3155976` | Módulo `reports`: MPd, END, resumen mensual y correctivos en PDF y Excel. Dos entradas de menú, **Informes MPd** e **Informes END**; los resúmenes de planta pasan a **Informes de Planta** |
 | V3-24 a V3-28, V3-30, V3-31 | Hecho | `5c9674c` · `7ec846a` | Sprint 1 |
 | V3-29 | Hecho | `6980341` · `a070f29` | |
 | V3-32 | Hecho | `15c0526`, `0b9d1b3` · `2dafdfa`, `b9bba67` | Módulo `maintenance`; marcas en el gráfico de tendencias; correctivos en V3-23 |
@@ -39,6 +39,7 @@ desinstala desde `/settings/modules` sin reiniciar nada. IPSA se abre en
 | Fase 3 (F3-01 a F3-06) | Hecho | `1dc832e` · `d156299`; Q17–Q19 `66a0a16` · `7a91e91` | Módulo `workday`: jornada firmada con clave, candado del día, observaciones con foto primero, perfil Jefe de Seguridad. Q17–Q19: el ATS es por servicio (formato del cliente), tres firmas de inicio sin las que no se llena nada del conjunto (o desbloqueo de admin), cierre con clave que fija la hora final; reabrir tiene permiso propio (Q18). Ver [`10-phase-3.md`](tickets/10-phase-3.md) |
 | Q20 | Hecho | `6cc121b` · `18c198b` | Módulo `activity` (Registro de actividad): cada inicio de sesión, clic, página, alta, cambio, baja y subida de archivo, en una tabla filtrable con exportación CSV. Ver [`12-activity-log.md`](tickets/12-activity-log.md) |
 | V3-37 | Hecho | `750d830`, `2ba888f` · `bb1e408` | Inquilino `ipsa`, comando `import_ipsa`. Informe: [`ipsa-import-report.md`](ipsa-import-report.md) |
+| Revisión Q10–Q20 | Hecho | `403d2d4`, `d608d56` · `3155976`, `ae35276` | Repaso de las diez respuestas sobre el sistema instalado: costuras de módulo (`edit_lock`, `request_observer`, secciones de visita), el candado de un servicio sin firmas en la ruta de rodillos que no lo tenía, Permisos agrupando por el nombre del módulo, y el lector de errores compartido |
 
 Correcciones transversales encontradas al validar (no las pidió nadie):
 módulos que se instalaban desde la UI sin exponer sus rutas hasta reiniciar

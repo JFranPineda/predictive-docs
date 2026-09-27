@@ -166,6 +166,18 @@ rodamiento).
 - **AC-02** Dada una lectura de aceleración sin umbral configurado, cuando se
   muestra, entonces sale el valor sin color de estado y con la marca "sin
   norma".
+- **AC-03** Dado el registro de valores de un conjunto, cuando se abre,
+  entonces la tabla de aceleración está siempre, entre velocidad y envolvente,
+  con celdas abiertas en las rondas de vibraciones que todavía no la midieron;
+  escribir en una de ellas crea la lectura.
+
+**Implementado** (27 set. 2026). La magnitud existe con `display_order` 20 y la
+decide el catálogo, no el código: `Tipos de medición` trae dos interruptores
+por magnitud — "Solo donde la plantilla lo pida" (`template_only`) y "Cuadro
+fijo en el registro" (`in_record`). Las seis del informe del cliente
+(velocidad, aceleración, envolvente, temperatura, ultrasonido, espesor) nacen
+con `in_record`, y en AMBEV se quitó `template_only` de la aceleración para que
+sus rondas la puedan llenar.
 
 ---
 

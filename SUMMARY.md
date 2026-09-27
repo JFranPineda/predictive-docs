@@ -594,8 +594,8 @@ los 47 libros; el informe de la importación está en
 `docs/v3/ipsa-import-report.md`.
 
 En la base real los módulos nuevos (`alignment`, `topography`, `maintenance`,
-`ut_rollers`) están migrados pero **sin instalar**, y `reports` pide
-actualizar de 0.1.0 a 0.2.0: se hace desde `/settings/modules`. `workday`
+`ut_rollers`, `activity`) están migrados pero **sin instalar**, y `reports`
+pide actualizar de 0.1.0 a 0.2.0: se hace desde `/settings/modules`. `workday`
 también está migrado y sin instalar: instalarlo activa el candado del día y
 la exigencia de ATS para los técnicos de ese cliente. Instalar
 `ut_rollers` crea su técnica, magnitud, perfil de estados, umbrales y el tipo
@@ -659,3 +659,25 @@ Lo que no se deduce del código:
   el proxy inverso de producción (`docs/07` §3).
 - `modules upgrade measurements|thresholds` vuelve a funcionar: sus manifiestos
   declaraban fixtures que nunca existieron.
+
+### Revisión de Q10–Q20 sobre el sistema instalado (2026-09-27)
+
+Se recorrió el sistema entero con los módulos instalados y desinstalados desde
+`Configuración → Aplicaciones`, no solo con las pruebas. Lo que hay que saber:
+
+- **El registro de valores dibuja siempre los cuadros del informe del cliente**
+  (velocidad, aceleración, envolvente, temperatura, ultrasonido, espesor), con
+  **celdas abiertas** donde la ronda todavía no midió; escribir en una crea la
+  lectura por la visita dueña de esa columna. Lo decide el catálogo
+  (`Magnitude.in_record`), no el código, y se cambia en Tipos de medición.
+- **Un módulo no llama a otro por su nombre**: la visita monta las secciones de
+  alineamiento, topografía y termografía por `visitSections`, el candado de un
+  servicio sin firmar lo declara `workday` en `edit_lock` del manifiesto, y el
+  registro de actividad escucha por `request_observer`. Desinstalar el módulo
+  se lleva su sección, su candado y su registro; reinstalarlo los devuelve con
+  sus datos intactos.
+- **Permisos agrupa por el nombre que declara cada manifiesto**: un módulo
+  nuevo ya no aparece como su código hasta que alguien lo traduzca.
+- El candado de Q19 se pide al abrir la pantalla (`lock_reason`) y se aplica
+  otra vez al guardar (428): la UI no es la que decide.
+

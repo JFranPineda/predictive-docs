@@ -278,5 +278,15 @@ V. Límites, VI. Tendencias, y hojas de espectros y termogramas.
   resumen, entonces tiene una fila por conjunto y el conteo NORMAL / ALARMA /
   PARADA / APAGADO de cada técnica.
 
+- **AC-04** Dado el menú, cuando se mira, entonces hay dos entradas distintas
+  — **Informes MPd** (`/reports/mpd`, con las pestañas MPd, Resumen mensual y
+  Correctivos) e **Informes END** (`/reports/end`) —, y la antigua `/reports`
+  redirige a la primera.
+
+**Implementado** (27 set. 2026). Las dos familias son dos entradas de menú, no
+dos pestañas de una pantalla: el que hace END nunca entra a MPd. La entrada de
+resúmenes de planta pasó a llamarse **Informes de Planta** para no competir con
+ellas.
+
 **Nota**: es el ticket más grande de v3. Conviene partirlo cuando se empiece:
 primero el informe MPd de un conjunto, después el resumen mensual, después END.
