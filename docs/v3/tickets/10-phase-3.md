@@ -28,6 +28,31 @@
 > preguntas del final se resolvieron con un supuesto (Q17 a Q19 en
 > `docs/v3/README.md`).
 
+> **Respuestas del cliente (2026-09-27), implementadas** (back `66a0a16`,
+> front `7a91e91`, módulo 0.2.0):
+>
+> - **Q17 — el ATS es por servicio.** Un servicio es un trabajo del personal
+>   en planta sobre un conjunto (`ServiceJob`: jornada, conjunto, orden
+>   opcional, actividad). Su ATS sigue el formato del cliente: titular,
+>   unidad, área, zona, actividad, categoría del riesgo (alto, mediano, bajo),
+>   EPP, equipos y herramientas, y los pasos con peligros, riesgos, evaluación
+>   IPERC (A/M/B con puntaje) y controles; un paso con varios peligros lleva un
+>   solo número de ítem. El personal ejecutor firma en pantalla. Reemplaza al
+>   ATS subido como documento.
+> - **Q19 — firmas de inicio y hora final.** El servicio empieza con las firmas
+>   del ingeniero de producción, el líder encargado del servicio y el
+>   supervisor de planta (dibujadas en pantalla); hasta entonces el guardia
+>   responde 428 a cualquier escritura de ese conjunto (visitas, lecturas,
+>   termogramas, fotos, alineamiento, topografía, UT, correctivos), salvo que
+>   un administrador lo desbloquee con un motivo (`workday.unlock_service`).
+>   El cierre lo firma el ingeniero jefe o un administrador con su clave
+>   (`workday.close_service`), solo con el ATS completo y firmado por todo el
+>   personal: esa hora es la **hora final** del servicio.
+> - **Q18 — reabrir.** Permiso propio `workday.reopen`, editable en Usuarios y
+>   permisos. Al instalar se crea el rol **Ingeniero jefe** (los permisos del
+>   ingeniero más abrir/cerrar/reabrir la jornada y cerrar servicios); los
+>   administradores lo tienen siempre.
+
 El cliente lo marcó como **"Fase 3 del sistema (A FUTURO)"**. Se implementó
 después de v3, a pedido, como módulo que cada cliente decide instalar. Lo que
 sigue es el pedido original y las decisiones que lo dejaron preparado.
@@ -71,9 +96,10 @@ de intervenir un equipo.
 - V3-35 (sesión de 10 minutos) no sustituye el cierre de jornada: son cosas
   distintas. Una sesión que expira no impide volver a entrar y editar.
 
-## Preguntas que habrá que hacer cuando se retome
+## Preguntas de la fase (respondidas el 2026-09-27)
 
-- ¿El ATS es un documento por trabajo, por conjunto o por jornada?
-- ¿Quién puede reabrir una jornada cerrada, y queda rastro?
-- ¿"Pasada la hora final" es la hora que declara el ingeniero jefe al cerrar o
-  una hora fija de turno (los turnos A/B/C de 8 h ya existen en la membresía)?
+- ¿El ATS es un documento por trabajo, por conjunto o por jornada? → por
+  servicio (Q17).
+- ¿Quién puede reabrir una jornada cerrada, y queda rastro? → ingeniero jefe y
+  administradores, configurable (Q18).
+- ¿Qué es "la hora final"? → la firma del cierre del servicio (Q19).

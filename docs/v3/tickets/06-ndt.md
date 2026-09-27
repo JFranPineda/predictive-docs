@@ -1,5 +1,25 @@
 # 06 · END y familias de servicio
 
+> **Respuesta del cliente Q15 (2026-09-27), implementada** (back `eaa8a5f`,
+> front `19b878e`, módulo `ut_rollers` 0.2.0):
+>
+> - La escala de espesor es la norma **«UT en rodillos · espesor mínimo de
+>   pared»** (técnica UT en rodillos): Normas la muestra y edita banda por
+>   banda —desde A hasta B, estado W— con los nombres Aceptable, Medio y
+>   Crítico. MEDIO ≤ 8,00 mm y CRÍTICO < 6,14 mm son los valores de partida.
+> - **Muñones de las prensas**, una tabla por lado (mando, transmisión): rollo,
+>   diámetro, longitud externa, longitud total y estado. El estado se escribe
+>   solo («Sin fisuras presentes en el muñón de polín.», «Tapado (Sin
+>   acceso)», el motivo de un sin acceso, «Presenta fisura a … mm de longitud,
+>   profundidad … mm.») o lo escribe el técnico.
+> - **Resumen de resultados** dato por dato (prensa, lado, incidencia,
+>   descripción, polín), armado con las incidencias de los muñones.
+> - Por orden y conjunto: **conclusiones, recomendaciones, plano del conjunto
+>   y registro fotográfico**. El informe END incluye todo eso.
+> - Fuente: `docs/v3/ultrasonido/informe_ultrasonido.xlsx` y las tablas que
+>   envió el cliente. Las hojas de trabajo del Excel (calibrador, nominal,
+>   máximo y mínimo por diámetro) no se modelaron.
+
 > **Estado (2026-09-26): V3-19 a V3-23 implementados y verificados.**
 >
 > - V3-19 (`a4b8103` · `d25fbd7`); V3-22 (`052c33e`, solo datos).

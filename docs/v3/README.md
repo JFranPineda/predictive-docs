@@ -4,9 +4,10 @@ Tercera ronda de requerimientos. Sale de la reunión de revisión del sistema en
 uso y de la ruta que recorrió Jesús por las pantallas. Cada ticket cita el
 texto del cliente que lo origina y apunta al código que hay que tocar.
 
-## Estado (2026-09-26)
+## Estado (2026-09-27)
 
-**Implementados y verificados: V3-01 a V3-37 y la Fase 3.** La Fase 3 es el
+**Implementados y verificados: V3-01 a V3-37, la Fase 3 y las respuestas del
+cliente Q8–Q11 y Q15–Q20.** La Fase 3 es el
 módulo opcional `workday` (desinstalado por defecto); V3-37 creó el segundo
 inquilino, `ipsa`, con la planta de Chaclacayo importada de sus 47 libros.
 
@@ -23,11 +24,11 @@ desinstala desde `/settings/modules` sin reiniciar nada. IPSA se abre en
 | V3-06 a V3-08 | Hecho | `5c6597f` · `09d2c40` | |
 | V3-09 a V3-15 | Hecho | ver [`03-vibration.md`](tickets/03-vibration.md) | |
 | V3-16 | Hecho | `9159df1` · `3ae5312`; Q8/Q9 `50037af`, `8fca47a` · `51c45d7` | ΔT se escribe tal cual (Q8); escala de 4 niveles de IPSA como norma, elegida por informe (Q9) |
-| V3-17 | Hecho | `6e0c309` · `9ca461f`; Q10 `b4d0b27` · `51c45d7` | Módulo `alignment`. La tabla por RPM es la escala de una norma editable en Normas (Q10) |
-| V3-18 | Hecho | `4781f09` · `1a0ed2c` | Módulo `topography`. Sin veredicto (Q11) |
+| V3-17 | Hecho | `6e0c309` · `9ca461f`; Q10 `b4d0b27`, `85b8f55` · `51c45d7`, `b5549c7` | Módulo `alignment`. Cada tramo de RPM de la norma dice hasta qué valor corresponde cada estado del equipo; ocho valores antes/después con ✓/✗ y estado; imágenes por conjunto según alineador: SKF 1, otro 2 (Q10) |
+| V3-18 | Hecho | `4781f09` · `1a0ed2c`; Q11 `ffd3dbf` · `9f1333b` | Módulo `topography`. Levantamiento por visita (fecha, componente principal, notas, esquema, plano con notas) y por polín los cuatro cuadros del plano con su medida, su foto y los desplazamientos (Q11). Sin veredicto |
 | V3-19 | Hecho | `a4b8103` · `d25fbd7` | |
 | V3-20 | Hecho | `72aca99` · `c942ae8` | `Technique.evidence_only` |
-| V3-21 | Hecho | `e441cb1`, `df13a77` · `063d11d` | Módulo `ut_rollers`. MEDIO ≤ 8,00 mm inferido de la orden 14778; CRÍTICO < 6,14 mm es supuesto (Q15) |
+| V3-21 | Hecho | `e441cb1`, `df13a77` · `063d11d`; Q15 `eaa8a5f` · `19b878e` | Módulo `ut_rollers`. La escala de espesor es una norma de UT editable en Normas (MEDIO ≤ 8,00 mm; CRÍTICO < 6,14 mm, supuesto hasta que el cliente la corrija). Muñones de prensas por lado, resumen de resultados, conclusiones, recomendaciones, plano y registro fotográfico por conjunto (Q15) |
 | V3-22 | Hecho | `052c33e` · — | Solo datos |
 | V3-23 | Hecho | `c816b4b`, `c2f876d` · `a02a134` | Módulo `reports`: MPd, END, resumen mensual y correctivos en PDF y Excel |
 | V3-24 a V3-28, V3-30, V3-31 | Hecho | `5c9674c` · `7ec846a` | Sprint 1 |
@@ -35,7 +36,8 @@ desinstala desde `/settings/modules` sin reiniciar nada. IPSA se abre en
 | V3-32 | Hecho | `15c0526`, `0b9d1b3` · `2dafdfa`, `b9bba67` | Módulo `maintenance`; marcas en el gráfico de tendencias; correctivos en V3-23 |
 | V3-33 a V3-35 | Hecho | `5c9674c` · `7ec846a` | Sprint 1 |
 | V3-36 | Hecho | `5569549` · `922192c` | |
-| Fase 3 (F3-01 a F3-06) | Hecho | `1dc832e` · `d156299` | Módulo `workday`: jornada firmada con clave, candado del día, ATS antes de la foto, observaciones con foto primero, perfil Jefe de Seguridad. Supuestos en [`10-phase-3.md`](tickets/10-phase-3.md) |
+| Fase 3 (F3-01 a F3-06) | Hecho | `1dc832e` · `d156299`; Q17–Q19 `66a0a16` · `7a91e91` | Módulo `workday`: jornada firmada con clave, candado del día, observaciones con foto primero, perfil Jefe de Seguridad. Q17–Q19: el ATS es por servicio (formato del cliente), tres firmas de inicio sin las que no se llena nada del conjunto (o desbloqueo de admin), cierre con clave que fija la hora final; reabrir tiene permiso propio (Q18). Ver [`10-phase-3.md`](tickets/10-phase-3.md) |
+| Q20 | Hecho | `6cc121b` · `18c198b` | Módulo `activity` (Registro de actividad): cada inicio de sesión, clic, página, alta, cambio, baja y subida de archivo, en una tabla filtrable con exportación CSV. Ver [`12-activity-log.md`](tickets/12-activity-log.md) |
 | V3-37 | Hecho | `750d830`, `2ba888f` · `bb1e408` | Inquilino `ipsa`, comando `import_ipsa`. Informe: [`ipsa-import-report.md`](ipsa-import-report.md) |
 
 Correcciones transversales encontradas al validar (no las pidió nadie):
@@ -165,16 +167,17 @@ el ticket aplica el supuesto que se indica.
 | Q7 | ¿Dónde se quiere ver el tipo de lubricación: ficha del equipo, visita de lubricación, informe? | V3-29 | En la ficha del equipo y en la cabecera de la visita. |
 | Q8 | "Valor delta mayor del elemento observado": ¿ΔT contra qué? | V3-16 | **Respondida (2026-09-26):** es un número en °C que el técnico escribe tal cual. El formulario del termograma pide ΔT directamente; ya no hay referencia (`50037af` · `51c45d7`). |
 | Q9 | La escala térmica de IPSA tiene **cuatro** niveles (aceptable < 82 °C, alarma < 121, **alerta** < 148, parada). | V3-16 | **Respondida:** va al módulo de Normas, aplicada a termografía, y cada informe elige su norma. Hecho: estado ALERTA, norma «Escala térmica IPSA» sobre Tmáx IR, `ServiceOrder.standard` (un informe con norma A y otro con B en el mismo cliente; cambiarla recalifica), escala editable en Normas (`50037af`, `8fca47a` · `51c45d7`). |
-| Q10 | Tolerancias de alineamiento: ¿las de la tabla SKF por RPM, o una por equipo? | V3-17 | **Respondida:** tabla por RPM como valores de escala de una norma. La tabla SKF es la norma «SKF · Tolerancias de alineamiento por RPM», editable en Normas; cada alineamiento elige su norma y sigue pudiendo sobrescribirse por conjunto (`b4d0b27` · `51c45d7`). |
-| Q11 | Topografía: ¿unidades, tolerancias y cuántos puntos? | V3-18 | mm y mm/m, sin veredicto automático hasta tener tolerancias. |
+| Q10 | Tolerancias de alineamiento: ¿las de la tabla SKF por RPM, o una por equipo? | V3-17 | **Respondida:** tabla por RPM como valores de escala de una norma (`b4d0b27` · `51c45d7`). **Ampliada (2026-09-27):** la norma define límites y estados del equipo por tramo; el servicio registra paralelo y angular, horizontal y vertical, antes y después; imágenes por conjunto rotórico: 1 con alineador SKF (resultado antes/después), 2 con otro alineador (`85b8f55` · `b5549c7`). |
+| Q11 | Topografía: ¿unidades, tolerancias y cuántos puntos? | V3-18 | **Respondida (2026-09-27):** notas; esquema del conjunto; plano del análisis con notas; desplazamiento horizontal y vertical en mm con signo; fecha del servicio; N polines medidos contra el componente principal (p. ej. Prensa 1) con los 4 cuadros del plano (2 de paralelismo, 2 de nivelación) con su medida y su foto (`ffd3dbf` · `9f1333b`). Sin veredicto: el cliente no pidió tolerancias. |
 | Q12 | Límite del plan: ¿cuentan los equipos retirados o apagados? ¿Qué pasa al superarlo? | V3-36 | Cuentan los activos no retirados; al superarlo se bloquea el alta, no la lectura. |
 | Q13 | ¿Hay versión del logo con fondo transparente (PNG o SVG)? La actual lleva fondo blanco y no funciona en modo oscuro. | V3-33 | Se usa la JPEG sobre una placa blanca. |
 | Q14 | ¿Quién puede borrar una foto: solo el administrador, o también quien la subió mientras la visita siga abierta? | V3-02 | Quien la subió, con la visita abierta; el administrador siempre. |
-| Q15 | "Medidas de 6 puntos según formato" en ultrasonido de rodillos, ¿son los P1–P6 de `docs/v2/ORDEN_14778(1).xlsx`? | V3-21 | Sí. |
-| Q16 | IPSA escribe **OBSERVACIÓN** como estado de columna (Pulper Nº 04). ¿Es un estado propio, entre normal y alarma, o equivale a alarma? | V3-37 | No se crea estado: el sistema califica por los valores (el Pulper sale PARADA, como en el resumen). |
-| Q17 | El **ATS**, ¿es un documento por trabajo, por conjunto o por jornada? | Fase 3 | Uno o varios por conjunto y jornada; vale mientras la jornada esté abierta y solo con el ATS firmado subido. |
-| Q18 | ¿Quién puede **reabrir** una jornada cerrada, y queda rastro? | Fase 3 | Solo quien tiene `workday.manage` (ingeniero jefe, administrador), con su clave y un motivo que queda en la auditoría. |
-| Q19 | "Pasada la hora final": ¿la hora que declara el ingeniero jefe al cerrar, o una hora fija de turno (A/B/C)? | Fase 3 | El momento en que el ingeniero jefe firma el cierre. |
+| Q15 | Ultrasonido de rodillos: datos a registrar y estado CRÍTICO. | V3-21 | **Respondida (2026-09-27):** los rangos y estados se configuran en Normas («desde A hasta B, estado W»); se registran los espesores, los muñones de las prensas (rollo, diámetro, longitud externa y total, estado), el resumen de resultados dato por dato, conclusiones, recomendaciones, plano del conjunto y registro fotográfico (`eaa8a5f` · `19b878e`). CRÍTICO < 6,14 mm sigue siendo el valor de partida: el cliente lo cambia en la norma. |
+| Q16 | IPSA escribe **OBSERVACIÓN** como estado (Pulper Nº 04). ¿Qué estado es? | V3-37 | **Abierta.** El cliente preguntó dónde figura: libro `Equipo # 01._Pulper N° 04.xlsx`, hoja VIBRACIONES, celda D13 (Estado de la cabecera) y fila 22, estado de cada toma: 13 de las 14 columnas (27-ago a 28-sep) dicen OBSERVACIÓN y la del 12-sep dice PARADA. Es el único libro de los 47 que lo usa. Hoy el sistema califica por los valores. |
+| Q17 | El **ATS**, ¿es un documento por trabajo, por conjunto o por jornada? | Fase 3 | **Respondida (2026-09-27):** por servicio (un trabajo del personal en planta sobre un conjunto), en el formato del cliente (cabecera, EPP, herramientas, categoría del riesgo, pasos con peligros, riesgos, IPERC y controles, personal ejecutor con firma) (`66a0a16` · `7a91e91`). |
+| Q18 | ¿Quién puede **reabrir** una jornada cerrada, y queda rastro? | Fase 3 | **Respondida:** el ingeniero jefe y los administradores, con clave y motivo; configurable en Usuarios y permisos con el permiso propio `workday.reopen` (rol «Ingeniero jefe» creado al instalar) (`66a0a16`). |
+| Q19 | "Pasada la hora final": ¿qué es la hora final? | Fase 3 | **Respondida:** la hora final de un servicio es cuando el ingeniero jefe o un admin firma su cierre con su clave, con el ATS completo y firmado. Para empezar, firman el ingeniero de producción, el líder del servicio y el supervisor de planta; sin esas firmas no se llena nada del conjunto, salvo que un admin lo desbloquee (`66a0a16` · `7a91e91`). |
+| Q20 | Registro de todo lo que pasa en el sistema. | — | **Hecho (2026-09-27):** módulo `activity`: usuario, evento, descripción y fecha y hora de cada inicio de sesión, clic, página abierta, alta, modificación, baja y subida de archivo; filtros y CSV (`6cc121b` · `18c198b`). |
 
 ## Hallazgos que el cliente no reportó
 

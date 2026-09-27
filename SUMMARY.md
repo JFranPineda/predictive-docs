@@ -285,7 +285,8 @@ conjunto con plantilla de puntos, importador RGP) · `nameplate` ·
 `diagnostics` · `operating_data` · `media` (subida, conversión, **galería por
 equipo**, **FLIR**) · `summaries` · `oil_analysis` · y, de v3, `alignment`,
 `topography`, `maintenance`, `ut_rollers` y `reports` (informes MPd/END en PDF
-y Excel), y de la Fase 3, `workday` (jornada, ATS y cierre del día). Quedan como stubs `blueprints`, `vibration`, `ultrasound`,
+y Excel), de la Fase 3, `workday` (jornada, servicios con ATS y firmas, cierre
+del día), y de Q20, `activity` (registro de actividad). Quedan como stubs `blueprints`, `vibration`, `ultrasound`,
 `thermography`.
 
 **Frontend — 13 módulos**: `assets` · `measurements` (registro de valores,
@@ -294,7 +295,7 @@ tendencia, **gráfico de tendencias**, **espectros**, **captura de ronda**,
 (usuarios, roles, **auditoría**) · `diagnostics` (**catálogo de fallas**) ·
 `nameplate` · `media` (**galería por equipo**) · `operating_data` ·
 `licensing` · `modules_admin` · `preferences` · y, de v3, `alignment`,
-`topography`, `maintenance`, `ut_rollers`, `reports`, `workday`.
+`topography`, `maintenance`, `ut_rollers`, `reports`, `workday`, `activity`.
 
 ### 5.2 Conjuntos rotativos y registro de valores
 
@@ -402,9 +403,10 @@ PATCH  /points/1/       ["El punto 2H ya existe en el conjunto, en MOTOR"]
 | Pendiente | Nota |
 |---|---|
 | Módulo `blueprints` (planos con puntos) | Diseñado en `docs/02 §1`, sin implementar. T3 del pedido original. |
-| Umbral **CRÍTICO** de rodillos | V3-21 usa < 6,14 mm como supuesto: la orden 14778 no trae ningún rodillo crítico. Confirmar con el cliente (Q15). Diámetro con calibrador y desgaste contra nominal, fuera de v3. |
-| OBSERVACIÓN de IPSA | Q16 sin respuesta: el importador no crea estado, califica por valores. |
-| Supuestos de la Fase 3 | Q17 a Q19 (alcance del ATS, quién reabre, qué es "hora final"). |
+| Umbral **CRÍTICO** de rodillos | Q15 respondida: los rangos se editan en la norma «UT en rodillos · espesor mínimo de pared». < 6,14 mm sigue como valor de partida hasta que el cliente lo cambie ahí. Diámetro con calibrador y desgaste contra nominal (hojas de trabajo del Excel), fuera de alcance. |
+| OBSERVACIÓN de IPSA | Q16 abierta: se le indicó al cliente dónde figura (Pulper Nº 04, hoja VIBRACIONES, D13 y fila 22). El importador no crea estado, califica por valores. |
+| Activar módulos en AMBEV/IPSA reales | `activity`, `workday`, `alignment`, `topography`, `ut_rollers`, `maintenance` siguen desinstalados; `reports` pide actualizar en AMBEV. Se hace desde `/settings/modules`. |
+| Retención del registro de actividad | `activity` guarda todo sin caducidad; con uso real hará falta purgar o archivar por antigüedad. |
 | Termografía de IPSA sin valores | Sus hojas no traen tabla de temperaturas: las visitas importadas quedan sin veredicto (el resumen del cliente dice OK). |
 | `make check` del backend | Nunca ha estado verde: `ruff format` reformatearía 202 ficheros y `mypy` no está instalado. No se forzó. |
 | Importador de espectros en la UI de visita | El endpoint y el parser están hechos; falta el botón dentro del formulario de visita. |
@@ -463,15 +465,22 @@ varios eran del tipo que no falla: devuelve algo plausible y equivocado.
 
 ## 8. Trampas del entorno (leer antes de prometer nada)
 
+- **Vite puede quedarse con un fichero vacío en caché** si lo lee mientras se
+  escribe (pasó con `TopographyPanel.tsx`: la app se quedaba en «Cargando
+  módulos…»). `touch` del fichero y recargar lo arregla.
+- **`pkill -f "runserver …"` mata también la shell** que lo lanza (el patrón
+  aparece en su propia línea de comandos): matar por PID y arrancar en otra
+  llamada.
+
 - **Herramientas de desarrollo instaladas** (2026-09-25) en `predictive-back/.venv`:
   `pytest`, `ruff`, `import-linter`, `weasyprint`, `pillow-heif`,
   `pillow-avif-plugin`. `pip install -e ".[dev]"` **falla** (layout plano, varios
   paquetes top-level): se instalan las dependencias por nombre. Línea base
-  (2026-09-26): `pytest tests/unit` verde, 354 tests; `lint-imports` con 2 violaciones de
+  (2026-09-27): `pytest tests/unit` verde, 383 tests; `lint-imports` con 2 violaciones de
   capas previas (`security.application` y `thresholds.application` importan
   infraestructura); ruff con 228 avisos (sobre todo `RUF012` y `E501`, el
   estilo del repo). `mypy` no está instalado.
-- **El front corre entero y en verde**: `npx vitest run` → 142 tests,
+- **El front corre entero y en verde**: `npx vitest run` → 153 tests,
   `npx tsc --noEmit` limpio, **`npx eslint src` sin errores** y `npx vite build`
   con un chunk por módulo. Cualquier error de lint es nuevo.
 - **Un fichero de código nuevo exige reiniciar `runserver`**: el recargador

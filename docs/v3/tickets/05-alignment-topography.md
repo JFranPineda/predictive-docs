@@ -1,5 +1,28 @@
 # 05 · Alineamiento y topografía (MPd Predictivo)
 
+> **Respuestas del cliente Q10 y Q11 (2026-09-27), implementadas.**
+>
+> - **Q10 · alineamiento** (back `85b8f55`, front `b5549c7`, módulo 0.3.0):
+>   cada tramo de RPM de una norma de alineamiento lista sus límites y el
+>   estado del equipo que significan («hasta 0,05 mm Aceptable, hasta 0,10 mm
+>   Alarma, por encima Parada»), editable en Normas. El registro guarda
+>   paralelo y angular, horizontal y vertical, antes y después, con ✓/✗ y el
+>   estado de cada valor, y el estado encontrado y final del equipo; congela la
+>   escala del tramo. Imágenes **por conjunto rotórico**: con alineador SKF una
+>   imagen de resultado (antes y después en la misma pantalla); con otro
+>   alineador, una antes y otra después; más la foto del conjunto y hasta dos
+>   de la observación. Los registros anteriores quedaron como «otro
+>   alineador». El informe MPd imprime los estados.
+> - **Q11 · topografía** (back `ffd3dbf`, front `9f1333b`, módulo 0.2.0): por
+>   visita, un levantamiento con contenido del plano, fecha del servicio,
+>   componente principal (p. ej. Prensa 1), N° de plano, instrumento, notas, el
+>   esquema del conjunto (recorrido de fieltro) y el plano del análisis con sus
+>   notas. Por cada polín medido, los cuatro cuadros del plano —paralelismo y
+>   vista perfil, lado mando (referencia) y lado transmisión— con su
+>   separación en mm y su foto, y el desplazamiento horizontal y vertical con
+>   signo (+3 mm, −1 mm), sugerido como transmisión − mando. Sin veredicto.
+>   Fuente: `docs/v3/topografia/` (9 planos de las prensas 1 a 3).
+
 > **Estado (2026-09-26): los dos implementados y verificados**, cada uno como
 > módulo instalable.
 >
