@@ -680,4 +680,9 @@ Se recorrió el sistema entero con los módulos instalados y desinstalados desde
   nuevo ya no aparece como su código hasta que alguien lo traduzca.
 - El candado de Q19 se pide al abrir la pantalla (`lock_reason`) y se aplica
   otra vez al guardar (428): la UI no es la que decide.
+- **OBSERVACIÓN es un estado de fábrica** (Q16), severidad 15, entre operativo
+  y alarma, ofrecido por las técnicas que califican condición. Nació en la
+  importación de IPSA; `thresholds.0004` lo da a las empresas que ya existían.
+  Un equipo fuera de norma (la Pulper Nº 04) se juzga con su propia norma y
+  con este estado, no bajando los límites de la ISO.
 
