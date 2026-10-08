@@ -40,6 +40,7 @@ desinstala desde `/settings/modules` sin reiniciar nada. IPSA se abre en
 | Q20 | Hecho | `6cc121b` · `18c198b` | Módulo `activity` (Registro de actividad): cada inicio de sesión, clic, página, alta, cambio, baja y subida de archivo, en una tabla filtrable con exportación CSV. Ver [`12-activity-log.md`](tickets/12-activity-log.md) |
 | V3-37 | Hecho | `750d830`, `2ba888f` · `bb1e408` | Inquilino `ipsa`, comando `import_ipsa`. Informe: [`ipsa-import-report.md`](ipsa-import-report.md) |
 | Revisión Q10–Q20 | Hecho | `403d2d4`, `d608d56` · `3155976`, `ae35276` | Repaso de las diez respuestas sobre el sistema instalado: costuras de módulo (`edit_lock`, `request_observer`, secciones de visita), el candado de un servicio sin firmas en la ruta de rodillos que no lo tenía, Permisos agrupando por el nombre del módulo, y el lector de errores compartido |
+| Revisión 8 oct. (T1–T14) | Hecho | `a457daa`, `4897df8`, `974193e`, `aeeffce`, `5cf126f` · `970a677`, `5a34de7`, `e43b572`, `cf8372a`, `6322d01`, `79c30ec`, `3f6f7c9` | CRUD de alineamiento y de rodillos, conjuntos de estados por servicio, menú marcado en páginas internas, Estructura en Configuración, buscador de tipos de conjunto, UX de Informes de Planta, Permisos y Tipos de medición. Respuestas en [`screens-guide.md`](screens-guide.md) |
 
 Correcciones transversales encontradas al validar (no las pidió nadie):
 módulos que se instalaban desde la UI sin exponer sus rutas hasta reiniciar

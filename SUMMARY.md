@@ -700,3 +700,31 @@ Se recorrió el sistema entero con los módulos instalados y desinstalados desde
   permiso `core.archive_history`: hay que **Actualizar** el módulo en cada
   inquilino para que el botón «Archivar ahora» exista.
 
+### Revisión del 8 de octubre de 2026 (T1–T14)
+
+Respuestas para el usuario en `docs/v3/screens-guide.md`. Lo que no se deduce
+del código:
+
+- **El menú marca la ruta más larga que contiene la página**
+  (`app/layout/activeMenu.ts`): con coincidencia exacta, abrir una tendencia
+  dejaba el menú sin marcar; con prefijo simple, `/assets/structure` marcaba
+  también Activos.
+- **Alineamiento admite trabajos puntuales** (sin visita): se crean desde
+  `/alignment`; el payload trae `order_code` y `can_edit`, calculado con la
+  misma regla que las escrituras.
+- **El catálogo de rodillos es del módulo** (`ut_rollers/interfaces/catalogue_views.py`):
+  crear grupo (tipo Rodillos siempre), renombrar, borrar vacío; rodillos
+  retirar/restaurar/borrar. Uno con espesores, hallazgos o muñones solo se
+  retira. El candado de jornada cubre `rollers/<id>/`.
+- **Cada servicio tiene su conjunto de estados editable** (`status-profiles/`).
+  Los editores de escala de Normas ofrecen solo los estados de condición del
+  servicio; uno sin configurar sigue ofreciendo todos. No se puede quitar un
+  estado que un umbral activo del servicio todavía usa. Con/sin aisladores no
+  es otro servicio: son clases rígida/flexible de la norma.
+- **`thresholds.0005`** retira OBSERVACIÓN de mantenimiento y lubricación, que
+  0004 había alcanzado por tener Operativo.
+- **Informes de Planta estaba fijo en la planta 1**; ahora sigue un selector.
+- **Nunca correr `prettier` sin opciones en el front**: no hay config, y por
+  defecto reescribe todo con comillas dobles. El estilo del repo es comillas
+  simples, comas finales y líneas de hasta ~120.
+

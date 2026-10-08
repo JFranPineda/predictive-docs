@@ -19,7 +19,7 @@ sleep 2
 
 # 3. Iniciar Cloudflared en segundo plano
 echo "-> Iniciando túnel de Cloudflared..."
-cloudflared tunnel --url http://127.0.0.1:5174 &
+cloudflared tunnel --url http://127.0.0.1:5174 --http-host-header "127.0.0.1" &
 CLOUD_PID=$!
 
 # Función para detener los servicios en el orden solicitado
