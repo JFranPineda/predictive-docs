@@ -728,3 +728,36 @@ del código:
   defecto reescribe todo con comillas dobles. El estilo del repo es comillas
   simples, comas finales y líneas de hasta ~120.
 
+### Revisión del 10 de octubre de 2026 (backend, modularidad, usuarios, UX)
+
+Informe completo en `docs/v3/review-2026-10-10-report.md`. Lo que no se deduce
+del código:
+
+- **Nadie reparte lo que no tiene** (`security.domain.policies.handing_out_refusal`):
+  un gestor con `manage_role`/`manage_user` que no es administrador no puede dar
+  permisos que no tiene, ni subir un rol o una persona a administrador, ni
+  tocar el acceso de un administrador. Los administradores están exentos.
+- **`GET users/` sin `view_user`/`manage_user` devuelve un directorio** (nombre,
+  iniciales, rol): es lo que leen los selectores de participantes.
+- **El alcance por áreas vale también en el detalle**: `assets.infrastructure.visibility`
+  (`find_visible_equipment`, `visible_equipments`, `within_reach`) y
+  `services.infrastructure.visibility` (`find_visible_visit`). Fuera de alcance
+  responde 404, no 403, para no confirmar que existe.
+- **Instalar/desinstalar módulos exige `core.manage_modules`** (antes no exigía nada).
+- **Errores de entrada nunca son 500**: `core.interfaces.errors.exception_handler`
+  convierte datos mal formados en 400 y bloqueos/choques en 409, siempre con
+  traza en el log.
+- **Una vista montada en dos rutas** (colección + ítem) se limita por ruta con
+  `core.interfaces.methods.CREATE_ONLY/DELETE_ONLY`.
+- **Los ficheros se borran al confirmar la transacción** (`media.infrastructure.uploads.forget_after_commit`).
+- **El front oculta lo que toma de un módulo no instalado**: `useInstalled(code)`
+  (sesión guarda los módulos instalados).
+- **Avisos y confirmaciones compartidos**: `@shared/feedback/FeedbackProvider`
+  (`useConfirm`, `useConfirmDelete`, `useToast`). Todo borrado pregunta.
+- **Espejo: también la carpeta de media debe ser propia** (`MEDIA_ROOT` aparte).
+  Una prueba con rollback borró dos ficheros de la carpeta compartida con la base
+  real antes de este arreglo (ver informe).
+- Herramientas de verificación reutilizables (en el scratchpad de la sesión):
+  rastreo GET de todas las rutas, fuzz de escrituras con rollback, escenario de
+  usuarios (44 comprobaciones) y rastreo de alcance por áreas.
+
