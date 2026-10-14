@@ -1,27 +1,34 @@
 # IPSA on-premise: planes, precios y protección de la licencia
 
-Documento **interno** de Industrie Ampel. Contiene costos y márgenes: no se
-entrega al cliente.
+Documento **interno** de Industrie Ampel. Contiene costos, márgenes y los
+límites de la negociación: no se entrega al cliente.
 
-Versión 2, 14 de octubre de 2026. Incorpora las respuestas del equipo: la hora
-cuesta USD 20, IPSA paga con orden de compra a 90 días y el costo de parada
-depende del tipo de equipo. Desglosa costo y precio ítem por ítem.
+Versión 3, 14 de octubre de 2026. Los precios de venta son **precios de lista**
+fijados por el equipo, con margen para que IPSA negocie hacia abajo. El
+documento dice hasta dónde se puede bajar, a cambio de qué y dónde está el
+piso.
 
 - **T1.** Tres planes para el CONTEXTO B (los datos de IPSA viven en su propio
-  servidor), con costos exactos por ítem y precio recomendado. Construidos con
-  los marcos de Hormozi: *pricing-strategy* (precio anclado al valor, niveles
-  DIY/DWY/DFY) y *objection-destroyer* (objeciones → cambio de creencia →
-  prueba).
+  servidor), con costos exactos por ítem, precio de lista y licencia del primer
+  año incluida. Construidos con los marcos de Hormozi: *pricing-strategy*
+  (precio anclado al valor, niveles DIY/DWY/DFY) y *objection-destroyer*
+  (objeciones → cambio de creencia → prueba).
 - **T2.** Cómo proteger el sistema cuando corre en un servidor que no
   controlamos (§5), y cómo registrar marca y software en INDECOPI (§7).
 
-> **Qué cambió respecto de la versión 1.**
+> **Qué cambió respecto de la versión 2.**
 >
-> - La implementación no sumaba gastos generales ni el costo de cobrar a 90
->   días. Con ambos, los planes 1 y 2 quedaban con 9–10 % de margen.
-> - Ahora toda la implementación se valoriza a una sola tarifa de USD 30/h.
-> - La licencia vale USD 250/mes en los tres planes.
-> - Se agregó el mapa de criticidad.
+> - **Precios de lista nuevos.** Implementación: 6 900, 9 200 y 11 200.
+>   Mensualidad: 400, 690 y 890. Los costos no cambian: lo que crece es el
+>   margen para negociar.
+> - **La mensualidad del Plan 3 bajó de 1 290 a 890**, y con el contenido
+>   anterior costaba USD 817 al mes (8 % de margen). Para que no pierda, su
+>   soporte baja de 8 a 6 h/mes y su bolsa de mejoras de 8 a 4 h/mes. Conserva la
+>   respuesta en 4 h, la visita mensual, el informe mensual y el servidor en
+>   comodato.
+> - **Nueva escalera de negociación** (§3.7): lista → cierre esperado (−20 % en la
+>   implementación) → piso.
+> - **Licencia y mensualidad separadas** (§3.2).
 
 ---
 
@@ -31,7 +38,7 @@ depende del tipo de equipo. Desglosa costo y precio ítem por ítem.
 |---|---|---|
 | Costo de una hora del equipo (sueldo + cargas) | USD 20/h | Confirmado por el equipo |
 | Gastos generales (administración, contabilidad, ventas, herramientas) | +15 % sobre todo costo directo, así que **la hora cargada cuesta USD 23** | Supuesto |
-| Tarifa de venta de la implementación | USD 30/h | Recomendación: deja ≈ 20 % después de gastos y financiamiento |
+| Tarifa de lista de la implementación | USD 54/h | Fijada por el equipo para negociar. El cierre esperado equivale a ~USD 43–45/h |
 | Traslado Lima ↔ Chaclacayo (Carretera Central km 18,5) | 2,5 h ida y vuelta + USD 30 de movilidad | Supuesto |
 | Forma de pago de IPSA | Orden de compra a **90 días** | Confirmado |
 | Costo de cobrar a 90 días | **3 % de cada factura** (factoring ≈ 1 %/mes) | Tasa por cotizar con el banco |
@@ -39,7 +46,7 @@ depende del tipo de equipo. Desglosa costo y precio ítem por ítem.
 | Precios | USD, **sin IGV** (18 %) | |
 | Lo que ya está cargado de IPSA | 47 conjuntos, 98 equipos, 795 puntos y 10 536 lecturas, en 5 áreas | Base `tenant_ipsa` |
 | Servidor del cliente (planes 1 y 2) | 4 vCPU, 8 GB, 400 GB SSD, Ubuntu Server 24.04 | [doc 07 §2](../07-deployment.md) |
-| Servidor en comodato (Plan 3), ≈ USD 2 750 amortizados en 36 meses | Servidor ~1 980, RAM y SSD ~300, UPS ~350, disco de respaldo ~120 | Servidor: Panacompu, sin IGV. Resto: estimado, pedir cotización |
+| Servidor en comodato (Plan 3), ≈ USD 2 750 amortizados en 36 meses y cobrados en la mensualidad | Servidor ~1 980, RAM y SSD ~300, UPS ~350, disco de respaldo ~120 | Servidor: Panacompu, sin IGV. Resto: estimado, pedir cotización |
 
 ### 0.1 Lo que confirmamos sobre IPSA
 
@@ -65,7 +72,7 @@ coherente:
   compresores y tratamiento de aguas.
 - **Antes de firmar**, hay que pedir la lista de los 200 conjuntos. El alcance y
   la licencia se fijan sobre esa lista, y lo que exceda se cobra por bloque
-  (§3.6).
+  (§3.8).
 
 **¿Cuesta USD 3 000 la hora de parada?** Es coherente:
 
@@ -104,8 +111,9 @@ un solo sistema, **sin que sus datos salgan de su planta**.
 | De producción con respaldo | Bajo | Programa el cambio al equipo de respaldo |
 | Auxiliar | Bajo | Inspección menos frecuente |
 
-- **El primer año del Plan 2 (USD 13 480) equivale a 4,5 horas de la línea de
-  secadores parada.** El del Plan 1 equivale a 2,9 horas y el del Plan 3, a 7,2.
+- **El primer año del Plan 2 a precio de lista (USD 17 480) equivale a 5,8
+  horas de la línea de secadores parada.** El del Plan 1 equivale a 3,9 horas y
+  el del Plan 3, a 7,3.
 - **Referencias externas.** TAPPI, citando a Frost & Sullivan, estima entre USD
   80 000 y 150 000 por hora en papeleras grandes
   ([TAPPI Paper360](https://paper360.tappi.org/?p=5261)). Una guía de un
@@ -121,8 +129,8 @@ un solo sistema, **sin que sus datos salgan de su planta**.
   conjunto) y arma a mano los informes MPd y END. Eso son decenas de horas de
   analista al mes que el sistema elimina.
 
-> Si PREDICTIVE evita cinco horas de parada de la línea de secadores en un año,
-> el Plan 2 ya se pagó.
+> Si PREDICTIVE evita seis horas de parada de la línea de secadores en un año,
+> el Plan 2 se pagó, aun a precio de lista.
 
 ### 1.1 Lo que el CONTEXTO A dejaba en la mesa
 
@@ -163,38 +171,61 @@ cobra la implementación aparte.
 
 Se presentan **de mayor a menor** (ancla). El recomendado es el 2.
 
-### 3.1 Resumen
+### 3.1 Resumen, con la licencia del primer año incluida
+
+Precios de lista, en USD y sin IGV:
 
 | | **Plan 3 — Planta Protegida** | **Plan 2 — Gestionado** ★ | **Plan 1 — Esencial** |
 |---|---|---|---|
 | Modelo | DFY: servidor de Industrie Ampel en su planta, llave en mano | DWY: su servidor, operado por nosotros | DIY+: su servidor, lo opera su TI |
 | Dónde viven los datos | En su planta, en un equipo nuestro en comodato | En su servidor | En su servidor |
-| Implementación (pago único) | **USD 6 200** | **USD 5 200** | **USD 3 900** |
-| Mensualidad | **USD 1 290** | **USD 690** | **USD 400** |
-| … de la cual, licencia | USD 250 | USD 250 | USD 250 |
-| Por conjunto (200) al mes | USD 6,45 | USD 3,45 | USD 2,00 |
-| Total año 1 | **USD 21 680** | **USD 13 480** | **USD 8 700** |
-| Desde el año 2 | USD 15 480/año | USD 8 280/año | USD 4 800/año |
-| Margen año 1 | USD 6 957 (32 %) | USD 3 853 (29 %) | USD 3 471 (40 %) |
-| Margen desde el año 2 | USD 5 681/año | USD 2 788/año | USD 2 724/año |
+| Implementación (pago único) | **11 200** | **9 200** | **6 900** |
+| Licencia de uso, 12 meses (250 × 12) | 3 000 | 3 000 | 3 000 |
+| Servicios, 12 meses | 7 680 (640 × 12) | 5 280 (440 × 12) | 1 800 (150 × 12) |
+| **Total año 1** | **21 880** | **17 480** | **11 700** |
+| Mensualidad (licencia + servicios) | 890 | 690 | 400 |
+| Por conjunto (200) al mes | 4,45 | 3,45 | 2,00 |
+| Desde el año 2 | 10 680/año | 8 280/año | 4 800/año |
+| Margen año 1 a precio de lista | 9 083 (42 %) | 7 733 (44 %) | 6 381 (55 %) |
+| Margen año 1 al cierre esperado (§3.7) | 6 949 (35 %) | 5 987 (38 %) | 5 023 (49 %) |
+| Margen desde el año 2 | 2 957/año | 2 788/año | 2 724/año |
 | Plazo mínimo | 24 meses | 12 meses | 12 meses |
 
-Cambios contra la versión 1:
+### 3.2 Licencia vs. mensualidad
 
-- Implementación: 3 500 → 3 900, 4 500 → 5 200 y 6 500 → 6 200.
-- Mensualidad del Plan 1: 390 → 400, para que la licencia valga USD 250 en los
-  tres planes y su soporte no quede bajo costo.
+Son dos cosas distintas, y conviene que IPSA las vea separadas:
 
-### 3.2 Qué incluye cada plan
+| | **Licencia de uso** | **Servicios** |
+|---|---|---|
+| Qué es | El derecho a usar el software, que es propiedad de Industrie Ampel | El trabajo de nuestro equipo para que el sistema funcione en su planta |
+| Qué incluye | Todos los módulos, hasta 200 conjuntos (≈ 650 equipos), 40 usuarios, 1 planta, nuevas versiones y renovación del archivo de licencia | Soporte, actualizaciones, revisión del servidor, visitas, bolsa de mejoras y, en el Plan 3, el servidor en comodato |
+| Precio | USD 250/mes (**USD 3 000/año**), **igual en los tres planes** | USD 150, 440 o 640 al mes, según el plan |
+| ¿Se negocia? | **No.** Es lo que protege el archivo `.lic` y donde está casi todo el margen | Solo quitando o agregando ítems, nunca bajando la tarifa |
+| Si no se paga | El sistema pasa a solo lectura y luego a «solo exportar» (§5.6) | Se suspende el servicio, y la llave del trimestre siguiente no se emite hasta que se pongan al día (§3.11) |
+| Detracción (SPOT) | Cesión en uso de un bien mueble, que tendría el 10 % | Servicios, 12 % |
 
-**La licencia de uso PREDICTIVE es igual en los tres planes (USD 250/mes):**
+- **Mensualidad = licencia + servicios.** USD 400 = 250 + 150; 690 = 250 + 440;
+  890 = 250 + 640.
+- **La implementación** es un tercer concepto: un servicio de pago único, aparte
+  de los dos anteriores.
 
-- Todos los módulos: vibraciones, ultrasonido, termografía, END, alineamiento,
-  rodillos, mantenimiento, jornada laboral, usuarios e informes.
-- Hasta 200 conjuntos (≈ 650 equipos), 40 usuarios y 1 planta.
-- Derecho a las nuevas versiones.
-- Renovación del archivo de licencia, también sin internet.
-- Exportación completa de sus datos, siempre.
+**Cómo facturarlo (recomendado):**
+
+- **La licencia, anual y adelantada:** una factura de USD 3 000 al inicio de cada
+  año.
+- **Los servicios, por trimestre.**
+- Las dos van en líneas o facturas separadas, por la detracción.
+
+**Por qué separarlas:**
+
+1. **«La licencia no subió».** En la nube les ofrecimos USD 250/mes, y la
+   licencia sigue costando eso. Lo que se suma es el servicio para que el sistema
+   viva en su servidor.
+2. **Se negocia sobre servicios, no sobre la licencia.** Si piden bajar la
+   mensualidad, se quita un servicio y el margen se queda donde está.
+3. **La llave técnica sigue al pago de la licencia** (§5.3).
+
+### 3.3 Qué incluye cada plan
 
 | Ítem | Plan 1 | Plan 2 ★ | Plan 3 |
 |---|---|---|---|
@@ -208,56 +239,57 @@ Cambios contra la versión 1:
 | Acompañamiento después del arranque | 1 semana | 2 semanas | 3 semanas |
 | Visitas durante la implementación | 3 | 4 | 5 |
 | **Mensualidad** | | | |
-| Soporte por ticket, WhatsApp o correo, de lunes a viernes | Respuesta en 48 h, hasta 4 h/mes | Respuesta en 8 h hábiles, hasta 6 h/mes | Respuesta en 4 h hábiles, hasta 8 h/mes |
+| Licencia de uso (§3.2) | ✓ | ✓ | ✓ |
+| Soporte por ticket, WhatsApp o correo, de lunes a viernes | Respuesta en 48 h, hasta 4 h/mes | Respuesta en 8 h hábiles, hasta 6 h/mes | Respuesta en 4 h hábiles, hasta 6 h/mes |
 | Actualizaciones | Trimestral, aplicada junto con su TI | Mensual, la aplicamos nosotros | Mensual, la aplicamos nosotros |
-| Chequeo de salud y prueba de restauración del respaldo | — | Mensual | Mensual |
+| Revisión del servidor y prueba de restauración del respaldo | — | Mensual | Mensual |
 | Informe de uso y confiabilidad para la gerencia | — | Trimestral | Mensual |
 | Visita presencial (medio día) | — | Cada 2 meses | Mensual |
-| Bolsa de mejoras a medida | — | 4 h/mes, acumulable por trimestre | 8 h/mes, acumulable por trimestre |
+| Bolsa de mejoras a medida | — | 4 h/mes, acumulable por trimestre | 4 h/mes, acumulable por trimestre |
 | Servidor nuestro en su planta: disco cifrado, UPS, disco de respaldo y reposición a nuestro cargo | — | — | ✓ |
 
 Por qué existe el Plan 3: es el ancla de precio, y además es el diseño que mejor
 nos protege (§5.9). Queda pendiente confirmar si su política acepta un equipo
 nuestro dentro de su planta.
 
-### 3.3 Implementación: costo y precio por ítem
+### 3.4 Implementación: costo y precio de lista por ítem
 
 - **Costo** = horas × USD 23 (la hora más el 15 % de gastos generales), más la
   movilidad con sus gastos.
-- **Precio** = horas × USD 30.
-- El ítem I incluye la movilidad y absorbe el redondeo del total.
-- Formato de cada celda: `horas · costo → precio`, en USD.
+- **Precio de lista** = horas × USD 54.
+- El ítem I (planes 1 y 2) y el ítem H (Plan 3) absorben el redondeo del total.
+- Formato de cada celda: `horas · costo → precio de lista`, en USD.
 
 | Ítem | Plan 1 | Plan 2 | Plan 3 |
 |---|---|---|---|
-| A. Reunión técnica con TI: red, seguridad, servidor y usuarios | 6 h · 138 → **180** | 6 h · 138 → **180** | 6 h · 138 → **180** |
-| B. Instalación y aseguramiento (12 h) + licencia, endurecimiento y prueba de restauración (4 h) | 16 h · 368 → **480** | 16 h · 368 → **480** | 16 h · 368 → **480** |
-| C. Carga de ~153 conjuntos (24 h) + historial (8 h), con el importador de sus libros | 32 h · 736 → **960** | 32 h · 736 → **960** | 32 h · 736 → **960** |
-| D. Mapa de criticidad, con su jefe de mantenimiento | 4 h · 92 → **120** | 4 h · 92 → **120** | 4 h · 92 → **120** |
-| E. Capacitación de 2 días (6 h de preparación + instructores) | 22 h · 506 → **660** | 38 h · 874 → **1 140** | 38 h · 874 → **1 140** |
-| F. Cambios básicos a medida | 20 h · 460 → **600** | 30 h · 690 → **900** | 40 h · 920 → **1 200** |
-| G. Acompañamiento después del arranque | 8 h · 184 → **240** | 16 h · 368 → **480** | 24 h · 552 → **720** |
-| H. Servidor en comodato: cifrado, prueba de 48 h e instalación física | — | — | 8 h · 184 → **240** |
-| I. Gestión del proyecto (12 / 15 / 18 h) y traslados (3 / 4 / 5 visitas) | 19,5 h · 552 → **660** | 25 h · 713 → **940** | 30,5 h · 874 → **1 160** |
-| **Total** | **127,5 h · 3 036 → 3 900** | **167 h · 3 979 → 5 200** | **198,5 h · 4 738 → 6 200** |
+| A. Reunión técnica con TI: red, seguridad, servidor y usuarios | 6 h · 138 → **324** | 6 h · 138 → **324** | 6 h · 138 → **324** |
+| B. Instalación y aseguramiento (12 h) + licencia, endurecimiento y prueba de restauración (4 h) | 16 h · 368 → **864** | 16 h · 368 → **864** | 16 h · 368 → **864** |
+| C. Carga de ~153 conjuntos (24 h) + historial (8 h), con el importador de sus libros | 32 h · 736 → **1 728** | 32 h · 736 → **1 728** | 32 h · 736 → **1 728** |
+| D. Mapa de criticidad, con su jefe de mantenimiento | 4 h · 92 → **216** | 4 h · 92 → **216** | 4 h · 92 → **216** |
+| E. Capacitación de 2 días (6 h de preparación + instructores) | 22 h · 506 → **1 188** | 38 h · 874 → **2 052** | 38 h · 874 → **2 052** |
+| F. Cambios básicos a medida | 20 h · 460 → **1 080** | 30 h · 690 → **1 620** | 40 h · 920 → **2 160** |
+| G. Acompañamiento después del arranque | 8 h · 184 → **432** | 16 h · 368 → **864** | 24 h · 552 → **1 296** |
+| H. Habilitación del servidor en comodato: preparación, cifrado, prueba de 48 h, transporte e instalación | — | — | 8 h · 184 → **913** |
+| I. Gestión del proyecto (12 / 15 / 18 h) y traslados (3 / 4 / 5 visitas) | 19,5 h · 552 → **1 068** | 25 h · 713 → **1 532** | 30,5 h · 874 → **1 647** |
+| **Total** | **127,5 h · 3 036 → 6 900** | **167 h · 3 979 → 9 200** | **198,5 h · 4 738 → 11 200** |
 
-**Desglose del costo:**
+**Desglose del costo, a precio de lista:**
 
 | Concepto | Plan 1 | Plan 2 | Plan 3 |
 |---|---|---|---|
 | Mano de obra (horas × USD 20) | 2 550 | 3 340 | 3 970 |
 | Movilidad (visitas × USD 30) | 90 | 120 | 150 |
 | Gastos generales (15 %) | 396 | 519 | 618 |
-| Financiamiento de la OC a 90 días (3 % del precio) | 117 | 156 | 186 |
-| **Costo exacto** | **3 153** | **4 135** | **4 924** |
-| **Precio** | **3 900** | **5 200** | **6 200** |
-| **Margen** | **747 (19 %)** | **1 065 (20 %)** | **1 276 (21 %)** |
+| Financiamiento de la OC a 90 días (3 % del precio) | 207 | 276 | 336 |
+| **Costo exacto** | **3 243** | **4 255** | **5 074** |
+| **Precio de lista** | **6 900** | **9 200** | **11 200** |
+| **Margen** | **3 657 (53 %)** | **4 945 (54 %)** | **6 126 (55 %)** |
 
 El hardware del Plan 3 (≈ USD 2 750) no está en la implementación. Se paga con
-la mensualidad (USD 210/mes, §3.4), sigue siendo de Industrie Ampel y vuelve a
+la mensualidad (USD 105/mes, §3.5), sigue siendo de Industrie Ampel y vuelve a
 nosotros si el contrato termina.
 
-### 3.4 Mensualidad: costo y precio por ítem
+### 3.5 Mensualidad: costo y precio por ítem
 
 - **Costo de cada ítem** = horas × USD 23 + gastos directos × 1,15 + 3 % de
   financiamiento.
@@ -266,64 +298,109 @@ nosotros si el contrato termina.
 | Ítem | Plan 1 | Plan 2 | Plan 3 |
 |---|---|---|---|
 | Licencia de uso (renovación 0,5 h + nuestra infraestructura USD 10) | 30,50 → **250** | 30,50 → **250** | 30,50 → **250** |
-| Soporte | 4 h + actualización trimestral (2 h): 142,50 → **150** | 6 h: 142,35 → **145** | 8 h: 191,50 → **250** |
-| Actualización mensual | (incluida en soporte) | 3 h: 71,25 → **75** | 3 h: 71,40 → **80** |
-| Operación gestionada: salud, prueba de respaldo e informe | — | 2 h: 47,50 → **50** | 4 h: 95,30 → **110** |
-| Visita presencial | — | Bimestral (2,25 h/mes + USD 15): 71,25 → **75** | Mensual (4,5 h + USD 30): 143,10 → **170** |
-| Bolsa de mejoras | — | 4 h: 94,85 → **95** | 8 h: 190,60 → **220** |
-| Servidor en comodato (USD 2 750 / 36 meses) | — | — | 94,15 → **210** |
-| **Total** | **6,5 h · 173 → 400** | **17,75 h · 457,70 → 690** | **28 h · 816,55 → 1 290** |
-| **Margen mensual** | **227 (57 %)** | **232 (34 %)** | **473 (37 %)** |
+| Soporte | 4 h + actualización trimestral (2 h): 142,50 → **150** | 6 h: 142,35 → **145** | 6 h, respuesta en 4 h: 142,35 → **145** |
+| Actualización mensual | (incluida en soporte) | 3 h: 71,25 → **75** | 3 h: 71,25 → **75** |
+| Revisión del servidor, prueba de respaldo e informe a gerencia | — | 2 h, informe trimestral: 47,50 → **50** | 3 h, informe mensual: 71,25 → **75** |
+| Visita presencial | — | Bimestral (2,25 h/mes + USD 15): 71,25 → **75** | Mensual (4,5 h + USD 30): 142,35 → **145** |
+| Bolsa de mejoras | — | 4 h: 94,85 → **95** | 4 h: 94,85 → **95** |
+| Servidor en comodato (USD 2 750 / 36 meses) | — | — | 91,00 → **105** |
+| **Total** | **6,5 h · 173 → 400** | **17,75 h · 457,70 → 690** | **21 h · 643,55 → 890** |
+| **Margen mensual** | **227 (57 %)** | **232 (34 %)** | **246 (28 %)** |
 
 **Desglose del costo mensual:**
 
 | Concepto | Plan 1 | Plan 2 | Plan 3 |
 |---|---|---|---|
-| Mano de obra (horas × USD 20) | 130 | 355 | 560 |
+| Mano de obra (horas × USD 20) | 130 | 355 | 420 |
 | Movilidad | — | 15 | 30 |
 | Nuestra infraestructura (servidor de licencias, registro privado, copia de versiones) | 10 | 10 | 10 |
 | Servidor en comodato | — | — | 76,39 |
-| Gastos generales (15 %) | 21 | 57 | 101,46 |
-| Financiamiento (3 %) | 12 | 20,70 | 38,70 |
-| **Costo exacto** | **173** | **457,70** | **816,55** |
+| Gastos generales (15 %) | 21 | 57 | 80,46 |
+| Financiamiento (3 %) | 12 | 20,70 | 26,70 |
+| **Costo exacto** | **173** | **457,70** | **643,55** |
 
 **Dónde está el margen:** en la licencia, que deja USD 219,50 al mes en cada
-plan. Los servicios van casi a costo, sobre todo en el Plan 2. De ahí salen dos
-reglas:
+plan. Los servicios van casi a costo. De ahí salen dos reglas:
 
-1. **Las horas fuera de la bolsa se cobran** (USD 35/h, §3.6). Regalar horas en
-   el Plan 2 lo deja en pérdida.
-2. **Si IPSA quiere quitar un servicio, se puede sin que caiga el margen.** Lo
-   que no se negocia es la licencia.
+1. **Las horas fuera de la bolsa se cobran** (USD 35/h, §3.8). Regalarlas deja
+   los servicios en pérdida.
+2. **La mensualidad casi no tiene margen para negociar** (§3.7). La negociación
+   se hace en la implementación; en la mensualidad solo se quitan servicios.
 
-### 3.5 Año 1, año 2 y caja
+### 3.6 Año 1, año 2 y caja
 
 | | Plan 1 | Plan 2 | Plan 3 |
 |---|---|---|---|
-| Ingreso año 1 | 8 700 | 13 480 | 21 680 |
-| Costo año 1 (implementación + 12 meses) | 5 229 | 9 627 | 14 723 |
-| **Margen año 1** | **3 471 (40 %)** | **3 853 (29 %)** | **6 957 (32 %)** |
-| Margen desde el año 2 | 2 724/año | 2 788/año | 5 681/año |
-| Lo que adelantamos antes del primer cobro: implementación + inversión de producto (§3.7), más el servidor en el Plan 3 | 5 420 | 6 363 | 9 872 |
+| Año 1 a precio de lista: ingreso → margen | 11 700 → 6 381 (55 %) | 17 480 → 7 733 (44 %) | 21 880 → 9 083 (42 %) |
+| Año 1 al cierre esperado (§3.7): ingreso → margen | 10 300 → 5 023 (49 %) | 15 680 → 5 987 (38 %) | 19 680 → 6 949 (35 %) |
+| Año 1 al piso: ingreso → margen | 8 300 → 3 083 (37 %) | 12 880 → 3 271 (25 %) | 16 180 → 3 554 (22 %) |
+| Margen desde el año 2 | 2 724/año | 2 788/año | 2 957/año |
+| Lo que adelantamos antes del primer cobro: implementación + inversión de producto (§3.9), más el servidor en el Plan 3 | 5 420 | 6 363 | 9 872 |
 
 - **Por qué el Plan 2 sigue siendo el recomendado.** Deja casi el mismo margen
-  mensual que el Plan 1, pero con más ingreso y con presencia cada dos meses
-  (de ahí salen las ventas de otros servicios). Además da menos incidentes,
-  porque las actualizaciones las aplicamos nosotros.
+  mensual que los otros, pero da presencia cada dos meses (de ahí salen las
+  ventas de otros servicios) y menos incidentes, porque las actualizaciones las
+  aplicamos nosotros.
 - **Aun cargando a IPSA toda la inversión de producto y el registro en INDECOPI**
-  (USD 2 750, §3.7), el Plan 2 deja USD 1 103 el primer año.
+  (USD 2 750, §3.9), el Plan 2 al cierre esperado deja USD 3 237 el primer año.
 
-### 3.6 Tarifas adicionales (van en la propuesta)
+### 3.7 Estrategia de negociación: lista → cierre → piso
+
+IPSA va a pedir rebaja. Los precios de lista dejan espacio para darla **sin
+regalar nada**: cada concesión se cambia por algo que nos sirve, y cada una es
+más chica que la anterior. Así el cliente siente que llegó al límite.
+
+**Implementación** (USD):
+
+| Escalón | Lo que IPSA da a cambio | Plan 1 | Plan 2 | Plan 3 |
+|---|---|---|---|---|
+| Lista | — | 6 900 | 9 200 | 11 200 |
+| 1. −10 % | Contrato de 24 meses (en el Plan 3, que ya es de 24: el año pagado en una sola factura) | 6 200 | 8 300 | 10 100 |
+| 2. −7 % más | Orden de compra emitida antes de una fecha límite (por ejemplo, fin de mes) | 5 700 | 7 600 | 9 300 |
+| 3. −3 % más (el último) | Carta de referencia y permiso para usar a IPSA como caso de éxito | **5 500** | **7 400** | **9 000** |
+| Piso: solo quitando alcance | — | 3 500 | 4 600 | 5 500 |
+
+**El cierre esperado es el escalón 3.** Por debajo de él, el precio no baja: se
+quita alcance, a precio de lista.
+
+- Capacitación con 1 instructor en vez de 2: −864.
+- Cambios a medida de 30 a 20 h: −540.
+- Acompañamiento de 2 semanas a 1: −432.
+
+**Por debajo del piso no se firma:** ahí la implementación deja menos de 10 % de
+margen.
+
+**Mensualidad:** la licencia (USD 250) no se negocia. Los servicios solo bajan
+quitando ítems.
+
+| | Plan 1 | Plan 2 | Plan 3 |
+|---|---|---|---|
+| Lista | 400 | 690 | 890 |
+| Piso | 250 (solo licencia; soporte a USD 35/h) | 650 | 860 |
+
+**Reglas de la mesa:**
+
+1. **Nunca conceder primero ni sin contrapartida.** La frase es «si ustedes…,
+   nosotros…».
+2. **Ante «está caro», preguntar qué parte del alcance quieren revisar.** No
+   responder con un número.
+3. **Máximo tres concesiones,** cada vez más chicas: 10, 7 y 3 %.
+4. **Si piden rebaja en la mensualidad, se ofrece quitar un servicio**, por
+   ejemplo la visita o la bolsa, nunca bajar la licencia.
+5. **Si el pago anual adelantado se usó como contrapartida,** ya no se da el bono
+   de 20 h (§3.11).
+
+### 3.8 Tarifas adicionales (van en la propuesta)
 
 | Concepto | Precio | Costo |
 |---|---|---|
 | Hora adicional: desarrollo, soporte o capacitación remota | USD 35 | 24,05 |
 | Visita adicional: medio día en planta, incluye traslado | USD 250 | 191,50 |
 | Día adicional de capacitación (1 instructor) | USD 450 | 335,50 |
-| Bloque de 25 conjuntos sobre los 200 | USD 30/mes + USD 150 de carga | 0,90/mes + 96,50 |
+| Bloque de 25 conjuntos sobre los 200 | USD 30/mes de licencia + USD 150 de carga | 0,90/mes + 96,50 |
 | Levantamiento en campo de datos de placa, si IPSA no los tiene | USD 20 por conjunto | 14,40 |
 
-### 3.7 Inversiones únicas que no dependen del plan
+### 3.9 Inversiones únicas que no dependen del plan
 
 | Inversión | USD | Detalle |
 |---|---|---|
@@ -332,44 +409,41 @@ reglas:
 | 2 llaves físicas para la clave privada | ~110 | Estimado |
 | Registro en INDECOPI: marca en clases 9 y 42 + software | ≈ 366 (S/ 1 263,45) | §7 |
 | Revisión del contrato de licencia por un abogado | Por cotizar | |
-| Servidor en comodato (solo Plan 3) | ≈ 2 750 | Se recupera con la mensualidad (USD 210/mes) |
+| Servidor en comodato (solo Plan 3) | ≈ 2 750 | Se recupera con la mensualidad (USD 105/mes) |
 
-### 3.8 Sensibilidad y precio mínimo
+### 3.10 Sensibilidad
 
 | Si… | Efecto en el Plan 2 |
 |---|---|
-| IPSA paga a 30 días (Ley 31362, §3.9) | El financiamiento baja del 3 % al 1 %: +USD 270 de margen en el año 1 |
+| IPSA paga a 30 días (Ley 31362, §3.11) | El financiamiento baja del 3 % al 1 %: +USD 350 de margen en el año 1 a precio de lista |
 | La hora sube USD 1 | +USD 192 de costo en la implementación y +USD 20 al mes |
 | IPSA no tiene los datos de los 153 conjuntos | +~51 h de levantamiento (USD 1 173 de costo); se cobra con la tarifa de USD 20 por conjunto |
 
-**Piso de negociación** (no bajar de aquí):
-
-| | Plan 1 | Plan 2 | Plan 3 |
-|---|---|---|---|
-| Implementación (10 % de margen) | 3 500 | 4 600 | 5 500 |
-| Mensualidad (~30 % de margen) | 250 | 650 | 1 170 |
-
-Fórmula:
+Fórmula del piso:
 
 ```
 precio mínimo = costo sin financiamiento / (1 − margen objetivo − 0,03)
 ```
 
-### 3.9 Condiciones de pago con orden de compra a 90 días
+El piso usa un margen objetivo del 10 % en la implementación y de ~30 % en las
+mensualidades de los planes 1 y 2. En la del Plan 3 usa 25 %, porque a USD 890
+no da para más.
+
+### 3.11 Condiciones de pago con orden de compra a 90 días
 
 1. **Implementación en tres hitos.**
    - 40 % al recibir la OC, con la reunión técnica hecha.
    - 30 % con el servidor instalado y los conjuntos cargados.
    - 30 % con la capacitación y el acta de puesta en marcha.
 
-   El «50 % al firmar» de la versión 1 ya no protegía: con 90 días de plazo,
-   llegaba después del arranque.
-2. **Mensualidad:** OC anual, con una factura trimestral al inicio de cada
-   trimestre.
+   Un «50 % al firmar» no protegería: con 90 días de plazo, llegaría después del
+   arranque.
+2. **Licencia anual y servicios trimestrales** (§3.2), contra una OC anual.
 3. **La licencia sigue al pago** (§5.3).
    - El archivo de cada trimestre vence al cierre del trimestre, más 30 días
      de gracia.
-   - El del trimestre siguiente se emite cuando la factura vencida está pagada.
+   - El del trimestre siguiente se emite cuando las facturas vencidas están
+     pagadas.
    - Lo máximo que IPSA puede usar sin pagar es un trimestre y 30 días (en el
      Plan 2, ~USD 2 760).
 4. **Ley 31362 (pago a las MYPE en 30 días).** Aplica si Industrie Ampel es una
@@ -394,26 +468,28 @@ precio mínimo = costo sin financiamiento / (1 − margen objetivo − 0,03)
    impuestos.
    - SUNAT trata la licencia de software como cesión en uso de un bien mueble,
      que tendría el 10 %; los servicios van al 12 %.
-   - Conviene facturar la licencia y los servicios en líneas separadas.
+   - Por eso la licencia y los servicios se facturan por separado.
    - Confirmar los porcentajes con tu contador.
 7. **Pago anual adelantado → bono, no descuento** (regla de Hormozi: agregar
    valor en vez de bajar el precio). Si pagan el año en una sola factura, se
-   suman 20 h de mejoras a medida (valor USD 700; nos cuestan USD 460). Si
-   piden descuento de todas formas, el máximo es un mes gratis.
+   suman 20 h de mejoras a medida (valor USD 700; nos cuestan USD 460). No se da
+   si el pago anual ya se usó en la escalera (§3.7).
 8. **Contrato de 12 meses (24 en el Plan 3)**, con renovación automática y
    preaviso de 60 días.
 9. **IGV (18 %)** aparte en todos los precios.
 
-### 3.10 Psicología del precio
+### 3.12 Psicología del precio
 
 - **«La licencia no subió».** En la nube les ofrecimos USD 250/mes; la licencia
   sigue costando USD 250 en los tres planes. Lo que se suma es el servicio para
   que el sistema viva en su servidor. Es el argumento más fuerte de la reunión.
 - **Ancla:** se muestra primero el Plan 3; el Plan 2 se ve razonable y el
   Plan 1 se ve barato.
-- **En horas de parada:** «todo el año del Plan 2 cuesta lo mismo que 4,5 horas
-  de su línea de secadores detenida».
+- **En horas de parada:** «todo el primer año del Plan 2 cuesta menos que seis
+  horas de su línea de secadores detenida».
 - **Por conjunto:** «USD 3,45 por conjunto al mes, 12 centavos al día».
+- **Desglose por ítem:** ver las horas de cada ítem hace que la implementación
+  se discuta por alcance y no por un número redondo.
 - **Garantías que reducen el riesgo percibido:**
   - **Garantía de arranque:** sus 200 conjuntos cargados y operando en 30 días
     desde que el servidor está listo y recibimos sus datos, o el último hito
@@ -421,7 +497,7 @@ precio mínimo = costo sin financiamiento / (1 − margen objetivo − 0,03)
   - **Garantía de salida:** sus datos se exportan completos (Excel y SQL)
     cuando quieran, incluso si no renuevan.
 
-### 3.11 Historia de justificación (para la reunión)
+### 3.13 Historia de justificación (para la reunión)
 
 > Ustedes nos pidieron que sus datos no salgan de su planta. La licencia del
 > sistema sigue costando lo que les ofrecimos: USD 250 al mes. Lo que cambia es
@@ -434,29 +510,30 @@ precio mínimo = costo sin financiamiento / (1 − margen objetivo − 0,03)
 > registros marcaban en parada los reductores del 1er y del 3er grupo de
 > secadores. Con el Plan Gestionado tienen sus 200 conjuntos clasificados por
 > criticidad, visitas, mejoras a medida y su programa predictivo completo por
-> USD 3,45 por conjunto al mes. Todo el primer año cuesta lo mismo que 4,5 horas
+> USD 3,45 por conjunto al mes. Todo el primer año cuesta menos que seis horas
 > de esa línea detenida.
 
-### 3.12 Revisión de riesgos
+### 3.14 Revisión de riesgos
 
 | Riesgo | Mitigación |
 |---|---|
-| **Choque contra el ancla de USD 250.** El cliente ya escuchó ese número. | «La licencia no subió»; presentar primero el Plan 3; tener el Plan 1 como entrada. Último recurso: licencia sola a USD 250/mes con soporte por hora (USD 35), siempre con la implementación cobrada. **Nunca** on-premise a USD 250 con la implementación incluida. |
-| OC a 90 días | Hitos, licencia por período, Ley 31362 y factoring (§3.9). |
-| Su TI no permite acceso remoto | Plan 2 con visita mensual en vez de bimestral (+USD 95/mes), o el Plan 3. |
-| Su TI no acepta un servidor ajeno | El Plan 3 se convierte en «su servidor con administración total nuestra», a USD 1 080/mes (sin los USD 210 del hardware). |
+| **Ancla demasiado alta.** IPSA escuchó USD 250/mes con todo incluido; el primer año del Plan 2 a lista es 5,8 veces eso. Puede retirarse en vez de negociar. | Abrir con «la licencia no subió» y el desglose por ítem. Si la reacción es muy negativa, pasar rápido al escalón 2 a cambio de la OC con fecha. Tener el Plan 1 como entrada. |
+| **Choque contra el ancla de USD 250.** | Último recurso: licencia sola a USD 250/mes con soporte por hora (USD 35), siempre con la implementación cobrada. **Nunca** on-premise a USD 250 con la implementación incluida. |
+| OC a 90 días | Hitos, licencia por período, Ley 31362 y factoring (§3.11). |
+| Su TI no permite acceso remoto | Plan 2 con visita mensual en vez de bimestral (+USD 70/mes), o el Plan 3. |
+| Su TI no acepta un servidor ajeno | El Plan 3 se convierte en «su servidor con administración total nuestra», a USD 785/mes (sin los USD 105 del hardware). |
 | Faltan datos de los conjuntos | Tarifa de levantamiento en campo (USD 20 por conjunto). |
 | Los «cambios básicos» crecen sin control | Horas fijas por plan; lo que exceda, a USD 35/h. |
 | Cambio USD/PEN | Facturar en USD, o en PEN con el tipo de cambio del día de la factura. |
 
-### 3.13 Experimentos
+### 3.15 Experimentos
 
 - En la reunión, presentar primero el Plan 3. Si lo descartan por precio, que
   sea **elección entre el 2 y el 1**, no entre «sí o no».
 - Ofrecer el bono del pago anual como cierre: «si firman este mes con pago
   anual, les sumamos 20 h de mejoras».
-- En el próximo cliente on-premise, probar la implementación del Plan 2 en
-  USD 5 900 para medir la elasticidad.
+- Anotar en qué escalón cierra IPSA. Si cierra en el 1 o en el 2, la lista del
+  próximo cliente on-premise puede subir; si exige el piso, hay que bajarla.
 
 ---
 
@@ -464,12 +541,13 @@ precio mínimo = costo sin financiamiento / (1 − margen objetivo − 0,03)
 
 | # | Objeción | Creencia escondida | Nueva creencia | Prueba |
 |---|---|---|---|---|
-| 1 | «Si el servidor lo pongo yo, ¿por qué cuesta más?» | «Me cobran más por menos» | «La licencia no subió; lo que se suma es operar un sistema solo para mí» | La licencia sigue en USD 250 (§3.4). El VPS del escenario A cuesta ~USD 57/mes ([VPSBenchmarks](https://www.vpsbenchmarks.com/hosters/contabo/plans/cloud-vps-60)); la diferencia es trabajo (§2). |
+| 1 | «Si el servidor lo pongo yo, ¿por qué cuesta más?» | «Me cobran más por menos» | «La licencia no subió; lo que se suma es operar un sistema solo para mí» | La licencia sigue en USD 250 (§3.2). El VPS del escenario A cuesta ~USD 57/mes ([VPSBenchmarks](https://www.vpsbenchmarks.com/hosters/contabo/plans/cloud-vps-60)); la diferencia es trabajo (§2). |
 | 2 | «No queremos que nadie externo vea datos ni entre a la red» | «Instalar software de terceros = abrir la puerta» | «El sistema funciona sin enviar un solo dato fuera; el acceso es suyo» | La licencia se renueva con un **archivo** (§5.3), sin internet. Si permiten conexión, solo viajan el id de licencia y conteos, auditables en su propio registro. El soporte remoto lo abre su TI, cuando quiere. |
 | 3 | «¿Por qué renovar la licencia? ¿Qué pasa con nuestros datos si no renovamos?» | «Nos van a secuestrar los datos» | «Los datos son de IPSA siempre; lo que se licencia es el software» | Garantía de salida: exportación completa en cualquier momento. Al vencer: aviso de 30 días, gracia en solo lectura y, después, **solo exportar** (§5.6). |
-| 4 | «Pagamos con OC a 90 días» | «El proveedor se tiene que adaptar a nosotros» | «Se trabaja con su OC; el precio ya lo contempla» | Factura trimestral contra OC anual; la licencia cubre el trimestre más 30 días (§3.9). |
-| 5 | «Antes la implementación estaba incluida» | «Me están cobrando dos veces» | «En la nube se diluía en un servidor compartido; en su planta es trabajo solo para ustedes» | 167 horas de nuestro equipo, ítem por ítem (§3.3). |
-| 6 | «¿Y si Industrie Ampel desaparece?» | «Me quedo con un sistema sin dueño» | «Su continuidad está garantizada por contrato» | **Escrow de código:** un depositario neutral guarda el código y se lo entrega solo si dejamos de operar. |
+| 4 | «Pagamos con OC a 90 días» | «El proveedor se tiene que adaptar a nosotros» | «Se trabaja con su OC; el precio ya lo contempla» | Licencia anual y servicios trimestrales contra una OC anual; la licencia cubre el trimestre más 30 días (§3.11). |
+| 5 | «Antes la implementación estaba incluida» | «Me están cobrando dos veces» | «En la nube se diluía en un servidor compartido; en su planta es trabajo solo para ustedes» | 167 horas de nuestro equipo, ítem por ítem (§3.4). |
+| 6 | «Está caro, necesitamos un descuento» | «El precio es arbitrario» | «El precio sale del alcance; si cambia el alcance o el compromiso, cambia el precio» | Desglose por ítem (§3.4) y escalera con contrapartidas (§3.7). |
+| 7 | «¿Y si Industrie Ampel desaparece?» | «Me quedo con un sistema sin dueño» | «Su continuidad está garantizada por contrato» | **Escrow de código:** un depositario neutral guarda el código y se lo entrega solo si dejamos de operar. |
 
 **Respuestas cortas, listas para WhatsApp:**
 
@@ -484,6 +562,8 @@ precio mínimo = costo sin financiamiento / (1 − margen objetivo − 0,03)
    20 h de mejoras a medida.»
 5. «En la nube la instalación se repartía entre todos los clientes. En su planta
    es un trabajo solo para ustedes: les mostramos las horas ítem por ítem.»
+6. «Podemos ajustarlo. ¿Qué parte del alcance quieren revisar? Si firmamos a
+   24 meses, la implementación baja 10 %.»
 
 ---
 
@@ -555,7 +635,7 @@ el aviso «El plan va por X de Y equipos».
 La llave vence al cierre del trimestre facturado, más 30 días de gracia. Con la
 OC a 90 días, la factura del trimestre vence justo al cierre, así que la gracia
 deja un mes para pagos atrasados. **La llave del trimestre siguiente se emite
-solo con las facturas vencidas pagadas** (§3.9). No hace falta apagar nada a
+solo con las facturas vencidas pagadas** (§3.11). No hace falta apagar nada a
 distancia: la llave caduca sola.
 
 Dos formas de renovar, según la política de red de IPSA:
@@ -625,7 +705,7 @@ presión legítima es que el **software** deje de trabajar, no la información.
 - **Suspensión por impago** con preaviso, coherente con la gracia técnica.
 - **Marca y software registrados en INDECOPI** (§7): prueba de titularidad y
   autoría ante cualquier disputa.
-- **Escrow opcional del código** (§4, objeción 6): calma el miedo del cliente sin
+- **Escrow opcional del código** (§4, objeción 7): calma el miedo del cliente sin
   entregarle el código.
 - Revisar con un abogado antes de firmar.
 
@@ -658,9 +738,9 @@ Sirve para IPSA y para **todo cliente on-premise futuro**.
 | Manual de instalación y de seguridad para el TI del cliente | 8 |
 | **Total** | **92 h × USD 23 = USD 2 116** |
 
-Con las herramientas (PyArmor y llaves físicas) suma USD 2 384 (§3.7). No se
+Con las herramientas (PyArmor y llaves físicas) suma USD 2 384 (§3.9). No se
 carga entero a IPSA: se recupera con el margen del primer año de cualquiera de
-los planes (§3.5).
+los planes (§3.6).
 
 ### 5.11 Orden recomendado
 
@@ -685,6 +765,7 @@ los planes (§3.5).
 | Forma de pago de IPSA | Orden de compra a 90 días |
 | Tamaño | Cerca de 200 conjuntos rotativos |
 | Costo de una hora de parada | ~USD 3 000 en la línea de secadores; bajo en equipos con respaldo y auxiliares |
+| Precios de lista | Implementación 6 900 / 9 200 / 11 200; mensualidad 400 / 690 / 890 (fijados por el equipo para negociar) |
 
 **Pendientes, para el TI de IPSA:**
 
@@ -698,9 +779,9 @@ los planes (§3.5).
 **Pendientes, para nosotros:**
 
 5. ¿Industrie Ampel ya es una empresa formal (con RUC) y califica como MYPE?
-   Decide si aplica la Ley 31362 (§3.9) y a nombre de quién va la marca (§7).
+   Decide si aplica la Ley 31362 (§3.11) y a nombre de quién va la marca (§7).
 6. ¿IPSA tiene los datos de placa de los 153 conjuntos, o hay que levantarlos
-   en campo (§3.6)?
+   en campo (§3.8)?
 
 **Pendientes, para IPSA:**
 
