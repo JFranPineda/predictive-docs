@@ -89,6 +89,13 @@ Contiene: cliente, plan, fechas, días de gracia, módulos habilitados, límites
 servidores, nunca en hardware del cliente. Una clave asimétrica sólo aporta algo
 cuando el verificador está en manos hostiles; aquí sería ceremonia.
 
+> **No vale para el on-premise completo.** Si la aplicación entera corre en el
+> servidor del cliente (lo que pide IPSA), el `LICENSE_SECRET` queda en su `.env`
+> y cualquiera con acceso podría emitirse licencias: el verificador sí está en
+> manos ajenas. Ese despliegue necesita firma Ed25519 con la clave pública
+> compilada, licencias cortas renovables y huella fuerte. Ver
+> [business/ipsa-onpremise-proposal.md §5](business/ipsa-onpremise-proposal.md).
+
 ### Qué hace y qué no
 
 - **Sí**: impide que nuestra aplicación sirva a un cliente cuyo contrato

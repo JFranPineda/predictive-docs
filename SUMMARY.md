@@ -532,6 +532,7 @@ varios eran del tipo que no falla: devuelve algo plausible y equivocado.
 | Fases y decisiones cerradas | `docs/06-roadmap.md` |
 | Despliegue en Contabo | `docs/07-deployment.md` |
 | Base de datos del cliente y licencias | `docs/08-onpremise-and-licensing.md` |
+| On-premise completo (IPSA): planes, precios y protección de la licencia | `docs/business/ipsa-onpremise-proposal.md` |
 | Informes reales de vibraciones | `docs/vibration/reports/*.xlsx` |
 | Ultrasonido END: informe, orden y mejoras pedidas | `docs/v2/` |
 
