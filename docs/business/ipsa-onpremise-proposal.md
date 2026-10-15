@@ -1,34 +1,33 @@
-# IPSA on-premise: planes, precios y protección de la licencia
+# IPSA: plan Cloud y planes on-premise, precios y protección de la licencia
 
 Documento **interno** de Industrie Ampel. Contiene costos, márgenes y los
 límites de la negociación: no se entrega al cliente.
 
-Versión 4, 14 de octubre de 2026. Los precios de venta son **precios de lista**
+Versión 5, 15 de octubre de 2026. Los precios de venta son **precios de lista**
 fijados por el equipo, con margen para que IPSA negocie hacia abajo. El
 documento dice hasta dónde se puede bajar, a cambio de qué y dónde está el
 piso.
 
-- **T1.** Tres planes para el CONTEXTO B (los datos de IPSA viven en su propio
-  servidor), con costos exactos por ítem, precio de lista y licencia del primer
-  año incluida. Construidos con los marcos de Hormozi: *pricing-strategy*
-  (precio anclado al valor, niveles DIY/DWY/DFY) y *objection-destroyer*
-  (objeciones → cambio de creencia → prueba).
+- **T1.** Cuatro planes:
+  - El **Plan Cloud** (§3.0), que es el que queremos que elijan.
+  - Tres planes on-premise para el CONTEXTO B (los datos de IPSA viven en su
+    propio servidor), con costos exactos por ítem, precio de lista y licencia
+    del primer año incluida.
+
+  Construidos con los marcos de Hormozi: *pricing-strategy* (precio anclado al
+  valor, niveles DIY/DWY/DFY), *objection-destroyer* (objeciones → cambio de
+  creencia → prueba), *value-perception* (empaque, ancla y contraste) y
+  *bonus-stack* (un bono por objeción).
 - **T2.** Cómo proteger el sistema cuando corre en un servidor que no
   controlamos (§5), y cómo registrar marca y software en INDECOPI (§7).
 
-> **Qué cambió respecto de la versión 3.**
+> **Qué cambió respecto de la versión 4.**
 >
-> - **Capacitación con 1 instructor:** 2 días en el Plan 1 y 3 días en los planes
->   2 y 3.
-> - **Visitas durante la implementación:** 2, 3 y 5. Los días de capacitación
->   son presenciales y se cuentan aparte, así que los viajes son 4, 6 y 8.
-> - **Informe a gerencia:** trimestral en los planes 2 y 3.
-> - **Visitas en la mensualidad:** 1 por trimestre en el Plan 2 y 2 por trimestre
->   en el Plan 3. No son acumulables.
-> - **La bolsa de mejoras sale de todos los planes** y se cobra aparte (§3.8).
-> - **Los precios de lista no cambian** (6 900 / 9 200 / 11 200 y
->   400 / 690 / 890): con el nuevo alcance ningún plan pierde, ni en el piso. La
->   mensualidad ahora también tiene espacio para negociar (§3.7).
+> - **Nuevo Plan Cloud** (§3.0): USD 250/mes, instalación y onboarding gratis,
+>   licencia de la versión 1.0 por 12 meses y contrato anual.
+> - En la reunión se presenta al final, después de los tres on-premise, para
+>   que el contraste lo muestre como la mejor decisión.
+> - Los tres planes on-premise no cambian.
 
 ---
 
@@ -149,6 +148,9 @@ Que al cliente le gustara el precio y no lo regateara es una señal de que estab
 **barato**. El pedido de on-premise cambia el alcance, y es el momento natural
 de corregir el precio.
 
+El Plan Cloud (§3.0) mantiene los USD 250, pero sin la carga de los 153
+conjuntos ni cambios a medida: por eso no pierde.
+
 ---
 
 ## 2. T1 — Por qué on-premise cuesta más que SaaS
@@ -168,9 +170,280 @@ cobra la implementación aparte.
 
 ---
 
-## 3. T1 — Los tres planes
+## 3. T1 — Los planes: Cloud y tres on-premise
 
-Se presentan **de mayor a menor** (ancla). El recomendado es el 2.
+En la reunión se presentan de mayor a menor: Plan 3, Plan 2, Plan 1 y, al
+final, el **Plan Cloud**, que es el que queremos que elijan (§3.0). Si su
+política exige su propio servidor, el recomendado es el Plan 2.
+
+### 3.0 Plan Cloud: el que queremos que elijan
+
+> **Condición.** El Plan Cloud solo es posible si IPSA acepta que sus datos
+> vivan en un servidor dedicado fuera de su planta, es decir, una excepción a su
+> política. El contraste con los planes on-premise existe para que la evalúen
+> con los números delante. Si la política no cede, el recomendado es el Plan 2.
+
+**Por qué es el mejor plan para IPSA:**
+
+- USD 3 000 el primer año, contra 11 700–21 880 en on-premise.
+- Sin implementación que pagar, sin servidor propio y sin trabajo para su TI.
+- Arranca en días, porque su historial ya está cargado.
+
+**Por qué es el mejor plan para nosotros:**
+
+- **El software nunca sale de nuestros servidores.** No hay riesgo de copia, y si
+  no pagan, se suspende.
+- **No hace falta la inversión de protección del §5** (USD 2 384).
+- **Una sola plataforma** que se actualiza una vez para todos.
+
+A cambio, es el plan que menos gana por cliente (ver «Costos exactos y margen»).
+
+#### Términos
+
+| Término | Plan Cloud |
+|---|---|
+| Mensualidad | **USD 250**, con la licencia y la nube incluidas |
+| Instalación | **Gratis** |
+| Licencia | 12 meses, incluida en la mensualidad, de la **versión 1.0** (la instalada) |
+| Contrato | Anual |
+| Onboarding | **2 días en su planta, gratis** (1 instructor) |
+| Requerimientos nuevos | Se registran y se toman en consideración para una siguiente versión |
+| Funcionalidades futuras | No incluidas en la suscripción |
+
+**Nombre:** se mantiene «Plan Cloud», con una bajada que diga el resultado:
+**«servidor dedicado, cero inversión»**. Alternativas probadas con los mismos
+criterios: «Cloud Dedicado», «Cloud Arranque Inmediato», «Cloud Todo
+Incluido». «Dedicado» es la palabra que más ayuda contra la objeción de la
+política.
+
+#### Qué incluye, en cuatro capas
+
+1. **El sistema completo, versión 1.0.**
+   - Todos los módulos de hoy: activos y placas, vibraciones, ultrasonido,
+     termografía, análisis de aceite, umbrales y normas, diagnósticos,
+     resúmenes de planta, órdenes y visitas de servicio, informes END y MPd,
+     alineamiento, mantenimiento, rodillos por ultrasonido, jornada laboral,
+     usuarios y permisos, y registro de actividad.
+   - Hasta 200 conjuntos y 40 usuarios.
+   - Correcciones y parches de seguridad de la 1.0.
+2. **La infraestructura que no tienen que administrar.**
+   - Un servidor en la nube dedicado solo a IPSA, con su propia base de datos.
+   - Respaldo diario fuera del servidor, HTTPS y monitoreo.
+   - Parches de seguridad aplicados por nosotros.
+3. **El arranque, sin costo.**
+   - Instalación.
+   - **Su historial ya está cargado:** 47 conjuntos, 98 equipos, 795 puntos y
+     10 536 lecturas. No empiezan de cero.
+   - Onboarding de 2 días en planta, que incluye enseñar a su equipo a cargar
+     los 153 conjuntos restantes con las plantillas.
+4. **La protección.**
+   - Soporte por ticket o WhatsApp: respuesta en 48 h hábiles, hasta 3 h/mes.
+   - Registro de cada inicio de sesión, cambio y descarga.
+   - Confidencialidad por contrato.
+   - Garantía de salida: exportación completa y borrado certificado al
+     terminar.
+
+#### Lo que no incluye, y cómo decirlo
+
+| Qué | Cómo se dice al cliente | Qué hacemos |
+|---|---|---|
+| Requerimientos nuevos | «Sus requerimientos quedan registrados en la hoja de ruta de PREDICTIVE y los tomamos en consideración para la siguiente versión.» | Se evalúan. Si los necesitan antes o son solo de IPSA, se cotizan (USD 35/h o bolsa de 10 h a USD 330, §3.8). |
+| Funcionalidades y versiones futuras | «La suscripción incluye la versión 1.0 completa, con sus correcciones y su seguridad. Las versiones nuevas se ofrecen como actualización, con precio preferente para suscriptores.» | Los módulos nuevos no se activan en su licencia («Lo que hay que confirmar», punto 3). |
+| Carga de los 153 conjuntos restantes | «Su equipo los carga con las plantillas que les enseñamos en el onboarding, o los cargamos nosotros con el Arranque Completo.» | Se vende aparte (escalera, abajo). |
+
+No prometer que un requerimiento entrará gratis: si entra en la versión 2.0, la
+2.0 se ofrece como actualización. La frase «lo tomamos en consideración» es
+verdadera y no compromete más que eso.
+
+#### El valor frente al precio
+
+| Componente | Valor, a nuestra lista on-premise (USD) | En el Plan Cloud |
+|---|---|---|
+| Licencia de uso, 12 meses | 3 000 | Incluida |
+| Servidor dedicado y su operación, 12 meses: lo que cobramos en on-premise por actualizar y revisar el servidor (USD 160/mes, Plan 2), sin contar el equipo | 1 920 | Incluido |
+| Soporte, 12 meses (3 h/mes a USD 35) | 1 260 | Incluido |
+| Instalación (ítem B) | 848 | **Gratis** |
+| Arranque con su historial: 47 conjuntos y 10 536 lecturas ya cargados | 815 | **Gratis** |
+| Onboarding de 2 días en planta (ítem E del Plan 1) | 1 166 | **Gratis** |
+| **Valor del primer año** | **9 009** | **USD 3 000** |
+
+Pagan un dólar de cada tres de valor. Todos los valores son nuestros propios
+precios de lista, que IPSA ve en la misma propuesta: el ancla es creíble.
+
+#### El contraste que crea el sesgo
+
+Esta es la tabla que ve IPSA, con precios de lista:
+
+| | Plan 3 | Plan 2 | Plan 1 | **Plan Cloud ★ Recomendado** |
+|---|---|---|---|---|
+| Implementación | 11 200 | 9 200 | 6 900 | **Gratis** |
+| Mensualidad | 890 | 690 | 400 | **250** |
+| **Total año 1** | 21 880 | 17 480 | 11 700 | **3 000** |
+| Desde el año 2 | 10 680 | 8 280 | 4 800 | **3 000** |
+| Por conjunto al mes | 4,45 | 3,45 | 2,00 | **1,25** |
+| El año 1 equivale a… de secadores parados | 7,3 h | 5,8 h | 3,9 h | **1 h** |
+| Servidor | Nuestro, en su planta | Suyo, lo operamos | Suyo, lo opera su TI | **Nuestro, dedicado, en la nube** |
+| Trabajo de su TI | Mínimo | Dar acceso | Operar todo | **Ninguno** |
+| Arranque | Semanas | Semanas | Semanas | **Días: el historial ya está cargado** |
+| Versiones nuevas | Incluidas | Incluidas | Incluidas | Versión 1.0; las nuevas, aparte |
+| Cambios a medida incluidos | 40 h | 30 h | 20 h | Aparte |
+| Dónde están los datos | En su planta | En su servidor | En su servidor | En un servidor dedicado en EE. UU. |
+
+Las últimas tres filas son ventajas reales de los planes on-premise. Mostrarlas
+hace creíble el resto de la tabla.
+
+**Cómo trabaja el contraste:**
+
+1. **Orden:** Plan 3 → 2 → 1 → Cloud. El ancla alta va primero y el Cloud llega
+   como alivio.
+2. **«El precio de su política»:** tener el sistema dentro de su planta cuesta
+   USD 8 700 más el primer año (Plan 1) y USD 1 800 más cada año siguiente.
+3. **«La licencia es la misma, USD 250. En el Cloud no pagan nada más»:** el
+   servidor, la instalación y el onboarding van por nuestra cuenta.
+4. **Recomendado por defecto:** el Cloud lleva la marca ★ en la propuesta.
+5. **Costo de no hacer nada:** todo el año del Cloud cuesta lo mismo que una hora
+   de su línea de secadores parada.
+6. **Velocidad:** «arrancan con su historial; sus 47 conjuntos y 10 536 lecturas
+   ya están en el sistema».
+
+#### Bonos y garantías, uno por objeción
+
+| Objeción | Bono o garantía | Valor (USD) | Nos cuesta (USD) |
+|---|---|---|---|
+| «Arrancar nos va a costar» | Instalación gratis | 848 | 138 |
+| «Empezar de cero toma meses» | Arranque con su historial | 815 | 0 |
+| «Nuestra gente no lo va a usar» | Onboarding de 2 días en planta | 1 166 | 690 |
+| «Nuestros datos fuera de la planta» | Servidor dedicado, base de datos propia, registro de accesos, confidencialidad y garantía de salida | — | En la mensualidad |
+| «¿Y si después la política nos obliga a llevarlo a nuestro servidor?» | **Garantía de mudanza (90 días):** si en los primeros 90 días pasan a un plan on-premise, el traslado de datos va sin costo y lo pagado en Cloud (hasta USD 750) se descuenta de la implementación | Hasta 750 | ~92 de traslado; el descuento sale del margen de negociación (§3.7) |
+| Acción rápida: firmar antes de la fecha límite | Mapa de criticidad de los 200 conjuntos | 212 | 92. Solo con el servidor VPS 30: con el VPS 60 deja el año 1 en −USD 39 |
+
+#### Costos exactos y margen (interno)
+
+**Arranque** (costo nuestro; el precio es cero):
+
+| Ítem | Horas | Costo (USD) |
+|---|---|---|
+| Alta de IPSA en la nube: base de datos dedicada, traslado de sus 47 conjuntos e historial, usuarios, dominio y HTTPS | 6 | 138 |
+| Onboarding: 2 días (16 h) + preparación (6 h) | 22 | 506 |
+| Viajes del onboarding: 2 × (2,5 h + USD 30) | 5 | 184 |
+| Gestión: contrato, OC y coordinación | 3 | 69 |
+| **Total** | **36** | **897** |
+
+**Mensualidad**, con dos servidores posibles:
+
+| Concepto (USD/mes) | Cloud VPS 60 (el del CONTEXTO A) | **Cloud VPS 30 dedicado (recomendado)** |
+|---|---|---|
+| Servidor Contabo | 57 (€49; 18 vCPU, 96 GB, 350 GB) | 16 (€14; 8 vCPU, 24 GB, 200 GB) |
+| Respaldo fuera del servidor (almacenamiento, estimado) | 5 | 5 |
+| Soporte: hasta 3 h × USD 20 | 60 | 60 |
+| Plataforma: parches, monitoreo y prueba de respaldo, 1 h | 20 | 20 |
+| Gastos generales (15 %) | 21,30 | 15,15 |
+| Financiamiento de la OC a 90 días (3 %) | 7,50 | 7,50 |
+| **Costo exacto** | **170,80** | **123,65** |
+| Precio | 250 | 250 |
+| **Margen mensual** | **79,20 (32 %)** | **126,35 (51 %)** |
+| **Año 1** (descontando los 897 del arranque) | **+53** | **+619** |
+| **Desde el año 2** | **+950/año** | **+1 516/año** |
+
+El VPS 30 sobra para IPSA (el dimensionado del doc 07 pide 4 vCPU y 8 GB). Sus
+200 GB alcanzan para empezar; si las fotos y los espectros crecen, se suma
+almacenamiento de objetos. Un VPS 60 tiene sentido solo si lo comparten varios
+clientes.
+
+**Reglas para que el Cloud no pierda:**
+
+1. **Servidor VPS 30 dedicado**, no un VPS 60 para un solo cliente.
+2. **Soporte con tope de 3 h/mes;** lo que exceda, a USD 35/h.
+3. **Nada a medida gratis:** los requerimientos van a la hoja de ruta o se
+   cotizan.
+4. **La carga de los 153 conjuntos no va gratis.** Si se incluyera, como
+   prometía el CONTEXTO A, el año 1 quedaría en −USD 117 (VPS 30) o −USD 683
+   (VPS 60). Se recupera en el año 2 solo si renuevan.
+5. **Factura anual al inicio**, contra la OC a 90 días; o trimestral.
+
+**Para Industrie Ampel, Cloud contra on-premise:**
+
+| | Plan Cloud (VPS 30) | Plan 2 al cierre (§3.7) |
+|---|---|---|
+| Margen año 1 | 619 | 6 506 |
+| Margen desde el año 2 | 1 516/año | 3 353/año |
+| Inversión de protección (§5) | No hace falta | USD 2 384 |
+| Riesgo de copia o de uso sin pago | Ninguno: el software no sale de nuestros servidores | Mitigado con capas (§5) |
+| Actualizaciones | Una vez para todos los clientes | Una por cliente |
+
+El Cloud gana menos por cliente, pero no exige inversión, no tiene riesgo de
+copia y se vende en días. Su ganancia está en lo que se vende después.
+
+#### Escalera: lo que se vende después
+
+| Escalón | Qué es | Precio | Margen |
+|---|---|---|---|
+| **Arranque Completo** (al firmar) | Carga de los 153 conjuntos con su historial, más el mapa de criticidad | USD 1 696 | ~USD 817 |
+| Mejoras a medida | Requerimientos que no pueden esperar a la siguiente versión | USD 35/h, o bolsa de 10 h a USD 330 | 31 % / 27 % |
+| Capacitación adicional | Un día en planta | USD 450 | 25 % |
+| Versión 2.0 y módulos nuevos | Actualización con precio preferente para suscriptores | Por definir al lanzarla | — |
+| Pasar a on-premise | Plan 1, 2 o 3, con la garantía de mudanza | Lista on-premise (§3.1) | §3.6 |
+
+#### Objeciones del Plan Cloud
+
+| # | Objeción | Creencia escondida | Nueva creencia | Prueba |
+|---|---|---|---|---|
+| 1 | «Nuestra política dice que los datos no salen de la planta» | «En la nube cualquiera puede ver nuestros datos» | «Un servidor dedicado solo a IPSA, con su propia base de datos y cada acceso registrado, deja sus datos aislados y vigilados» | Servidor dedicado; base de datos separada por cliente (así funciona el sistema hoy); HTTPS; permisos por rol; registro de actividad; confidencialidad por contrato; garantías de salida y de mudanza. Si la política no cede, el Plan 1 es la opción en su servidor. |
+| 2 | «¿Por qué no incluye las versiones nuevas?» | «Me van a cobrar todo después» | «Pagan por lo que usan hoy: el sistema completo» | La 1.0 trae todos los módulos de hoy; correcciones y seguridad incluidas; la actualización es opcional y con precio preferente. |
+| 3 | «¿Y nuestros requerimientos?» | «No nos van a escuchar» | «Sus pedidos alimentan el producto» | Quedan en la hoja de ruta; si los necesitan antes, se cotizan con las horas a la vista. |
+| 4 | «¿Por qué un contrato anual?» | «Me amarran» | «El año paga la instalación y el onboarding gratis, y congela el precio» | Precio fijo por 12 meses; garantía de mudanza de 90 días; exportación siempre. |
+
+**Respuestas cortas, listas para WhatsApp:**
+
+1. «Su información queda en un servidor dedicado solo a IPSA, con su propia base
+   de datos. Cada acceso queda registrado, y pueden llevarse todo cuando
+   quieran.»
+2. «La suscripción incluye el sistema completo de hoy, con sus correcciones y su
+   seguridad. Las versiones nuevas son opcionales y con precio preferente para
+   ustedes.»
+3. «Sus requerimientos quedan registrados en nuestra hoja de ruta y los tomamos
+   en consideración para la siguiente versión. Si los necesitan antes, se los
+   cotizamos.»
+4. «El contrato anual es lo que nos permite darles la instalación y los 2 días de
+   onboarding sin costo, con el precio congelado todo el año.»
+
+#### Lo que hay que confirmar antes de ofrecerlo
+
+1. **La política de IPSA.** El Cloud es una excepción a su política. La decide su
+   gerencia o su comité de seguridad, no Compras: hay que llegar a esa persona.
+2. **Datos personales fuera del Perú.**
+   - Contabo no tiene centro de datos en Sudamérica; los más cercanos están en
+     EE. UU.
+   - Los usuarios y la jornada laboral (nombres de trabajadores, ATS) son datos
+     personales. Enviarlos a otro país es un flujo transfronterizo: Ley 29733,
+     art. 15, y su reglamento, el DS 016-2024-JUS, vigente desde el 30 de marzo
+     de 2025.
+   - IPSA, como titular, debe asegurar un nivel de protección adecuado o
+     garantías por contrato. Firmar con IPSA un contrato de encargo de
+     tratamiento y revisarlo con un abogado.
+   - Si su política acepta la nube pero exige que los datos estén en el Perú, hay
+     proveedores con centro de datos en Lima: habría que cotizar y recalcular.
+3. **Cómo se cumple la «versión 1.0».**
+   - La licencia ya restringe módulos (`modules`, en
+     `licensing/domain/license.py`). La de IPSA lista los módulos de hoy y los
+     nuevos no se activan.
+   - Las mejoras dentro de un módulo existente sí llegarían a todos. Por eso,
+     **toda funcionalidad nueva debe nacer como módulo o detrás de una bandera
+     de la licencia**.
+   - Las correcciones y los parches de seguridad van para todos.
+4. **Respaldo diario cifrado fuera del servidor.** Hay que configurarlo antes del
+   arranque: hoy no existe en producción.
+
+#### Guion de la reunión
+
+1. Mostrar el Plan 3, luego el 2 y el 1: lo que pidieron, con su servidor.
+2. Cerrar con: «Y si su política lo permite, hay una opción que les ahorra USD
+   8 700 el primer año». Ahí va el Plan Cloud con su tabla de valor.
+3. La frase: «La licencia es la misma, USD 250. En el Cloud no pagan nada más: el
+   servidor, la instalación y el onboarding van por nuestra cuenta».
+4. Si dudan entre la nube y su servidor: la garantía de mudanza.
+5. Si la política no lo permite: volver al Plan 2 y a la escalera de
+   negociación (§3.7).
 
 ### 3.1 Resumen, con la licencia del primer año incluida
 
@@ -492,8 +765,9 @@ más abajo el soporte quedaría regalado.
 - **«La licencia no subió».** En la nube les ofrecimos USD 250/mes; la licencia
   sigue costando USD 250 en los tres planes. Lo que se suma es el servicio para
   que el sistema viva en su servidor. Es el argumento más fuerte de la reunión.
-- **Ancla:** se muestra primero el Plan 3; el Plan 2 se ve razonable y el
-  Plan 1 se ve barato.
+- **Ancla:** se muestra primero el Plan 3; el Plan 2 se ve razonable, el
+  Plan 1 se ve barato y el Cloud, al final, se ve como la mejor decisión
+  (§3.0).
 - **En horas de parada:** «todo el primer año del Plan 2 cuesta menos que seis
   horas de su línea de secadores detenida».
 - **Por conjunto:** «USD 3,45 por conjunto al mes, 12 centavos al día».
@@ -775,6 +1049,7 @@ los planes (§3.6).
 | Tamaño | Cerca de 200 conjuntos rotativos |
 | Costo de una hora de parada | ~USD 3 000 en la línea de secadores; bajo en equipos con respaldo y auxiliares |
 | Precios de lista | Implementación 6 900 / 9 200 / 11 200; mensualidad 400 / 690 / 890 (fijados por el equipo para negociar) |
+| Plan Cloud (15-oct) | USD 250/mes, instalación gratis, licencia de la versión 1.0 por 12 meses, contrato anual, onboarding de 2 días gratis, requerimientos y versiones nuevas aparte (§3.0) |
 | Alcance (14-oct, segunda ronda) | Capacitación con 1 instructor (2 / 3 / 3 días); 2 / 3 / 5 visitas de implementación; informe trimestral; 1 y 2 visitas por trimestre; mejoras a medida aparte |
 
 **Pendientes, para el TI de IPSA:**
@@ -798,6 +1073,8 @@ los planes (§3.6).
 7. La lista de los 200 conjuntos, con su criticidad si la tienen.
 8. Su precio promedio por tonelada (cierra el cálculo de los USD 3 000/h).
 9. ¿Cuántos usuarios tendrán?
+10. ¿Su política admitiría el Plan Cloud, con sus datos en un servidor dedicado
+    fuera del Perú? ¿Quién aprueba esa excepción?
 
 ---
 
@@ -883,6 +1160,12 @@ eso, y el contrato de licencia (§5.8) se apoya en esa prueba.
 - UIT 2026 (S/ 5 500): [LP Derecho](https://lpderecho.pe/valor-uit-2026-decreto-supremo-301-2025-ef/)
 - Factoring y factura negociable: [Perú Gestiona](https://perugestiona.pe/?p=600)
 - Detracción de licencias de software: [Noticiero Contable](https://noticierocontable.com/licencias-software-afecto-detraccion)
+
+**Plan Cloud:**
+
+- Ubicaciones de Contabo (sin centro de datos en Sudamérica): [Contabo](https://contabo.com/en-us/locations), [preguntas al CEO de Contabo](https://contabo.com/blog/what-went-down-in-ask-me-anything-with-contabo-ceo-thomas-noglik/)
+- Precios de Cloud VPS 30 y 60: [OneDollarVPS, 2026](https://onedollarvps.com/fr/pricing/contabo-pricing.html), [VPSBenchmarks](https://www.vpsbenchmarks.com/hosters/contabo/plans/cloud-vps-60)
+- Nuevo reglamento de protección de datos personales (DS 016-2024-JUS): [Garrigues](https://www.garrigues.com/es_ES/noticia/peru-publica-nuevo-reglamento-ley-proteccion-datos-personales), [IAPP](https://iapp.org/news/a/se-publica-el-nuevo-reglamento-de-protecci-n-de-datos-personales-en-per-)
 
 **INDECOPI:**
 

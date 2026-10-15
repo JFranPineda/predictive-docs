@@ -532,7 +532,7 @@ varios eran del tipo que no falla: devuelve algo plausible y equivocado.
 | Fases y decisiones cerradas | `docs/06-roadmap.md` |
 | Despliegue en Contabo | `docs/07-deployment.md` |
 | Base de datos del cliente y licencias | `docs/08-onpremise-and-licensing.md` |
-| On-premise completo (IPSA): costo y precio por ítem, pago a 90 días, protección de la licencia y registro en INDECOPI | `docs/business/ipsa-onpremise-proposal.md` |
+| Planes IPSA: Cloud (el recomendado) y on-premise; costo y precio por ítem, negociación, protección de la licencia y registro en INDECOPI | `docs/business/ipsa-onpremise-proposal.md` |
 | Informes reales de vibraciones | `docs/vibration/reports/*.xlsx` |
 | Ultrasonido END: informe, orden y mejoras pedidas | `docs/v2/` |
 
