@@ -854,18 +854,21 @@ más abajo el soporte quedaría regalado.
 
 ### 5.0 La verdad primero
 
-**No existe una llave irrompible** cuando el programa corre en un servidor que
-controla otra persona. Con tiempo y conocimiento, cualquier verificación se
-puede quitar. Lo que sí se logra, y es como protegen su software los grandes
-proveedores on-premise, es esto:
+**Ninguna medida técnica es absoluta** cuando el programa corre en un servidor
+que controla otra persona. Conviene decirlo antes de prometer nada. Lo que sí se
+logra, y es como protege su software cualquier proveedor on-premise, es esto:
 
-- **Que romperla cueste más que pagar.**
-- **Que se detecte y se pueda rastrear** de qué instalación salió una copia.
-- **Que el contrato haga del uso no autorizado un riesgo legal** que una empresa
-  formal como IPSA no corre.
+- **Que la licencia no se pueda falsificar:** solo nosotros podemos emitirla.
+- **Que esté atada al período pagado** y venza sola, sin apagar nada a
+  distancia.
+- **Que una instalación movida o duplicada se detecte.**
+- **Que el producto se entregue cerrado**, compilado y firmado, no como código
+  fuente.
+- **Que el contrato y el registro en INDECOPI sostengan la titularidad**, que es
+  lo que de verdad importa frente a una empresa formal como IPSA.
 
-Por eso la protección tiene capas. Ninguna sola basta; juntas hacen que pagar
-sea lo más barato.
+Por eso la protección tiene capas, y las tres patas van juntas: técnica,
+comercial y legal. Ninguna sola basta.
 
 ### 5.1 Por qué la licencia de hoy no sirve en on-premise
 
@@ -961,24 +964,27 @@ paga. Además de destruir la relación comercial, en Perú puede configurar un
 delito informático (Ley 30096, atentado contra la integridad de datos). La
 presión legítima es que el **software** deje de trabajar, no la información.
 
-### 5.7 Capa 6 — Que no sea fácil quitar la verificación del código
+### 5.7 Capa 6 — Entregar el producto cerrado, no el código fuente
+
+Es lo que hace cualquier proveedor de software que instala en casa del cliente:
+se entrega el producto compilado y firmado, no las fuentes.
 
 - **No entregar fuentes.** El backend se entrega **compilado** (Nuitka convierte
-  Python en módulos nativos) dentro de imágenes Docker. Como segunda cerradura
-  independiente, PyArmor (ofuscación comercial con su propia fecha de
-  caducidad y atadura a máquina).
-- **La verificación no es un solo `if`.** Comprobaciones repartidas en el
-  middleware, la generación de PDF y Excel, las importaciones y las tareas de
-  fondo, con verificación de integridad de los propios módulos.
-- **El front** va compilado, sin mapas de fuente, y solo lo sirve el backend con
-  licencia válida.
+  Python en módulos nativos) dentro de imágenes Docker. Alternativa si alguna
+  dependencia nativa no compila limpio: PyArmor, empaquetado comercial.
+- **El front** va compilado, sin mapas de fuente (el build de producción
+  normal), y solo lo sirve el backend con licencia válida.
 - **Imágenes firmadas** (cosign), entregadas por un registro privado o como
-  archivo `.tar` firmado si no hay internet.
-- **Marca de agua por cliente.** Cada entrega lleva el id de IPSA embebido en el
-  binario y en los metadatos de los PDF. Si aparece una copia en otra empresa,
-  sabemos de qué instalación salió.
+  archivo `.tar` firmado si no hay internet. La firma garantiza que la imagen
+  que corre es la que publicamos.
+- **Identificador de compilación por cliente.** Cada entrega lleva el código de
+  IPSA y la versión embebidos en la imagen y en los metadatos de los PDF. Sirve
+  para soporte (saber qué versión corre cada cliente), para fijar la versión
+  contratada del Plan Cloud y como constancia de titularidad del producto.
+- **La verificación de licencia sigue en un solo punto** (el middleware), que es
+  lo mantenible, más una comprobación de integridad al arrancar.
 
-### 5.8 Capa 7 — El contrato (la parte que sí es irrompible)
+### 5.8 Capa 7 — El contrato (la capa que de verdad sostiene todo)
 
 - **Contrato de licencia de uso, no de venta:** plazo, renovación y alcance (una
   instalación, ~200 conjuntos, N usuarios).
@@ -1031,8 +1037,8 @@ los planes (§3.6).
    licencia revisado por un abogado y preguntas a TI de IPSA (§6).
 2. **Antes de instalar:** capas 1, 2, 3, 4 y 5 (licencia asimétrica, renovación,
    huella, reloj y modo «solo exportar»).
-3. **Antes de entregar el primer instalador:** capa 6 (compilación, firma y
-   marca de agua).
+3. **Antes de entregar el primer instalador:** capa 6 (compilación, firma e
+   identificador de compilación por cliente).
 4. **Si eligen el Plan 3:** preparar el servidor en comodato (capa 8).
 
 ---

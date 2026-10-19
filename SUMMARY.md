@@ -762,3 +762,23 @@ del código:
   rastreo GET de todas las rutas, fuzz de escrituras con rollback, escenario de
   usuarios (44 comprobaciones) y rastreo de alcance por áreas.
 
+
+---
+
+## 13. v4 — On-premise v1: licencia y empaquetado (2026-10-19)
+
+El plan por fases está en [`docs/v4/README.md`](docs/v4/README.md): implementa
+el §5 de la propuesta IPSA (proteger la licencia cuando el sistema corre entero
+en el servidor del cliente). Rama `onpremise-v1` en back y front.
+
+Siete fases, cada una con criterios de aceptación numerados y sus decisiones
+pendientes: cimientos con PostgreSQL, licencia Ed25519 (token v2, reemplaza
+HMAC en todos los clientes), huella de instalación 2 de 3 y tope de reloj,
+licencias cortas con renovación por archivo y servidor online, modo «solo
+exportar» al vencer, distribución compilada y firmada, e instalador con manual.
+
+Decisiones tomadas: alcance completo (incluye compilado y servidor de
+renovación) y un solo formato de token (Ed25519 para todos, AMBEV se reemite).
+
+Lo que no es código y vive en la propuesta: el contrato de licencia de uso con
+registro en INDECOPI (§5.8 y §7) y el servidor en comodato del Plan 3 (§5.9).
