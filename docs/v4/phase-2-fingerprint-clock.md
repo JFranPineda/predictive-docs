@@ -24,7 +24,9 @@
   - `installation_id`: UUID creado al instalar, guardado en el plano de control
     **y** en el volumen de datos del cliente (un archivo en `MEDIA_ROOT`).
   - `pg_system_id`: `SELECT system_identifier FROM pg_control_system()` —
-    único por clúster de PostgreSQL; cambia si se recrea la base.
+    único por clúster de PostgreSQL; cambia si se recrea la base. **Verificado en
+    el banco de la Fase 0:** el rol de aplicación sin privilegios lo lee, así que
+    no hace falta pedirle permisos extra al TI del cliente.
   - `machine_id`: `/etc/machine-id` del servidor.
 - `domain/license.py`: nueva `installation_fingerprint(installation_id,
   pg_system_id, machine_id)` que guarda los tres en el token.

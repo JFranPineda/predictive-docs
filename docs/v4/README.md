@@ -21,12 +21,14 @@ movida se detecte, que el producto no se entregue como código fuente, y que el
 contrato y el registro en INDECOPI sostengan la titularidad (§5.8 y §7). Las
 tres patas van juntas: técnica, comercial y legal.
 
-## Decisiones ya tomadas (2026-10-19)
+## Decisiones tomadas
 
 | # | Decisión | Elegido | Consecuencia |
 |---|---|---|---|
 | D1 | Alcance del código de v1 | **Núcleo + compilado + servidor de renovación online** (~76 h) | Entran las capas 1 a 6 del §5 y el servidor de licencias. Las capas 7 (contrato/INDECOPI) y 8 (appliance) no son código y quedan fuera de la rama. |
 | D2 | Firma de la licencia | **Todo a Ed25519 (token v2)** | Se reemplaza HMAC en **todos** los clientes, AMBEV incluido. Un solo formato. AMBEV se reemite y hay que verificar que su sistema sigue vigente (Fase 1). |
+| D3 | Banco de pruebas (P0-a) | **PostgreSQL en Docker + API desde el `.venv`** | Base desechable en el puerto 5437, sin tocar el PostgreSQL del sistema ni otros contenedores. Ver [Fase 0](phase-0-foundations.md). |
+| D4 | Catálogo base en una base vacía (P0-b) | **Se resuelve en la Fase 6** | El banco arranca importando los libros de IPSA, que traen el catálogo. Un cliente nuevo sin libros necesita el comando de catálogo de la Fase 6. |
 
 ## Mapa: capa del §5 → fase
 
@@ -46,13 +48,13 @@ tres patas van juntas: técnica, comercial y legal.
 
 | Fase | Qué deja listo | Estimado | Estado |
 |---|---|---|---|
-| [0 · Cimientos](phase-0-foundations.md) | Banco de pruebas on-prem con PostgreSQL 16, imagen Docker e integración continua | ~10 h | Pendiente |
+| [0 · Cimientos](phase-0-foundations.md) | Banco de pruebas on-prem con PostgreSQL 16 e integración continua | ~10 h | **Hecha** · `5b1af48` |
 | [1 · Licencia Ed25519](phase-1-ed25519.md) | Token v2 firmado, clave privada fuera del repo, pública compilada; AMBEV reemitido | ~14 h | Pendiente |
 | [2 · Huella y reloj](phase-2-fingerprint-clock.md) | Huella de instalación 2 de 3 y bloqueo por atraso de reloj | ~12 h | Pendiente |
 | [3 · Renovación](phase-3-renewal.md) | Licencias cortas, renovación por archivo `.lic` y servidor online | ~18 h | Pendiente |
 | [4 · Degradar](phase-4-degrade-export.md) | Al vencer: bloquea el trabajo pero siempre deja exportar | ~6 h | Pendiente |
 | [5 · Empaquetado cerrado](phase-5-hardening.md) | Backend y front compilados, imágenes firmadas e identificador de compilación por cliente | ~18 h | Pendiente |
-| [6 · Empaquetar](phase-6-packaging.md) | Instalador, actualización sin internet y manual para el TI del cliente | ~10 h | Pendiente |
+| [6 · Empaquetar](phase-6-packaging.md) | Catálogo base, instalador, actualización sin internet y manual para el TI del cliente | ~15 h | Pendiente |
 
 Las fases 0 a 4 se pueden instalar en IPSA **bajo nuestra supervisión**. La
 Fase 5 es la que §5.11 pide **antes de entregarle el instalador a su TI**.
@@ -76,10 +78,12 @@ criterios de aceptación numerados.
   *scratchpad*, backend **8012** y front **5175**.
 - **Puertos 8010/5174 y cloudflared son del usuario** ([[predictive-dev-ports]]).
   Mis servidores usan otros puertos y se apagan al terminar.
-- **Adición on-prem:** la huella fuerte usa el `system_identifier` de
-  PostgreSQL, que SQLite no tiene. Por eso se levanta un **banco de pruebas
-  on-prem** con PostgreSQL 16 en un inquilino desechable (Fase 0), nunca sobre
-  AMBEV ni IPSA reales.
+- **Adición on-prem:** la huella de instalación usa el `system_identifier` de
+  PostgreSQL, que SQLite no tiene. Todo lo on-premise se prueba en el **banco de
+  la Fase 0** (`predictive-back/scripts/onprem_test.sh`): PostgreSQL 16 en el
+  5437, API en el 8013 y un inquilino desechable `ipsa_test`, nunca sobre AMBEV
+  ni IPSA reales. El banco se apaga al terminar cada sesión
+  (`scripts/onprem_test.sh down`).
 - La licencia vive en el **plano de control** (nuestra BD, 3 tablas), no en la
   base del cliente. Reemitir la licencia de AMBEV (D2) no toca sus datos de
   mantenimiento.

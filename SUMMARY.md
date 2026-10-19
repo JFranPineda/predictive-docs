@@ -780,5 +780,21 @@ exportar» al vencer, distribución compilada y firmada, e instalador con manual
 Decisiones tomadas: alcance completo (incluye compilado y servidor de
 renovación) y un solo formato de token (Ed25519 para todos, AMBEV se reemite).
 
+**Fase 0 hecha** (`predictive-back` `5b1af48`): banco on-premise en
+`scripts/onprem_test.sh` (PostgreSQL 16 en el 5437, rol sin superusuario,
+inquilino desechable `ipsa_test`, API en el 8013) e integración continua en
+`.github/workflows/ci.yml`. Lo que no se deduce del código:
+
+- **Las pruebas son 100 % unitarias** (408 casos, ninguno toca base de datos):
+  lo que prueba PostgreSQL es la prueba de humo del banco, no pytest.
+- **El banco no puede alcanzar las bases de desarrollo**: exporta sus variables
+  (ganan sobre `.env`) y deja vacías las `TENANT_*_DATABASE_URL`; responde 404
+  para `ambev`.
+- **En una base vacía `modules bootstrap` falla** hasta que exista el catálogo
+  base; hoy solo lo siembran `import_ipsa` y `seed_demo`. Se resuelve en la
+  Fase 6.
+- Respaldo previo de las tres bases y la media en
+  `predictive-back/data/backups/2026-10-19-before-onpremise-v1/` (fuera de git).
+
 Lo que no es código y vive en la propuesta: el contrato de licencia de uso con
 registro en INDECOPI (§5.8 y §7) y el servidor en comodato del Plan 3 (§5.9).

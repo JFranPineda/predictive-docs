@@ -28,6 +28,17 @@ muchas más horas y cada cliente sería distinto.
 - Un `.env.example` on-premise, distinto del de desarrollo: sin `DEBUG`, con
   `MEDIA_BACKEND=local`, `HISTORY_ROOT`, y la ruta del archivo de licencia.
 
+### Catálogo base (decisión P0-b, viene de la Fase 0)
+
+- Hoy, en una base vacía, `modules bootstrap` falla: el gancho de `ut_rollers`
+  busca la unidad `mm`, y las unidades, magnitudes y estados base solo los
+  siembran `import_ipsa` y `seed_demo`.
+- Se extrae ese catálogo a un comando propio que corre **antes** de instalar
+  módulos, y `install.sh` lo usa. Así un cliente nuevo arranca sin libros ni
+  demo. ~4–6 h dentro de esta fase.
+- Como `import_ipsa` y `seed_demo` comparten ese código, se vuelven a probar los
+  dos en el banco (Fase 0) después del cambio.
+
 ### Actualización sin internet
 
 - `update.sh` que recibe el `.tar` firmado de la nueva versión (Fase 5),
@@ -56,6 +67,9 @@ muchas más horas y cada cliente sería distinto.
 - **AC-6.1** `install.sh` deja un PREDICTIVE sirviendo en un servidor limpio
   (probado en una VM nueva), en menos de 30 minutos y sin pasos manuales fuera
   del guion.
+- **AC-6.1b** Sobre una base vacía, sin libros ni demo, el catálogo base más
+  `modules bootstrap` instalan todos los módulos automáticos sin error; después,
+  `import_ipsa` y `seed_demo` siguen funcionando en el banco.
 - **AC-6.2** `update.sh` aplica una versión nueva y, ante un fallo de
   migración, vuelve a la anterior sin perder datos.
 - **AC-6.3** `backup.sh` + `restore.sh` reconstruyen el sistema en una máquina
